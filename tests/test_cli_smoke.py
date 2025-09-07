@@ -1,5 +1,5 @@
 # tests/test_cli_smoke.py
-import os
+# import os
 import subprocess
 import sys
 
