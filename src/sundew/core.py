@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import random
+import sys
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
@@ -11,19 +12,31 @@ from .energy import EnergyAccount
 from .gating import gate_probability
 
 
-@dataclass(slots=True)
+# ---------------------------------------------------------------------
+# Compatibility: Python 3.9 doesn't support dataclass(slots=True).
+# Use a thin wrapper that sets/strips `slots` depending on version.
+# ---------------------------------------------------------------------
+if sys.version_info >= (3, 10):
+    def _dataclass(*args, **kwargs):
+        kwargs.setdefault("slots", True)
+        return dataclass(*args, **kwargs)
+else:
+    def _dataclass(*args, **kwargs):
+        kwargs.pop("slots", None)
+        return dataclass(*args, **kwargs)
+
+
+@_dataclass
 class ProcessingResult:
     """Lightweight record returned when an event is processed (activated)."""
-
     significance: float
     processing_time: float
     energy_consumed: float
 
 
-@dataclass(slots=True)
+@_dataclass
 class Metrics:
     """Minimal metrics container the tests poke at directly."""
-
     ema_activation_rate: float = 0.0
     processed: int = 0
     activated: int = 0
@@ -61,7 +74,7 @@ class SundewAlgorithm:
     """
 
     def __init__(self, config: SundewConfig) -> None:
-        # Config
+        # Config (validate when available)
         if hasattr(config, "validate"):
             config.validate()
         self.cfg = config
@@ -100,9 +113,7 @@ class SundewAlgorithm:
         self._eff_probe_every = max(1, (self._probe_every_cfg or 100))
 
         # Energy account (positional args: value, max_value)
-        self.energy = EnergyAccount(
-            float(self.cfg.max_energy), float(self.cfg.max_energy)
-        )
+        self.energy = EnergyAccount(float(self.cfg.max_energy), float(self.cfg.max_energy))
 
         # RNG
         random.seed(int(self.cfg.rng_seed))
@@ -116,9 +127,9 @@ class SundewAlgorithm:
         self.metrics.processed += 1
 
         # Deterministic probe computed up-front; can override refractory.
-        force_probe = self.metrics.processed == 1 or (
-            self._eff_probe_every > 0
-            and (self.metrics.processed % self._eff_probe_every == 0)
+        force_probe = (
+            self.metrics.processed == 1
+            or (self._eff_probe_every > 0 and (self.metrics.processed % self._eff_probe_every == 0))
         )
 
         # Respect refractory only when not forcing a probe
@@ -178,11 +189,7 @@ class SundewAlgorithm:
         """Stable summary used by tests and CLI demo."""
         n = max(1, self.metrics.processed)  # avoid div by zero
         act_rate = self.metrics.activated / n
-        avg_pt = (
-            (self.metrics.total_processing_time / self.metrics.activated)
-            if self.metrics.activated
-            else 0.0
-        )
+        avg_pt = (self.metrics.total_processing_time / self.metrics.activated) if self.metrics.activated else 0.0
         energy_remaining = float(getattr(self.energy, "value", 0.0))
 
         # Simple baseline vs. actual energy estimate
@@ -236,9 +243,7 @@ class SundewAlgorithm:
         if activated is not None:
             obs = 1.0 if activated else 0.0
             a = self._ema_alpha
-            self.metrics.ema_activation_rate = (
-                a * obs + (1.0 - a) * self.metrics.ema_activation_rate
-            )
+            self.metrics.ema_activation_rate = a * obs + (1.0 - a) * self.metrics.ema_activation_rate
 
         # PI error (target - ema); deadbanded
         err = float(self.cfg.target_activation_rate) - self.metrics.ema_activation_rate
@@ -247,9 +252,7 @@ class SundewAlgorithm:
 
         # Integrate & clamp integrator
         self._int_err += err
-        self._int_err = _clamp(
-            self._int_err, -self.cfg.integral_clamp, self.cfg.integral_clamp
-        )
+        self._int_err = _clamp(self._int_err, -self.cfg.integral_clamp, self.cfg.integral_clamp)
 
         # PI output: positive delta when under-target → threshold DOWN
         delta = self._kp * err + self._ki * self._int_err
@@ -257,26 +260,19 @@ class SundewAlgorithm:
         # Energy pressure: lower energy → conservative → threshold UP
         press = 0.0
         try:
-            frac = float(getattr(self.energy, "value", 0.0)) / float(
-                self.cfg.max_energy
-            )
+            frac = float(getattr(self.energy, "value", 0.0)) / float(self.cfg.max_energy)
             press = self._press * (1.0 - _clamp(frac, 0.0, 1.0))
         except Exception:
             press = 0.0
 
         # Apply and clamp
-        self.threshold = _clamp(
-            self.threshold - delta + press, self._min_thr, self._max_thr
-        )
+        self.threshold = _clamp(self.threshold - delta + press, self._min_thr, self._max_thr)
 
     def _tick_dormant_energy(self) -> None:
         # Subtract dormant cost; add small random regen
         v = float(getattr(self.energy, "value", 0.0))
         v = max(0.0, v - self._dorm_cost)
-        v = min(
-            float(self.cfg.max_energy),
-            v + random.uniform(self._regen_min, self._regen_max),
-        )
+        v = min(float(self.cfg.max_energy), v + random.uniform(self._regen_min, self._regen_max))
         self.energy.value = v
 
     def _spend_energy(self, amount: float) -> None:
