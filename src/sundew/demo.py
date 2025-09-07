@@ -3,9 +3,9 @@ from __future__ import annotations
 
 import random as _random
 import time
-from dataclasses import asdict
+from dataclasses import asdict, is_dataclass
 from datetime import datetime
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple, TypedDict
 
 from .config import SundewConfig
 from .core import ProcessingResult, SundewAlgorithm
@@ -31,10 +31,17 @@ CHECK = "✅" if EMOJI_OK else "[ok]"
 PAUSE = "⏸" if EMOJI_OK else "[idle]"
 FLAG_DONE = "🏁" if EMOJI_OK else "[done]"
 
+
 # ---------------------------------------------------------------------
 # Event schema with type-specific anomaly/urgency priors
 # ---------------------------------------------------------------------
-EVENT_TYPES = [
+class _Kind(TypedDict):
+    type: str
+    anomaly_bias: Tuple[float, float]
+    urgency_bias: Tuple[float, float]
+
+
+EVENT_TYPES: List[_Kind] = [
     {"type": "environmental", "anomaly_bias": (0.0, 0.4), "urgency_bias": (0.1, 0.6)},
     {"type": "security", "anomaly_bias": (0.4, 0.9), "urgency_bias": (0.3, 0.8)},
     {"type": "health_monitor", "anomaly_bias": (0.2, 0.7), "urgency_bias": (0.2, 0.7)},
@@ -43,20 +50,30 @@ EVENT_TYPES = [
 ]
 
 # Simple module-level RNG for reproducibility in CLI/demo usage
-
-
 _rng = _random.Random(42)
 
 
-def synth_event(i: int) -> Dict:  # pragma: no cover
+def _energy_float(algo: SundewAlgorithm) -> float:
+    """Robustly extract a float from EnergyAccount or raw number."""
+    e = getattr(algo, "energy", 0.0)
+    v = getattr(e, "value", None)
+    try:
+        return float(v if v is not None else e)
+    except Exception:
+        return 0.0
+
+
+def synth_event(i: int) -> Dict[str, Any]:  # pragma: no cover
     """
     Sample a synthetic event (bounded in [0,1] except magnitude ~[0,100]).
     Kept simple so CLI can call without passing an RNG.
     """
     kind = _rng.choice(EVENT_TYPES)
-    mag_raw = _rng.uniform(0.0, 1.0)  # base in [0,1]
-    anomaly = _rng.uniform(*kind["anomaly_bias"])
-    urgency = _rng.uniform(*kind["urgency_bias"])
+    mag_raw = _rng.uniform(0.0, 1.0)
+    lo_a, hi_a = kind["anomaly_bias"]
+    lo_u, hi_u = kind["urgency_bias"]
+    anomaly = _rng.uniform(lo_a, hi_a)
+    urgency = _rng.uniform(lo_u, hi_u)
     context = _rng.uniform(0.0, 1.0)
 
     return {
@@ -73,12 +90,11 @@ def synth_event(i: int) -> Dict:  # pragma: no cover
 # ---------------------------------------------------------------------
 # Public programmatic demo entry (used by CLI/tests)
 # ---------------------------------------------------------------------
-def run_demo(n_events: int = 40, temperature: float = 0.1) -> Dict:  # pragma: no cover
+def run_demo(n_events: int = 40, temperature: float = 0.1) -> Dict[str, Any]:  # pragma: no cover
     """
     Run a small synthetic stream and return a structured report.
     Randomness is seeded deterministically for reproducibility.
     """
-    # Configure and seed
     cfg = SundewConfig(gate_temperature=temperature)
     algo = SundewAlgorithm(cfg)
 
@@ -86,22 +102,12 @@ def run_demo(n_events: int = 40, temperature: float = 0.1) -> Dict:  # pragma: n
 
     print(f"{BULLET} Sundew Algorithm — Demo")
     print("=" * 60)
-    # EnergyAccount exposes .value; fall back to float(algo.energy)
-    try:
-        energy_val = float(getattr(algo.energy, "value", algo.energy))
-    except Exception:
-        energy_val = 0.0
-    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {energy_val:.1f}\n")
+    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n")
 
     for i in range(n_events):
         x = synth_event(i)
         res = algo.process(x)
-
-        # re-read energy to reflect changes
-        try:
-            energy_val = float(getattr(algo.energy, "value", algo.energy))
-        except Exception:
-            energy_val = 0.0
+        energy_val = _energy_float(algo)
 
         if res is None:
             print(
@@ -110,10 +116,14 @@ def run_demo(n_events: int = 40, temperature: float = 0.1) -> Dict:  # pragma: n
             )
         else:
             processed.append(res)
+            details = (
+                f"(sig={res.significance:.3f}, "
+                f"{res.processing_time:.3f}s, "
+                f"ΔE≈{res.energy_consumed:.1f})"
+            )
             print(
                 f"{i + 1:02d}. {x['type']:<15} {CHECK} processed "
-                f"(sig={res.significance:.3f}, {res.processing_time:.3f}s, ΔE≈{res.energy_consumed:.1f}) "
-                f"| energy {energy_val:6.1f} | thr {algo.threshold:.3f}"
+                f"{details} | energy {energy_val:6.1f} | thr {algo.threshold:.3f}"
             )
 
     print(f"\n{FLAG_DONE} Final Report")
@@ -127,16 +137,22 @@ def run_demo(n_events: int = 40, temperature: float = 0.1) -> Dict:  # pragma: n
         else:
             print(f"  {k:30s}: {v}")
 
-    # Safer serialization for dataclasses (ProcessingResult is a dataclass)
-    proc_serializable = []
+    # Serialize results safely
+    proc_serializable: List[Dict[str, Any]] = []
     for r in processed:
-        try:
+        if is_dataclass(r):
             proc_serializable.append(asdict(r))
-        except Exception:
+        else:
             proc_serializable.append(getattr(r, "__dict__", {}))
 
+    cfg_dict: Dict[str, Any]
+    if is_dataclass(cfg):
+        cfg_dict = asdict(cfg)
+    else:
+        cfg_dict = {k: getattr(cfg, k) for k in dir(cfg) if not k.startswith("_")}
+
     return {
-        "config": asdict(cfg),
+        "config": cfg_dict,
         "report": report,
         "processed_events": proc_serializable,
         "generated_at": datetime.utcnow().isoformat(),

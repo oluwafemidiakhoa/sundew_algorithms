@@ -1,39 +1,44 @@
-# Byte-compiled / cache
+# Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 *.so
-*.dll
 
-# Virtual env / tooling
+# Virtual envs
 .venv/
 venv/
-.env
-.env.*
-.ruff_cache/
-.mypy_cache/
-.pytest_cache/
-ipynb_checkpoints/
-.idea/
-.vscode/
 
-# Build & packaging
+# Build artifacts
 build/
 dist/
 *.egg-info/
-pip-wheel-metadata/
 
-# Coverage / test artifacts
+# Tooling caches
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
 .coverage
 coverage.xml
 htmlcov/
-.hypothesis/
-.pyre/
 
-# OS junk
+# Hypothesis examples
+.hypothesis/
+
+# IDE / OS
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
 
+# Logs & local outputs
+*.log
+results/
+*.png
+
+# Jupyter
+.ipynb_checkpoints/
+
 # Misc
-pytest
+.env
+.env.*

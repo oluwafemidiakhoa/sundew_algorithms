@@ -1,5 +1,5 @@
 [build-system]
-requires = ["setuptools>=61.0"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -7,7 +7,7 @@ name = "sundew-algorithms"
 version = "0.1.5"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = { text = "MIT" }
 
 authors = [
@@ -20,13 +20,11 @@ keywords = [
 ]
 
 classifiers = [
-  "Development Status :: 3 - Alpha",
+  "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
-  "Programming Language :: Python :: 3.8",
-  "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
@@ -51,14 +49,13 @@ dev = [
   "ruff>=0.5.0",
   "mypy>=1.10.0",
   "pre-commit>=3.5.0",
-  "flake8>=6.0",  # <-- add flake8 for CI lint step
 ]
 
 [project.urls]
-Homepage = "https://github.com/oluwafemidiakhoa/sundew_algo"
-Repository = "https://github.com/oluwafemidiakhoa/sundew_algo"
-Issues = "https://github.com/oluwafemidiakhoa/sundew_algo/issues"
-"CI Actions" = "https://github.com/oluwafemidiakhoa/sundew_algo/actions"
+Homepage   = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
+Repository = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
+Issues     = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
+"CI Actions" = "https://github.com/oluwafemidiakhoa/sundew_algorithms/actions"
 
 [project.scripts]
 sundew = "sundew.cli:main"
@@ -71,6 +68,9 @@ where = ["src"]
 include = ["sundew*"]
 exclude = ["tests*"]
 
+# -------------------------
+# Testing / Coverage config
+# -------------------------
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
@@ -78,42 +78,50 @@ addopts = "-q"
 [tool.coverage.run]
 branch = true
 source = ["src"]
-omit = [
-  "tests/*",
-  # Uncomment the following lines if you prefer to exclude CLI/demo from coverage:
-  # "src/sundew/cli.py",
-  # "src/sundew/demo.py",
-]
+omit = ["tests/*"]
 
 [tool.coverage.report]
 show_missing = true
 skip_covered = false
 precision = 1
 
-# Ruff linter/formatter configuration
+# ---------------
+# Ruff (linter/formatter)
+# ---------------
 [tool.ruff]
-target-version = "py313"
+target-version = "py310"
 line-length = 100
-
-# Flake8 (for CI jobs that call 'flake8')
-[tool.flake8]
-max-line-length = 100
-extend-ignore = ["E203"]
-exclude = [
-  ".git",
-  "__pycache__",
+extend-exclude = [
   ".venv",
-  "venv",
   ".mypy_cache",
   ".pytest_cache",
   "build",
   "dist",
+  ".hypothesis",
 ]
 
-# MyPy static typing configuration
+[tool.ruff.lint]
+# Enable import sorting and the default rule set
+extend-select = ["I"]
+
+# -------
+# MyPy
+# -------
 [tool.mypy]
-python_version = "3.13"
-strict = true
-ignore_missing_imports = true
-# Avoid duplicate-module errors for scripts with same names under Windows
-exclude = "(?x)(^benchmarks(/|\\\\)|^adapters(/|\\\\))"
+python_version = "3.10"
+
+# Analyze only the package source (prevents seeing files twice as 'sundew.core' and 'src.sundew.core')
+files = ["src"]
+
+# Treat 'src' as the import root
+mypy_path = ["src"]
+explicit_package_bases = true
+
+# Typical ergonomics for library code
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+show_column_numbers = true
+
+# Don’t scan caches/builds
+exclude = "(^build/|^dist/|^\\.mypy_cache/)"

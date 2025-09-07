@@ -1,10 +1,25 @@
 # src/sundew/config_presets.py
 from __future__ import annotations
 
-from dataclasses import replace
+from dataclasses import asdict
 from typing import Any, Callable, Dict
 
 from .config import SundewConfig
+
+# ------------------------------------------------------------------------------
+# Internal helpers
+# ------------------------------------------------------------------------------
+
+
+def _clone(cfg: SundewConfig, **updates: Any) -> SundewConfig:
+    """
+    Create a new SundewConfig by copying fields from an existing one and
+    applying keyword overrides. This avoids mypy issues with dataclasses.replace.
+    """
+    data: Dict[str, Any] = asdict(cfg)
+    data.update(updates)
+    return SundewConfig(**data)
+
 
 # ------------------------------------------------------------------------------
 # Baseline (former numbers)
@@ -94,7 +109,7 @@ def _tuned_v1() -> SundewConfig:
 
 def _tuned_v2() -> SundewConfig:
     """
-    Recommended general-purpose settings (from your latest experiments):
+    Recommended general-purpose settings:
     - slightly higher gains, smaller deadband
     - softer energy pressure
     - tighter max_threshold to avoid hard-pegging
@@ -168,10 +183,8 @@ def _ecg_v1() -> SundewConfig:
 def _ecg_mitbih_best() -> SundewConfig:
     """
     Frozen best-at-hand trade-off from the MIT-BIH sweep results.
-    Values here reflect the 'best_by_counts' selection you generated.
+    Values here reflect a 'best_by_counts' selection.
     """
-    # These values are a reasonable default snapshot; adjust if you’ve
-    # finalized a different row from your sweep report.
     return SundewConfig(
         activation_threshold=0.65,
         target_activation_rate=0.13,
@@ -206,7 +219,7 @@ def _ecg_mitbih_best() -> SundewConfig:
 
 def _aggressive() -> SundewConfig:
     """Faster to hit target; more activations; lower energy savings."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         adapt_kp=0.12,
         adapt_ki=0.04,
@@ -219,7 +232,7 @@ def _aggressive() -> SundewConfig:
 
 def _conservative() -> SundewConfig:
     """Maximize savings (will under-activate in quiet streams)."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         adapt_kp=0.05,
         adapt_ki=0.01,
@@ -233,7 +246,7 @@ def _conservative() -> SundewConfig:
 
 def _high_temp() -> SundewConfig:
     """Probe/explore more (useful for anomaly-heavy streams)."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         gate_temperature=0.20,
         energy_pressure=0.025,
@@ -242,7 +255,7 @@ def _high_temp() -> SundewConfig:
 
 def _low_temp() -> SundewConfig:
     """Nearly hard gate; sharper selectivity."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         gate_temperature=0.00,
         energy_pressure=0.035,
@@ -251,7 +264,7 @@ def _low_temp() -> SundewConfig:
 
 def _energy_saver() -> SundewConfig:
     """Prioritize battery; accept lower activation rate."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         energy_pressure=0.08,
         adapt_kp=0.06,
@@ -263,7 +276,7 @@ def _energy_saver() -> SundewConfig:
 
 def _target_0p30() -> SundewConfig:
     """Convenience preset for a higher target activation rate."""
-    return replace(
+    return _clone(
         _tuned_v2(),
         target_activation_rate=0.30,
     )
@@ -278,7 +291,7 @@ _PRESETS: Dict[str, Callable[[], SundewConfig]] = {
     "tuned_v1": _tuned_v1,
     "tuned_v2": _tuned_v2,  # current general recommendation
     "ecg_v1": _ecg_v1,  # ECG-focused generic preset
-    "ecg_mitbih_best": _ecg_mitbih_best,  # Frozen from MIT-BIH sweep
+    "ecg_mitbih_best": _ecg_mitbih_best,  # frozen from MIT-BIH sweep
     "aggressive": _aggressive,
     "conservative": _conservative,
     "high_temp": _high_temp,
@@ -297,7 +310,7 @@ def get_preset(name: str, overrides: Dict[str, Any] | None = None) -> SundewConf
     """
     Return a SundewConfig for the named preset. Optionally override fields:
 
-        cfg = get_preset("tuned_v2", overrides=dict(target_activation_rate=0.30))
+        cfg = get_preset("tuned_v2", overrides={"target_activation_rate": 0.30})
 
     Raises KeyError if the preset name is unknown.
     """

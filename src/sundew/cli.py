@@ -6,6 +6,7 @@ import json
 import sys
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
+from typing import Any, Dict
 
 from . import get_preset, list_presets
 from .config import SundewConfig
@@ -39,14 +40,15 @@ def _energy_float(algo: SundewAlgorithm) -> float:
         return 0.0
 
 
-def _to_plain(obj) -> dict:
+def _to_plain(obj: object) -> Dict[str, Any]:
     """
     Dataclass-safe serializer (works with slots=True).
     Falls back to __dict__ if not a dataclass.
     """
     if is_dataclass(obj):
-        return asdict(obj)
-    return getattr(obj, "__dict__", {})
+        return asdict(obj)  # type: ignore[arg-type]
+    d = getattr(obj, "__dict__", {})
+    return dict(d) if isinstance(d, dict) else {}
 
 
 def cmd_list_presets(_: argparse.Namespace) -> int:
@@ -56,7 +58,7 @@ def cmd_list_presets(_: argparse.Namespace) -> int:
 
 
 def cmd_print_config(ns: argparse.Namespace) -> int:
-    cfg = get_preset(ns.preset) if ns.preset else SundewConfig()
+    cfg: SundewConfig = get_preset(ns.preset) if ns.preset else SundewConfig()
     print(json.dumps(_to_plain(cfg), indent=2))
     return 0
 
@@ -70,9 +72,7 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
 
     print(f"{BULLET} Sundew Algorithm — Demo")
     print("=" * 60)
-    print(
-        f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n"
-    )
+    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n")
 
     processed: list[ProcessingResult] = []
     for i in range(ns.events):
@@ -126,9 +126,7 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover
     sub = ap.add_subparsers(dest="cmd")
 
     # list-presets
-    ap_list = sub.add_parser(
-        "list-presets", help="List available configuration presets"
-    )
+    ap_list = sub.add_parser("list-presets", help="List available configuration presets")
     ap_list.set_defaults(func=cmd_list_presets)
 
     # print-config
@@ -145,12 +143,8 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover
         help="Run the interactive demo (shortcut without subcommand)",
     )
     ap.add_argument("--events", type=int, default=40, help="Number of demo events")
-    ap.add_argument(
-        "--temperature", type=float, default=0.1, help="Gating temperature (0=hard)"
-    )
-    ap.add_argument(
-        "--save", type=str, default="", help="Optional path to save demo results JSON"
-    )
+    ap.add_argument("--temperature", type=float, default=0.1, help="Gating temperature (0=hard)")
+    ap.add_argument("--save", type=str, default="", help="Optional path to save demo results JSON")
 
     # demo subcommand (explicit)
     ap_demo = sub.add_parser("demo", help="Run the interactive demo")
