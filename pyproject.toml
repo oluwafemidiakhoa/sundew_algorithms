@@ -28,7 +28,9 @@ classifiers = [
   "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11"
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Programming Language :: Python :: 3.13",
 ]
 
 dependencies = []
@@ -49,12 +51,13 @@ dev = [
   "ruff>=0.5.0",
   "mypy>=1.10.0",
   "pre-commit>=3.5.0",
+  "flake8>=6.0",  # <-- add flake8 for CI lint step
 ]
 
 [project.urls]
-Homepage   = "https://github.com/oluwafemidiakhoa/sundew_algo"
+Homepage = "https://github.com/oluwafemidiakhoa/sundew_algo"
 Repository = "https://github.com/oluwafemidiakhoa/sundew_algo"
-Issues     = "https://github.com/oluwafemidiakhoa/sundew_algo/issues"
+Issues = "https://github.com/oluwafemidiakhoa/sundew_algo/issues"
 "CI Actions" = "https://github.com/oluwafemidiakhoa/sundew_algo/actions"
 
 [project.scripts]
@@ -87,13 +90,30 @@ show_missing = true
 skip_covered = false
 precision = 1
 
+# Ruff linter/formatter configuration
 [tool.ruff]
 target-version = "py313"
 line-length = 100
 
+# Flake8 (for CI jobs that call 'flake8')
+[tool.flake8]
+max-line-length = 100
+extend-ignore = ["E203"]
+exclude = [
+  ".git",
+  "__pycache__",
+  ".venv",
+  "venv",
+  ".mypy_cache",
+  ".pytest_cache",
+  "build",
+  "dist",
+]
+
+# MyPy static typing configuration
 [tool.mypy]
 python_version = "3.13"
 strict = true
 ignore_missing_imports = true
-# Avoid duplicate-module errors for scripts with the same name on Windows
+# Avoid duplicate-module errors for scripts with same names under Windows
 exclude = "(?x)(^benchmarks(/|\\\\)|^adapters(/|\\\\))"
