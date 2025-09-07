@@ -177,9 +177,7 @@ def sigmoid(x: float) -> float:
     return 1.0 / (1.0 + math.exp(-x))
 
 
-def make_feature_stream(
-    rows: Iterable[Dict], max_abs_for_scale: float = 3.0
-) -> Iterable[Dict]:
+def make_feature_stream(rows: Iterable[Dict], max_abs_for_scale: float = 3.0) -> Iterable[Dict]:
     """
     Convert raw ECG rows into Sundew-compatible lightweight features.
     Returns dicts with:
@@ -327,16 +325,10 @@ def run(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="Run Sundew on an ECG CSV and save results."
-    )
-    ap.add_argument(
-        "--csv", required=True, help="Path to ECG CSV (e.g., MIT-BIH export)."
-    )
+    ap = argparse.ArgumentParser(description="Run Sundew on an ECG CSV and save results.")
+    ap.add_argument("--csv", required=True, help="Path to ECG CSV (e.g., MIT-BIH export).")
     ap.add_argument("--preset", default="tuned_v2", help="Config preset name.")
-    ap.add_argument(
-        "--limit", type=int, default=None, help="Optional limit of samples to process."
-    )
+    ap.add_argument("--limit", type=int, default=None, help="Optional limit of samples to process.")
     ap.add_argument("--save", type=str, default=None, help="Optional JSON output path.")
     ap.add_argument(
         "--refractory",

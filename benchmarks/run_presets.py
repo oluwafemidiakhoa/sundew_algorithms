@@ -72,9 +72,7 @@ def run_once(n_events: int, cfg: SundewConfig, seed: int) -> Dict[str, Any]:
 
 
 def main():
-    ap = argparse.ArgumentParser(
-        description="Run multiple Sundew presets and aggregate results"
-    )
+    ap = argparse.ArgumentParser(description="Run multiple Sundew presets and aggregate results")
     ap.add_argument(
         "--presets",
         nargs="+",
@@ -83,9 +81,7 @@ def main():
     )
     ap.add_argument("--events", type=int, default=300, help="Events per run")
     ap.add_argument("--repeats", type=int, default=3, help="Seeds per preset")
-    ap.add_argument(
-        "--seed-base", type=int, default=42, help="Base seed used for repeats"
-    )
+    ap.add_argument("--seed-base", type=int, default=42, help="Base seed used for repeats")
     ap.add_argument(
         "--out",
         type=str,

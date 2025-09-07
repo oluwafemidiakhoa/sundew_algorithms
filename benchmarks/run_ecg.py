@@ -314,16 +314,10 @@ def run_once(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="Run Sundew on an ECG CSV and save results."
-    )
-    ap.add_argument(
-        "--csv", required=True, help="Path to ECG CSV (e.g., MIT-BIH export)."
-    )
+    ap = argparse.ArgumentParser(description="Run Sundew on an ECG CSV and save results.")
+    ap.add_argument("--csv", required=True, help="Path to ECG CSV (e.g., MIT-BIH export).")
     ap.add_argument("--preset", default="tuned_v2", help="Config preset name.")
-    ap.add_argument(
-        "--limit", type=int, default=None, help="Optional limit of samples to process."
-    )
+    ap.add_argument("--limit", type=int, default=None, help="Optional limit of samples to process.")
     ap.add_argument("--save", type=str, default=None, help="Optional JSON output path.")
     ap.add_argument(
         "--refractory",

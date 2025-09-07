@@ -51,9 +51,7 @@ def run_demo(n_events: int, temperature: float) -> dict:
 
     print(f"{BULLET} Sundew Algorithm — Demo")
     print("=" * 60)
-    print(
-        f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n"
-    )
+    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n")
 
     processed = []
     for i in range(n_events):
@@ -94,12 +92,8 @@ def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(description="Sundew Algorithm CLI")
     ap.add_argument("--demo", action="store_true", help="Run the interactive demo")
     ap.add_argument("--events", type=int, default=40, help="Number of demo events")
-    ap.add_argument(
-        "--temperature", type=float, default=0.1, help="Gating temperature (0=hard)"
-    )
-    ap.add_argument(
-        "--save", type=str, default="", help="Optional: save demo results to JSON path"
-    )
+    ap.add_argument("--temperature", type=float, default=0.1, help="Gating temperature (0=hard)")
+    ap.add_argument("--save", type=str, default="", help="Optional: save demo results to JSON path")
     args = ap.parse_args(argv)
 
     if args.demo:

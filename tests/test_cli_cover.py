@@ -33,9 +33,7 @@ def test_cmd_list_presets_prints(monkeypatch, capsys):
     """
     import sundew.cli as cli
 
-    monkeypatch.setattr(
-        "sundew.cli.list_presets", lambda: ["tuned_v2", "ecg_mitbih_best"]
-    )
+    monkeypatch.setattr("sundew.cli.list_presets", lambda: ["tuned_v2", "ecg_mitbih_best"])
 
     rc = cli.cmd_list_presets(types.SimpleNamespace())
     captured = capsys.readouterr().out.strip().splitlines()

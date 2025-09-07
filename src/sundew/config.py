@@ -8,10 +8,12 @@ from typing import Tuple
 # Compatibility: dataclass(slots=...) is only available on Python >= 3.10.
 # Use @_dataclass everywhere; it sets slots=True on 3.10+ and ignores it on 3.8/3.9.
 if sys.version_info >= (3, 10):
+
     def _dataclass(*args, **kwargs):
         kwargs.setdefault("slots", True)
         return dataclass(*args, **kwargs)
 else:
+
     def _dataclass(*args, **kwargs):
         kwargs.pop("slots", None)
         return dataclass(*args, **kwargs)
@@ -99,6 +101,4 @@ class SundewConfig:
         # Enforce that weights form a convex combination
         weight_sum = self.w_magnitude + self.w_anomaly + self.w_context + self.w_urgency
         if abs(weight_sum - 1.0) > 1e-6:
-            raise ValueError(
-                "w_magnitude + w_anomaly + w_context + w_urgency must sum to 1.0."
-            )
+            raise ValueError("w_magnitude + w_anomaly + w_context + w_urgency must sum to 1.0.")

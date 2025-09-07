@@ -41,13 +41,9 @@ def main():
         default="tuned_v2",
         help=f"Config preset to use. Options: {list_presets()}",
     )
-    ap.add_argument(
-        "--events", type=int, default=200, help="Number of events to simulate"
-    )
+    ap.add_argument("--events", type=int, default=200, help="Number of events to simulate")
     ap.add_argument("--seed", type=int, default=42, help="RNG seed")
-    ap.add_argument(
-        "--out", type=str, default="results/plots", help="Output directory for PNGs"
-    )
+    ap.add_argument("--out", type=str, default="results/plots", help="Output directory for PNGs")
     ap.add_argument(
         "--savecsv",
         type=str,
@@ -73,9 +69,7 @@ def main():
         steps.append(i + 1)
         thresholds.append(algo.threshold)
         e_val = getattr(getattr(algo, "energy", None), "value", None)
-        energies.append(
-            e_val if e_val is not None else float(getattr(algo, "energy", 0.0))
-        )
+        energies.append(e_val if e_val is not None else float(getattr(algo, "energy", 0.0)))
         emas.append(algo.metrics.ema_activation_rate)
         activations.append(1 if res is not None else 0)
 
@@ -96,9 +90,7 @@ def main():
                     "seed",
                 ]
             )
-            for s, thr, en, ema, act in zip(
-                steps, thresholds, energies, emas, activations
-            ):
+            for s, thr, en, ema, act in zip(steps, thresholds, energies, emas, activations):
                 w.writerow([s, thr, en, ema, act, args.preset, args.seed])
         print(f"📄 saved timeseries CSV: {csv_path.resolve()}")
 

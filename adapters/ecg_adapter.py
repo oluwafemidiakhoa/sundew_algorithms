@@ -161,8 +161,7 @@ def ecg_events_from_csv(
 
             yield {
                 "timestamp": ts,
-                "magnitude": magnitude
-                * 100.0,  # Sundew expects 0..100 before normalization
+                "magnitude": magnitude * 100.0,  # Sundew expects 0..100 before normalization
                 "anomaly_score": anomaly,
                 "context_relevance": context,
                 "urgency": urgency,

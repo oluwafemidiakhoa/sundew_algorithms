@@ -71,12 +71,7 @@ def _ensure_savings_pct(row: Dict) -> float:
     # 2) compute from baseline/actual if both present
     b = row.get("baseline_energy_cost", None)
     a = row.get("actual_energy_cost", None)
-    if (
-        isinstance(b, (int, float))
-        and isinstance(a, (int, float))
-        and b
-        and math.isfinite(b)
-    ):
+    if isinstance(b, (int, float)) and isinstance(a, (int, float)) and b and math.isfinite(b):
         return max(-100.0, min(100.0, 100.0 * (b - a) / b))
     # 3) fallback 0
     return 0.0
@@ -134,9 +129,7 @@ def _rank_key_factory(sort_fields: List[str]):
     }
     for s in sort_fields:
         if s not in valid:
-            raise ValueError(
-                f"Unsupported sort field '{s}'. Use one of: {sorted(valid)}"
-            )
+            raise ValueError(f"Unsupported sort field '{s}'. Use one of: {sorted(valid)}")
 
     def key(row: Dict):
         vals = []
@@ -250,16 +243,11 @@ def _describe(rows: List[Dict]) -> str:
     )
     lines: List[str] = []
     for k in keys:
-        vals = [
-            r.get(k) if k not in SAVINGS_ALIASES else _ensure_savings_pct(r)
-            for r in rows
-        ]
+        vals = [r.get(k) if k not in SAVINGS_ALIASES else _ensure_savings_pct(r) for r in rows]
         vals = [v for v in vals if isinstance(v, (int, float)) and math.isfinite(v)]
         if not vals:
             continue
-        lines.append(
-            f"{k:28s} min={min(vals):.4g}  med={median(vals):.4g}  max={max(vals):.4g}"
-        )
+        lines.append(f"{k:28s} min={min(vals):.4g}  med={median(vals):.4g}  max={max(vals):.4g}")
     return "\n".join(lines)
 
 
@@ -370,28 +358,16 @@ def select_best(
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="Select best Sundew configs from sweep CSV (robust)"
-    )
+    ap = argparse.ArgumentParser(description="Select best Sundew configs from sweep CSV (robust)")
     ap.add_argument("--csv", required=True, help="Input sweep CSV")
     ap.add_argument("--out-csv", required=True, help="Output CSV with top-N rows")
     ap.add_argument("--out-md", default=None, help="Optional Markdown summary path")
-    ap.add_argument(
-        "--research-md", default=None, help="Optional research update block path"
-    )
-    ap.add_argument(
-        "--dataset-name", default=None, help="Dataset name for research update"
-    )
-    ap.add_argument(
-        "--dataset-notes", default=None, help="Dataset notes for research update"
-    )
+    ap.add_argument("--research-md", default=None, help="Optional research update block path")
+    ap.add_argument("--dataset-name", default=None, help="Dataset name for research update")
+    ap.add_argument("--dataset-notes", default=None, help="Dataset notes for research update")
 
-    ap.add_argument(
-        "--min-savings", type=float, default=80.0, help="Minimum energy savings (%)"
-    )
-    ap.add_argument(
-        "--min-precision", type=float, default=0.0, help="Minimum precision"
-    )
+    ap.add_argument("--min-savings", type=float, default=80.0, help="Minimum energy savings (%)")
+    ap.add_argument("--min-precision", type=float, default=0.0, help="Minimum precision")
     ap.add_argument("--min-recall", type=float, default=0.0, help="Minimum recall")
     ap.add_argument("--min-f1", type=float, default=0.0, help="Minimum F1")
     ap.add_argument(
@@ -417,9 +393,7 @@ def main() -> None:
         ),
     )
     ap.add_argument("--top-n", type=int, default=10, help="Number of rows to return")
-    ap.add_argument(
-        "--describe", action="store_true", help="Print distribution summary pre-filter"
-    )
+    ap.add_argument("--describe", action="store_true", help="Print distribution summary pre-filter")
 
     args = ap.parse_args()
     sort_fields = [s.strip() for s in args.sort.split(",") if s.strip()]

@@ -52,9 +52,7 @@ def main() -> None:
         default="ecg_v1",
         help="Config preset to start from (default: ecg_v1)",
     )
-    ap.add_argument(
-        "--limit", type=int, default=None, help="Optional cap on number of samples"
-    )
+    ap.add_argument("--limit", type=int, default=None, help="Optional cap on number of samples")
     ap.add_argument(
         "--thr-min",
         type=float,
@@ -67,9 +65,7 @@ def main() -> None:
         required=True,
         help="Max activation_threshold (e.g., 0.70)",
     )
-    ap.add_argument(
-        "--thr-step", type=float, required=True, help="Step size (e.g., 0.01)"
-    )
+    ap.add_argument("--thr-step", type=float, required=True, help="Step size (e.g., 0.01)")
     ap.add_argument(
         "--gate-temperature",
         type=float,
@@ -88,12 +84,8 @@ def main() -> None:
         default=0,
         help="Refractory (samples). 0 disables. (default: 0)",
     )
-    ap.add_argument(
-        "--out-csv", required=True, help="Output CSV file for the curve results"
-    )
-    ap.add_argument(
-        "--out-png", default=None, help="Optional PNG path for F1/P/R vs threshold"
-    )
+    ap.add_argument("--out-csv", required=True, help="Output CSV file for the curve results")
+    ap.add_argument("--out-png", default=None, help="Optional PNG path for F1/P/R vs threshold")
     args = ap.parse_args()
 
     thresholds = frange(args.thr_min, args.thr_max, args.thr_step)

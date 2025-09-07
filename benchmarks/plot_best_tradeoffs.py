@@ -76,9 +76,7 @@ def _rank(rows: List[Dict], sort_fields: List[str], top_n: int) -> List[Dict]:
     }
     for s in sort_fields:
         if s not in valid:
-            raise ValueError(
-                f"Unsupported sort field '{s}'. Use one of: {sorted(valid)}"
-            )
+            raise ValueError(f"Unsupported sort field '{s}'. Use one of: {sorted(valid)}")
 
     def key(r: Dict):
         return tuple(r.get(s, 0.0) for s in sort_fields)
@@ -95,17 +93,11 @@ def _fp_rate(row: Dict) -> float:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="Plot best trade-offs (F1 vs Energy Savings)"
-    )
-    ap.add_argument(
-        "--csv", required=True, help="Sweep CSV (e.g., results/sweep_cm.csv)"
-    )
+    ap = argparse.ArgumentParser(description="Plot best trade-offs (F1 vs Energy Savings)")
+    ap.add_argument("--csv", required=True, help="Sweep CSV (e.g., results/sweep_cm.csv)")
     ap.add_argument("--out", required=True, help="Output PNG path")
     ap.add_argument("--top-n", type=int, default=10, help="Top-N to plot after sorting")
-    ap.add_argument(
-        "--sort", default="f1,precision", help="Comma-separated sort fields (desc)"
-    )
+    ap.add_argument("--sort", default="f1,precision", help="Comma-separated sort fields (desc)")
     args = ap.parse_args()
 
     rows = _read_rows(args.csv)
@@ -121,9 +113,7 @@ def main() -> None:
     labels = []
 
     def get_savings(row: Dict) -> float:
-        return float(
-            row.get("estimated_energy_savings_pct", row.get("energy_savings_pct", 0.0))
-        )
+        return float(row.get("estimated_energy_savings_pct", row.get("energy_savings_pct", 0.0)))
 
     for r in best:
         xs.append(get_savings(r))

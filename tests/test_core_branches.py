@@ -17,9 +17,7 @@ def tiny_stream(n=200, hi_prob=0.15, seed=123):
     # Base “significance driver” in [0,1] with occasional spikes
     base = np.clip(rng.normal(0.10, 0.10, size=n), 0.0, 1.0)
     spikes = rng.random(n) < hi_prob
-    base[spikes] = np.clip(
-        base[spikes] + rng.uniform(0.6, 1.0, size=spikes.sum()), 0.0, 1.0
-    )
+    base[spikes] = np.clip(base[spikes] + rng.uniform(0.6, 1.0, size=spikes.sum()), 0.0, 1.0)
 
     # Add a bit of independent noise for the other channels
     ctx_noise = np.clip(base * 0.6 + rng.normal(0.05, 0.05, size=n), 0.0, 1.0)
@@ -55,9 +53,7 @@ def run_for(cfg, n=200, seed=123):
 
 def test_core_energy_pressure_and_gate_paths():
     # Softer gate to exercise gate_temperature path
-    cfg = get_preset(
-        "tuned_v2", overrides=dict(gate_temperature=0.15, energy_pressure=0.04)
-    )
+    cfg = get_preset("tuned_v2", overrides=dict(gate_temperature=0.15, energy_pressure=0.04))
     stats = run_for(cfg, n=300)
     assert stats["activated"] >= 1  # we crossed the gate at least once
 
@@ -66,9 +62,7 @@ def test_core_integral_clamp_and_bounds():
     # Push the controller harder to touch integral clamp / threshold bounds
     cfg = get_preset(
         "tuned_v2",
-        overrides=dict(
-            adapt_kp=0.12, adapt_ki=0.05, min_threshold=0.2, max_threshold=0.9
-        ),
+        overrides=dict(adapt_kp=0.12, adapt_ki=0.05, min_threshold=0.2, max_threshold=0.9),
     )
     stats = run_for(cfg, n=350)
     assert stats["activated"] >= 1

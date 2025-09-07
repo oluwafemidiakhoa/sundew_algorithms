@@ -60,9 +60,7 @@ def _read_rows(path: str) -> List[Dict]:
             for k in list(row.keys()):
                 if k in NUMERIC_FIELDS and row[k] != "":
                     try:
-                        row[k] = (
-                            float(row[k]) if k != "refractory" else int(float(row[k]))
-                        )
+                        row[k] = float(row[k]) if k != "refractory" else int(float(row[k]))
                     except ValueError:
                         pass
             rows.append(row)
@@ -82,9 +80,7 @@ def _parse_match(s: str) -> Dict[str, float | int]:
         k, v = pair.split("=", 1)
         k, v = k.strip(), v.strip()
         if k not in NUMERIC_FIELDS:
-            raise ValueError(
-                f"Unsupported match key '{k}'. Use one of: {sorted(NUMERIC_FIELDS)}"
-            )
+            raise ValueError(f"Unsupported match key '{k}'. Use one of: {sorted(NUMERIC_FIELDS)}")
         # refractory is int; others are float
         if k == "refractory":
             out[k] = int(float(v))
@@ -105,9 +101,7 @@ def _parse_match(s: str) -> Dict[str, float | int]:
     return out
 
 
-def _select_row(
-    rows: List[Dict], row_index: Optional[int], match: Optional[Dict]
-) -> Dict:
+def _select_row(rows: List[Dict], row_index: Optional[int], match: Optional[Dict]) -> Dict:
     if row_index is not None:
         if row_index < 1 or row_index > len(rows):
             raise IndexError(f"--row-index {row_index} out of range 1..{len(rows)}")
@@ -167,9 +161,7 @@ def main() -> None:
         required=True,
         help="Sweep CSV (e.g., results/sweep.csv or results/best.csv)",
     )
-    ap.add_argument(
-        "--row-index", type=int, default=None, help="1-based row index to re-run"
-    )
+    ap.add_argument("--row-index", type=int, default=None, help="1-based row index to re-run")
     ap.add_argument(
         "--match",
         type=str,
@@ -249,9 +241,7 @@ def main() -> None:
     # Optional evaluator
     if args.eval:
         if not args.save:
-            print(
-                "\n[warn] --eval requested but no --save path provided; evaluator needs a JSON."
-            )
+            print("\n[warn] --eval requested but no --save path provided; evaluator needs a JSON.")
             return
         try:
             # lazy import to avoid hard dependency if user doesn't want this

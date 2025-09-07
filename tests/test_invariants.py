@@ -28,7 +28,5 @@ def test_threshold_clamped_over_steps():
     cfg = SundewConfig()
     algo = SundewAlgorithm(cfg)
     for _ in range(200):
-        algo.process(
-            {"magnitude": 0, "anomaly_score": 0, "context_relevance": 0, "urgency": 0}
-        )
+        algo.process({"magnitude": 0, "anomaly_score": 0, "context_relevance": 0, "urgency": 0})
         assert cfg.min_threshold <= algo.threshold <= cfg.max_threshold

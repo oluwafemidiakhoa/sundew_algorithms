@@ -20,9 +20,7 @@ def test_every_preset_instantiates(name):
 
 
 def test_get_preset_overrides_and_errors():
-    cfg = get_preset(
-        "tuned_v2", overrides=dict(target_activation_rate=0.30, gate_temperature=0.15)
-    )
+    cfg = get_preset("tuned_v2", overrides=dict(target_activation_rate=0.30, gate_temperature=0.15))
     assert cfg.target_activation_rate == pytest.approx(0.30)
     assert cfg.gate_temperature == pytest.approx(0.15)
 

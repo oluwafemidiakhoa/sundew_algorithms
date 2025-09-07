@@ -10,12 +10,8 @@ import matplotlib.pyplot as plt
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument(
-        "--json", required=True, help="Path to JSON with y_true and y_pred arrays"
-    )
-    ap.add_argument(
-        "--out", default="results/plots_real", help="Output directory for the plot"
-    )
+    ap.add_argument("--json", required=True, help="Path to JSON with y_true and y_pred arrays")
+    ap.add_argument("--out", default="results/plots_real", help="Output directory for the plot")
     args = ap.parse_args()
 
     os.makedirs(args.out, exist_ok=True)

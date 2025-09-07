@@ -110,17 +110,11 @@ def sweep(csv_path: str, out_csv: str, preset: str, limit: int | None) -> None:
 
 
 def main() -> None:
-    ap = argparse.ArgumentParser(
-        description="ECG parameter sweep with confusion-matrix columns."
-    )
+    ap = argparse.ArgumentParser(description="ECG parameter sweep with confusion-matrix columns.")
     ap.add_argument("--csv", required=True, help="Path to ECG CSV")
     ap.add_argument("--out", required=True, help="Output CSV path")
-    ap.add_argument(
-        "--preset", default="ecg_v1", help="Config preset (default: ecg_v1)"
-    )
-    ap.add_argument(
-        "--limit", type=int, default=None, help="Optional cap on samples (e.g., 50000)"
-    )
+    ap.add_argument("--preset", default="ecg_v1", help="Config preset (default: ecg_v1)")
+    ap.add_argument("--limit", type=int, default=None, help="Optional cap on samples (e.g., 50000)")
     args = ap.parse_args()
 
     sweep(args.csv, args.out, args.preset, args.limit)

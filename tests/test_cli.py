@@ -11,9 +11,7 @@ from sundew.core import SundewConfig
 
 
 def _add_common_args(p: argparse.ArgumentParser) -> None:
-    p.add_argument(
-        "--preset", default="tuned_v2", help="Preset name (see list-presets)"
-    )
+    p.add_argument("--preset", default="tuned_v2", help="Preset name (see list-presets)")
     p.add_argument(
         "--overrides",
         default=None,
@@ -63,9 +61,7 @@ def build_parser() -> argparse.ArgumentParser:
     p_list.set_defaults(func=cmd_list_presets)
 
     # print-config
-    p_cfg = sub.add_parser(
-        "print-config", help="Print a preset (with optional overrides) as JSON"
-    )
+    p_cfg = sub.add_parser("print-config", help="Print a preset (with optional overrides) as JSON")
     _add_common_args(p_cfg)
     p_cfg.set_defaults(func=cmd_print_config)
 
