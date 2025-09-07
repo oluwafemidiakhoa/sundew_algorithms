@@ -1,0 +1,39 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.dll
+
+# Virtual env / tooling
+.venv/
+venv/
+.env
+.env.*
+.ruff_cache/
+.mypy_cache/
+.pytest_cache/
+ipynb_checkpoints/
+.idea/
+.vscode/
+
+# Build & packaging
+build/
+dist/
+*.egg-info/
+pip-wheel-metadata/
+
+# Coverage / test artifacts
+.coverage
+coverage.xml
+htmlcov/
+.hypothesis/
+.pyre/
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Misc
+pytest

@@ -1,0 +1,99 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sundew"
+version = "0.1.2"
+description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+
+authors = [
+  { name = "Oluwafemi Idiakhoa", email = "oluwafemidiakhoa@gmail.com" }
+]
+
+keywords = [
+  "bio-inspired", "event-driven", "energy-efficient",
+  "adaptive-threshold", "edge-ai", "gating", "control"
+]
+
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11"
+]
+
+dependencies = []
+
+[project.optional-dependencies]
+benchmarks = [
+  "numpy>=1.23,<2.0",
+  "matplotlib>=3.3",
+]
+dev = [
+  # core development / testing
+  "numpy>=1.23,<2.0",
+  "pytest>=8.0",
+  "pytest-cov>=4.0",
+  # property-based tests
+  "hypothesis>=6.0",
+  # static analysis & style
+  "ruff>=0.5.0",
+  "mypy>=1.10.0",
+  "pre-commit>=3.5.0",
+]
+
+[project.urls]
+Homepage   = "https://github.com/oluwafemidiakhoa/sundew_algo"
+Repository = "https://github.com/oluwafemidiakhoa/sundew_algo"
+Issues     = "https://github.com/oluwafemidiakhoa/sundew_algo/issues"
+"CI Actions" = "https://github.com/oluwafemidiakhoa/sundew_algo/actions"
+
+[project.scripts]
+sundew = "sundew.cli:main"
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["sundew*"]
+exclude = ["tests*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = [
+  "tests/*",
+  # Uncomment the following lines if you prefer to exclude CLI/demo from coverage:
+  # "src/sundew/cli.py",
+  # "src/sundew/demo.py",
+]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
+precision = 1
+
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+ignore_missing_imports = true
+# Avoid duplicate-module errors for scripts with the same name on Windows
+exclude = "(?x)(^benchmarks(/|\\\\)|^adapters(/|\\\\))"
