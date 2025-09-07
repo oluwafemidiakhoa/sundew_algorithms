@@ -1,44 +1,45 @@
+# .gitignore
+
 # Python
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-*.so
 
 # Virtual envs
 .venv/
 venv/
+env/
+*.env
+.conda/
+pip-wheel-metadata/
 
 # Build artifacts
 build/
 dist/
 *.egg-info/
+.eggs/
 
-# Tooling caches
+# Caches
 .mypy_cache/
-.ruff_cache/
 .pytest_cache/
-.coverage
-coverage.xml
-htmlcov/
-
-# Hypothesis examples
+.ruff_cache/
+.ipynb_checkpoints/
 .hypothesis/
+
+# Coverage
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
 
 # IDE / OS
 .vscode/
 .idea/
+*.swp
 .DS_Store
 Thumbs.db
 
-# Logs & local outputs
-*.log
+# Local data / results
 results/
-*.png
-
-# Jupyter
-.ipynb_checkpoints/
-
-# Misc
-.env
-.env.*
+logs/
