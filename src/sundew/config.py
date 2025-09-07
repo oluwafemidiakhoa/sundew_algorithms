@@ -1,10 +1,23 @@
+# src/sundew/config.py
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from typing import Tuple
 
+# Compatibility: dataclass(slots=...) is only available on Python >= 3.10.
+# Use @_dataclass everywhere; it sets slots=True on 3.10+ and ignores it on 3.8/3.9.
+if sys.version_info >= (3, 10):
+    def _dataclass(*args, **kwargs):
+        kwargs.setdefault("slots", True)
+        return dataclass(*args, **kwargs)
+else:
+    def _dataclass(*args, **kwargs):
+        kwargs.pop("slots", None)
+        return dataclass(*args, **kwargs)
 
-@dataclass(slots=True)
+
+@_dataclass
 class SundewConfig:
     """
     Configuration for the Sundew algorithm.
@@ -60,8 +73,9 @@ class SundewConfig:
             raise ValueError("min_threshold must be ≤ max_threshold within [0, 1].")
         if self.gate_temperature < 0.0:
             raise ValueError("gate_temperature must be non-negative.")
-        if self.target_activation_rate < 0.0 or self.target_activation_rate > 1.0:
+        if not (0.0 <= self.target_activation_rate <= 1.0):
             raise ValueError("target_activation_rate must be in [0, 1].")
+
         for name in (
             "ema_alpha",
             "adapt_kp",
@@ -81,7 +95,8 @@ class SundewConfig:
             value = getattr(self, name)
             if value < 0:
                 raise ValueError(f"{name} must be non-negative.")
-        # Optional: enforce that weights form a convex combination
+
+        # Enforce that weights form a convex combination
         weight_sum = self.w_magnitude + self.w_anomaly + self.w_context + self.w_urgency
         if abs(weight_sum - 1.0) > 1e-6:
             raise ValueError(
