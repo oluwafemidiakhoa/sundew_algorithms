@@ -5,7 +5,7 @@ from src.sundew.core import SundewAlgorithm
 from tests.conftest import get_preset
 
 # Remove any cached versions
-modules_to_remove = [k for k in list(sys.modules) if "sundew" in k]
+modules_to_remove = [k for k in list(sys.modules.keys()) if "sundew" in k]
 for m in modules_to_remove:
     del sys.modules[m]
 
