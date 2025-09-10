@@ -100,6 +100,10 @@ extend-exclude = [
 [tool.ruff.lint]
 extend-select = ["I"]
 
+# Keep import sorting sane (fixes I001 in tests)
+[tool.ruff.lint.isort]
+known-first-party = ["sundew", "tests"]
+
 # -------
 # Flake8
 # -------
