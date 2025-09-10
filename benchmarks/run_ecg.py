@@ -7,6 +7,7 @@ import csv
 import json
 import math
 import os
+from dataclasses import asdict
 from typing import Dict, Iterable, Iterator, List, Optional
 
 from sundew import SundewAlgorithm
@@ -128,7 +129,6 @@ def ecg_events_from_csv(path: str) -> Iterator[Dict[str, float | int]]:
     Yield dicts with 'signal' (float) and optional 'label' (int 0/1) from CSV.
     Auto-detect plausible columns for signal/label without hard-coding schema.
     """
-    # Determine keys from header
     with open(path, "r", newline="", encoding="utf-8-sig") as f:
         reader = csv.DictReader(f)
         header = reader.fieldnames or []
@@ -269,8 +269,20 @@ def run(
     f1 = (2 * prec * rec) / max(1e-12, (prec + rec)) if (tp + fp + fn) > 0 else 0.0
 
     report = algo.report()
+
+    # Robust config serialization: works for slotted dataclasses too
+    try:
+        cfg_dict: Dict[str, object] = asdict(cfg)  # type: ignore[assignment]
+    except Exception:
+        # Fallback if cfg isn't a dataclass for some reason
+        cfg_dict = {
+            k: getattr(cfg, k)
+            for k in dir(cfg)
+            if not k.startswith("_") and not callable(getattr(cfg, k, None))
+        }
+
     out: Dict[str, object] = {
-        "config": cfg.__dict__,
+        "config": cfg_dict,
         "report": report,
         "counts": {
             "tp": tp,
