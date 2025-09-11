@@ -1,13 +1,33 @@
 #!/usr/bin/env python3
 # benchmarks/run_ecg.py
+"""
+Run Sundew on an ECG CSV and export metrics + energy report.
+
+Examples
+
+PowerShell:
+  python -m benchmarks.run_ecg `
+    --csv "data\\MIT-BIH Arrhythmia Database.csv" `
+    --preset tuned_v2 --limit 50000 `
+    --overrides "target_activation_rate=0.12,gate_temperature=0.07" `
+    --save "results\\ecg_run.json"
+
+Bash:
+  python -m benchmarks.run_ecg \
+    --csv "data/MIT-BIH Arrhythmia Database.csv" \
+    --preset tuned_v2 --limit 50000 \
+    --overrides "target_activation_rate=0.12,gate_temperature=0.07" \
+    --save results/ecg_run.json
+"""
+
 from __future__ import annotations
 
 import argparse
 import csv
 import json
 import math
-import os
 from dataclasses import asdict
+from pathlib import Path
 from typing import Dict, Iterable, Iterator, List, Optional
 
 from sundew import SundewAlgorithm
@@ -17,7 +37,7 @@ from sundew.config_presets import get_preset
 
 
 class RunningStats:
-    """Welford’s algorithm for running mean/std."""
+    """Welford’s algorithm for running mean/std (numerically stable)."""
 
     __slots__ = ("n", "mean", "M2")
 
@@ -189,15 +209,12 @@ def make_feature_stream(
         ctx = ema_anom.update(anom)
 
         # derivative
-        if prev_sig is None:
-            deriv = 0.0
-        else:
-            deriv = sig - prev_sig
+        deriv = 0.0 if prev_sig is None else (sig - prev_sig)
         prev_sig = sig
         urg = math.tanh(abs(deriv) / (5.0 * sd + 1e-6))  # normalize to [0,1]
 
-        # scale |z| to 0..100 for magnitude
-        mag = max(0.0, min(100.0, 100.0 * (abs(z) / (6.0 + 1e-9))))  # ~6σ -> ~100
+        # scale |z| to 0..100 for magnitude (~6σ -> ~100)
+        mag = max(0.0, min(100.0, 100.0 * (abs(z) / (6.0 + 1e-9))))
 
         out: Dict[str, float | int] = {
             "magnitude": mag,
@@ -213,6 +230,29 @@ def make_feature_stream(
 # ---------------------- Core runner ----------------------
 
 
+def _parse_overrides(s: Optional[str]) -> Optional[Dict[str, float | int | bool | str]]:
+    if not s:
+        return None
+    out: Dict[str, float | int | bool | str] = {}
+    for pair in s.split(","):
+        if "=" not in pair:
+            continue
+        k, v = pair.split("=", 1)
+        k = k.strip()
+        v = v.strip()
+        try:
+            if "." in v or "e" in v.lower():
+                out[k] = float(v)
+            else:
+                out[k] = int(v)
+        except ValueError:
+            if v.lower() in ("true", "false"):
+                out[k] = v.lower() == "true"
+            else:
+                out[k] = v
+    return out
+
+
 def run(
     csv_path: str,
     preset: str = "tuned_v2",
@@ -224,6 +264,10 @@ def run(
     """
     Execute Sundew on a CSV stream and return a result dict.
     """
+    p = Path(csv_path)
+    if not p.exists():
+        raise FileNotFoundError(f"CSV not found: {csv_path}")
+
     cfg = get_preset(preset, overrides=overrides or {})
     algo = SundewAlgorithm(cfg)
 
@@ -254,12 +298,12 @@ def run(
     # Confusion and metrics (only meaningful if labels present)
     tp = fp = fn = tn = 0
     if any(y_true):
-        for t, p in zip(y_true, y_pred):
-            if t == 1 and p == 1:
+        for t, p_ in zip(y_true, y_pred):
+            if t == 1 and p_ == 1:
                 tp += 1
-            elif t == 0 and p == 1:
+            elif t == 0 and p_ == 1:
                 fp += 1
-            elif t == 1 and p == 0:
+            elif t == 1 and p_ == 0:
                 fn += 1
             else:
                 tn += 1
@@ -274,7 +318,6 @@ def run(
     try:
         cfg_dict: Dict[str, object] = asdict(cfg)  # type: ignore[assignment]
     except Exception:
-        # Fallback if cfg isn't a dataclass for some reason
         cfg_dict = {
             k: getattr(cfg, k)
             for k in dir(cfg)
@@ -293,13 +336,14 @@ def run(
             "recall": rec,
             "f1": f1,
             "total_inputs": len(y_true),
-            "activations": sum(1 for p in y_pred if p == 1),
+            "activations": sum(1 for p_ in y_pred if p_ == 1),
         },
     }
 
     if save_path:
-        os.makedirs(os.path.dirname(save_path) or ".", exist_ok=True)
-        with open(save_path, "w", encoding="utf-8") as f:
+        out_path = Path(save_path)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(out_path, "w", encoding="utf-8") as f:
             json.dump(out, f, indent=2)
         print(f"Saved results to {save_path}")
 
@@ -346,25 +390,7 @@ def main() -> None:
 
     args = ap.parse_args()
 
-    overrides_dict: Optional[Dict[str, float | int | bool | str]] = None
-    if args.overrides:
-        overrides_dict = {}
-        for pair in args.overrides.split(","):
-            if "=" not in pair:
-                continue
-            k, v = pair.split("=", 1)
-            k = k.strip()
-            v = v.strip()
-            try:
-                if "." in v or "e" in v.lower():
-                    overrides_dict[k] = float(v)
-                else:
-                    overrides_dict[k] = int(v)
-            except ValueError:
-                if v.lower() in ("true", "false"):
-                    overrides_dict[k] = v.lower() == "true"
-                else:
-                    overrides_dict[k] = v
+    overrides_dict = _parse_overrides(args.overrides)
 
     run(
         csv_path=args.csv,
