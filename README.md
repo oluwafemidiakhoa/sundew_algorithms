@@ -1,6 +1,6 @@
 # Sundew Algorithms
 
-> **Bio-inspired, energy-aware selective activation for streaming data.**  
+> **Bio-inspired, energy-aware selective activation for streaming data.**
 > Sundew decides when to fully process an input and when to skip, trading a small drop in accuracy for **large energy savings**.
 
 [![PyPI version](https://badge.fury.io/py/sundew-algorithms.svg)](https://badge.fury.io/py/sundew-algorithms)
@@ -50,7 +50,7 @@ This repository ships a small benchmarking harness around the Sundew Algorithm f
 
 ### Dataset Reference
 
-**MIT-BIH Arrhythmia Database** - The benchmark uses the MIT-BIH Arrhythmia Database, a widely-used reference for cardiac arrhythmia research. 
+**MIT-BIH Arrhythmia Database** - The benchmark uses the MIT-BIH Arrhythmia Database, a widely-used reference for cardiac arrhythmia research.
 
 - **Source**: PhysioNet (https://physionet.org/content/mitdb/1.0.0/)
 - **Citation**: Moody GB, Mark RG. The impact of the MIT-BIH Arrhythmia Database. IEEE Eng in Med and Biol 20(3):45-50 (May-June 2001).
@@ -168,7 +168,7 @@ Add `--refractory 3` to dampen rapid re-fires (balanced_014_r3.json).
   run: |
     sundew-ecg --csv "data/MIT-BIH Arrhythmia Database.csv" --preset tuned_v2 --limit 5000 --save results/smoke.json
     python tools/summarize_and_plot.py --dir results --out results/summary.csv --md results/summary.md --plots results/plots
-    
+
 - name: Upload Results
   uses: actions/upload-artifact@v3
   with:

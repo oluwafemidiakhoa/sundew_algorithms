@@ -1,29 +1,18 @@
 # src/sundew/config_presets.py
 from __future__ import annotations
 
-from dataclasses import asdict
+from dataclasses import replace
 from typing import Any, Callable, Dict
 
 from .config import SundewConfig
 
-# ------------------------------------------------------------------------------
-# Internal helpers
-# ------------------------------------------------------------------------------
-
 
 def _clone(cfg: SundewConfig, **updates: Any) -> SundewConfig:
-    """
-    Create a new SundewConfig by copying fields from an existing one and
-    applying keyword overrides. This avoids mypy issues with dataclasses.replace.
-    """
-    data: Dict[str, Any] = asdict(cfg)
-    data.update(updates)
-    return SundewConfig(**data)
+    """Return a copy of cfg with field overrides (typed & mypy-friendly)."""
+    return replace(cfg, **updates)
 
 
-# ------------------------------------------------------------------------------
-# Baseline (former numbers)
-# ------------------------------------------------------------------------------
+# ---------------- Baseline ----------------
 
 
 def _baseline() -> SundewConfig:
@@ -32,49 +21,37 @@ def _baseline() -> SundewConfig:
     Conservative and prone to under-activation (maximizes savings).
     """
     return SundewConfig(
-        # Activation & adaptation
         activation_threshold=0.70,
         target_activation_rate=0.25,
         ema_alpha=0.10,
-        # Controller (initial PI-style numbers kept for reproducibility)
         adapt_kp=0.06,
         adapt_ki=0.01,
         error_deadband=0.010,
         integral_clamp=0.50,
-        # Threshold bounds
         min_threshold=0.30,
         max_threshold=0.95,
-        # Energy pressure (stronger -> more conservative)
         energy_pressure=0.15,
-        # Gating
-        gate_temperature=0.00,  # hard
-        # Energy model
+        gate_temperature=0.00,  # hard gate
         max_energy=100.0,
         dormant_tick_cost=0.5,
         dormancy_regen=(1.0, 3.0),
         eval_cost=0.6,
         base_processing_cost=10.0,
-        # Significance weights
         w_magnitude=0.30,
         w_anomaly=0.40,
         w_context=0.20,
         w_urgency=0.10,
-        # Extras
         rng_seed=42,
         probe_every=200,
         refractory=0,
     )
 
 
-# ------------------------------------------------------------------------------
-# Tuned v1 (PI + softer pressure)
-# ------------------------------------------------------------------------------
+# ---------------- Tuned v1 ----------------
 
 
 def _tuned_v1() -> SundewConfig:
-    """
-    First PI iteration that reduced threshold pegging and improved activation rate.
-    """
+    """First PI iteration that softened pressure and improved activation rate."""
     return SundewConfig(
         activation_threshold=0.70,
         target_activation_rate=0.25,
@@ -85,8 +62,8 @@ def _tuned_v1() -> SundewConfig:
         integral_clamp=0.50,
         min_threshold=0.20,
         max_threshold=0.90,
-        energy_pressure=0.05,  # softer than baseline
-        gate_temperature=0.10,  # soft-ish
+        energy_pressure=0.05,
+        gate_temperature=0.10,
         max_energy=100.0,
         dormant_tick_cost=0.5,
         dormancy_regen=(1.0, 3.0),
@@ -102,9 +79,7 @@ def _tuned_v1() -> SundewConfig:
     )
 
 
-# ------------------------------------------------------------------------------
-# Tuned v2 (current recommended general-use defaults)
-# ------------------------------------------------------------------------------
+# ---------------- Tuned v2 (recommended) ----------------
 
 
 def _tuned_v2() -> SundewConfig:
@@ -141,21 +116,19 @@ def _tuned_v2() -> SundewConfig:
     )
 
 
-# ------------------------------------------------------------------------------
-# ECG-focused presets
-# ------------------------------------------------------------------------------
+# ---------------- ECG-focused ----------------
 
 
 def _ecg_v1() -> SundewConfig:
     """
     ECG-oriented trade-off:
-    - Lower starting threshold and slightly softer gate to raise recall
+    - Lower starting threshold & softer gate to raise recall
     - Slightly faster controller
-    - Bias significance toward anomaly/context (ECG morphology deviations)
+    - Bias significance toward anomaly/context
     """
     return SundewConfig(
         activation_threshold=0.60,
-        target_activation_rate=0.12,  # allow more duty than generic tuned_v2
+        target_activation_rate=0.12,
         ema_alpha=0.08,
         adapt_kp=0.09,
         adapt_ki=0.02,
@@ -163,8 +136,8 @@ def _ecg_v1() -> SundewConfig:
         integral_clamp=0.50,
         min_threshold=0.45,
         max_threshold=0.95,
-        energy_pressure=0.08,  # don’t clamp too early in low energy
-        gate_temperature=0.12,  # admit borderline beats
+        energy_pressure=0.08,
+        gate_temperature=0.12,
         max_energy=100.0,
         dormant_tick_cost=0.5,
         dormancy_regen=(1.0, 3.0),
@@ -181,10 +154,7 @@ def _ecg_v1() -> SundewConfig:
 
 
 def _ecg_mitbih_best() -> SundewConfig:
-    """
-    Frozen best-at-hand trade-off from the MIT-BIH sweep results.
-    Values here reflect a 'best_by_counts' selection.
-    """
+    """Frozen ‘best trade-off’ from an MIT-BIH sweep."""
     return SundewConfig(
         activation_threshold=0.65,
         target_activation_rate=0.13,
@@ -212,9 +182,7 @@ def _ecg_mitbih_best() -> SundewConfig:
     )
 
 
-# ------------------------------------------------------------------------------
-# Variants
-# ------------------------------------------------------------------------------
+# ---------------- Variants ----------------
 
 
 def _aggressive() -> SundewConfig:
@@ -246,20 +214,12 @@ def _conservative() -> SundewConfig:
 
 def _high_temp() -> SundewConfig:
     """Probe/explore more (useful for anomaly-heavy streams)."""
-    return _clone(
-        _tuned_v2(),
-        gate_temperature=0.20,
-        energy_pressure=0.025,
-    )
+    return _clone(_tuned_v2(), gate_temperature=0.20, energy_pressure=0.025)
 
 
 def _low_temp() -> SundewConfig:
     """Nearly hard gate; sharper selectivity."""
-    return _clone(
-        _tuned_v2(),
-        gate_temperature=0.00,
-        energy_pressure=0.035,
-    )
+    return _clone(_tuned_v2(), gate_temperature=0.00, energy_pressure=0.035)
 
 
 def _energy_saver() -> SundewConfig:
@@ -276,22 +236,17 @@ def _energy_saver() -> SundewConfig:
 
 def _target_0p30() -> SundewConfig:
     """Convenience preset for a higher target activation rate."""
-    return _clone(
-        _tuned_v2(),
-        target_activation_rate=0.30,
-    )
+    return _clone(_tuned_v2(), target_activation_rate=0.30)
 
 
-# ------------------------------------------------------------------------------
-# Registry & helpers
-# ------------------------------------------------------------------------------
+# ---------------- Registry & helpers ----------------
 
 _PRESETS: Dict[str, Callable[[], SundewConfig]] = {
     "baseline": _baseline,
     "tuned_v1": _tuned_v1,
     "tuned_v2": _tuned_v2,  # current general recommendation
     "ecg_v1": _ecg_v1,  # ECG-focused generic preset
-    "ecg_mitbih_best": _ecg_mitbih_best,  # frozen from MIT-BIH sweep
+    "ecg_mitbih_best": _ecg_mitbih_best,
     "aggressive": _aggressive,
     "conservative": _conservative,
     "high_temp": _high_temp,

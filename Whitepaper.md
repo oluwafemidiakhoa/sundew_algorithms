@@ -1,9 +1,9 @@
 # The Sundew Algorithm: Energy-Aware Selective Activation for Edge AI Systems
 
-**Author:** Oluwafemi Idiakhoa  
-**Affiliation:** Independent Research  
-**Contact:** oluwafemidiakhoa@gmail.com  
-**ORCID:** 0009-0008-7911-1171  
+**Author:** Oluwafemi Idiakhoa
+**Affiliation:** Independent Research
+**Contact:** oluwafemidiakhoa@gmail.com
+**ORCID:** 0009-0008-7911-1171
 **Repository:** https://github.com/oluwafemidiakhoa/sundew_algorithms
 **License:** MIT
 
@@ -132,13 +132,13 @@ Comprehensive parameter sweeps were conducted to identify optimal trade-offs, wi
 
 **Additional Visualizations:**
 
-Activation Rate vs. Target Rate  
+Activation Rate vs. Target Rate
 ![Activation vs Target](results/plots/experiments_2/activation_vs_target.png)
 
-Energy Savings vs. Temperature Parameter  
+Energy Savings vs. Temperature Parameter
 ![Energy vs Temperature](results/plots/experiments_2/energy_savings_vs_temp.png)
 
-Threshold Distribution by Preset Configuration  
+Threshold Distribution by Preset Configuration
 ![Threshold Hist by Preset](results/plots/experiments_3/threshold_hist_by_preset.png)
 
 ## 7. Experimental Protocol

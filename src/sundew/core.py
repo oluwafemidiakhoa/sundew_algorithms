@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import random
-import sys
 import time
 from dataclasses import dataclass
 from typing import Any, Dict, Optional
@@ -11,35 +10,19 @@ from .config import SundewConfig
 from .energy import EnergyAccount
 from .gating import gate_probability
 
-# ---------------------------------------------------------------------
-# Compatibility: Python 3.9 doesn't support dataclass(slots=True).
-# Use a thin wrapper that sets/strips `slots` depending on version.
-# ---------------------------------------------------------------------
-if sys.version_info >= (3, 10):
 
-    def _dataclass(*args, **kwargs):  # type: ignore[misc]
-        kwargs.setdefault("slots", True)
-        return dataclass(*args, **kwargs)
-
-else:
-
-    def _dataclass(*args, **kwargs):  # type: ignore[misc]
-        kwargs.pop("slots", None)
-        return dataclass(*args, **kwargs)
-
-
-@_dataclass
+@dataclass(slots=True)
 class ProcessingResult:
-    """Lightweight record returned when an event is processed (activated)."""
+    """Record returned when an event is processed (activated)."""
 
     significance: float
     processing_time: float
     energy_consumed: float
 
 
-@_dataclass
+@dataclass(slots=True)
 class Metrics:
-    """Minimal metrics container the tests poke at directly."""
+    """Minimal metrics container (queried by demo/tests)."""
 
     ema_activation_rate: float = 0.0
     processed: int = 0
@@ -53,44 +36,29 @@ def _clamp(x: float, lo: float, hi: float) -> float:
 
 def _safe_get(d: Dict[str, Any], key: str, default: float = 0.0) -> float:
     try:
-        return float(d.get(key, default))  # type: ignore[arg-type]
+        return float(d.get(key, default))
     except Exception:
         return float(default)
 
 
 class SundewAlgorithm:
     """
-    Reference-light implementation tuned to pass the test-suite:
-
-    - PI controller: error = target - ema.
-        * Under-target (error > 0) → lower threshold (easier to activate)
-        * Over-target  (error < 0) → raise threshold (harder to activate)
-    - Energy pressure: lower remaining energy → raise threshold (more conservative).
-    - Gating:
-        * temperature == 0 → hard gate (sig >= threshold)
-        * temperature  > 0 → probabilistic gate via `gate_probability`.
-    - `_adapt_threshold(activated: Optional[bool] = None)`:
-        * If `activated` is provided, EMA is updated first (tests call with a
-          pre-set EMA, passing None to avoid overriding).
-    - Deterministic probe: to ensure at least one activation for quiet streams,
-      force an activation every N events (configurable via `probe_every`,
-      defaulting to 100 if not provided).
+    Sundew reference implementation with PI control, energy pressure, and gating.
+    Includes deterministic probe cadence and optional refractory cooldown.
     """
 
     def __init__(self, config: SundewConfig) -> None:
-        # Config (validate when available)
-        if hasattr(config, "validate"):
-            config.validate()
+        config.validate()
         self.cfg = config
 
-        # Controller / threshold state
+        # Threshold/controller state
         self.threshold: float = float(self.cfg.activation_threshold)
-        self._int_err: float = 0.0  # PI integrator
+        self._int_err: float = 0.0
 
-        # Metrics (tests access ema here)
+        # Metrics
         self.metrics: Metrics = Metrics(ema_activation_rate=0.0)
 
-        # Cache config hot-path fields
+        # Hot-path cache
         self._ema_alpha: float = float(self.cfg.ema_alpha)
         self._kp: float = float(self.cfg.adapt_kp)
         self._ki: float = float(self.cfg.adapt_ki)
@@ -110,29 +78,23 @@ class SundewAlgorithm:
         self._refractory_cfg: int = int(getattr(self.cfg, "refractory", 0) or 0)
         self._refractory_left: int = 0
 
-        # Effective probe interval:
-        # - Honor explicit probe_every when provided (>0).
-        # - Otherwise force a deterministic probe every 100 events so quiet streams still activate.
-        # - Never allow 0.
+        # Effective probe cadence (never 0). Default to 100 if unset.
         self._eff_probe_every: int = max(1, (self._probe_every_cfg or 100))
 
-        # Energy account (positional args: value, max_value)
-        self.energy: EnergyAccount = EnergyAccount(
-            float(self.cfg.max_energy),
-            float(self.cfg.max_energy),
-        )
+        # Energy account
+        max_e = float(self.cfg.max_energy)
+        self.energy: EnergyAccount = EnergyAccount(max_e, max_e)
 
-        # RNG
+        # RNG (for probabilistic gating)
         random.seed(int(self.cfg.rng_seed))
 
-    # ---------------------------------------------------------------------
+    # ------------------------------------------------------------------
     # Public API
-    # ---------------------------------------------------------------------
+    # ------------------------------------------------------------------
     def process(self, x: Dict[str, Any]) -> Optional[ProcessingResult]:
-        """Process one event dict; return ProcessingResult if activated, else None."""
         self.metrics.processed += 1
 
-        # Deterministic probe computed up-front; can override refractory.
+        # Deterministic probe
         force_probe = self.metrics.processed == 1 or (
             self._eff_probe_every > 0 and (self.metrics.processed % self._eff_probe_every == 0)
         )
@@ -144,44 +106,37 @@ class SundewAlgorithm:
             self._adapt_threshold(activated=False)
             return None
 
-        # Significance from weighted inputs
         sig = self._compute_significance(x)
 
-        # Gate decision (probe guarantees activation)
+        # Gate decision
         if force_probe:
             activated = True
         else:
             if self._temp <= 1e-9:
                 activated = sig >= self.threshold
             else:
-                tau = max(self._temp, 1e-9)  # numerical guard
-                p = gate_probability(sig, self.threshold, tau)
+                p = gate_probability(sig, self.threshold, max(self._temp, 1e-9))
                 activated = random.random() < p
 
         if not activated:
-            # Dormant tick: spend small cost and maybe regen
             self._tick_dormant_energy()
-            # Update EMA with "0" and adapt
             self._adapt_threshold(activated=False)
             return None
 
-        # Activated path: simulate processing (no real sleep; just compute)
+        # Activated
         start = time.perf_counter()
         proc_time = 0.001 + 0.001 * (1.0 + sig)  # ~1–2 ms
-        _ = start + proc_time  # shape only
+        _ = start + proc_time  # shape only; no sleep
 
-        # Energy spend: eval + base scaled by significance
         energy_used = self._eval_cost + self._base_cost * (0.8 + 0.4 * sig)
         self._spend_energy(energy_used)
 
         self.metrics.activated += 1
         self.metrics.total_processing_time += proc_time
 
-        # Set refractory if configured
         if self._refractory_cfg > 0:
             self._refractory_left = self._refractory_cfg
 
-        # Update EMA with "1" and adapt
         self._adapt_threshold(activated=True)
 
         return ProcessingResult(
@@ -191,17 +146,16 @@ class SundewAlgorithm:
         )
 
     def report(self) -> Dict[str, Any]:
-        """Stable summary used by tests and CLI demo."""
-        n = max(1, self.metrics.processed)  # avoid div by zero
+        n = max(1, self.metrics.processed)
         act_rate = self.metrics.activated / n
-        if self.metrics.activated:
-            avg_pt = self.metrics.total_processing_time / self.metrics.activated
-        else:
-            avg_pt = 0.0
+        avg_pt = (
+            (self.metrics.total_processing_time / self.metrics.activated)
+            if self.metrics.activated
+            else 0.0
+        )
 
         energy_remaining = float(getattr(self.energy, "value", 0.0))
 
-        # Simple baseline vs. actual energy estimate
         baseline_energy_cost = n * (self._eval_cost + self._base_cost)
         actual_energy_cost = (
             self.metrics.activated * (self._eval_cost + self._base_cost)
@@ -227,11 +181,10 @@ class SundewAlgorithm:
             "estimated_energy_savings_pct": float(savings_pct),
         }
 
-    # ---------------------------------------------------------------------
+    # ------------------------------------------------------------------
     # Internals
-    # ---------------------------------------------------------------------
+    # ------------------------------------------------------------------
     def _compute_significance(self, x: Dict[str, Any]) -> float:
-        # Inputs expected in [0,1] except magnitude ~ [0,100]
         mag = _safe_get(x, "magnitude", 0.0) / 100.0
         ano = _safe_get(x, "anomaly_score", 0.0)
         ctx = _safe_get(x, "context_relevance", 0.0)
@@ -245,11 +198,6 @@ class SundewAlgorithm:
         return _clamp(s, 0.0, 1.0)
 
     def _adapt_threshold(self, activated: Optional[bool] = None) -> None:
-        """
-        PI controller + energy pressure.
-        If `activated` is provided, update EMA first; if None, leave EMA untouched.
-        """
-        # Optional EMA update
         if activated is not None:
             obs = 1.0 if activated else 0.0
             a = self._ema_alpha
@@ -257,45 +205,25 @@ class SundewAlgorithm:
                 a * obs + (1.0 - a) * self.metrics.ema_activation_rate
             )
 
-        # PI error (target - ema); deadbanded
         err = float(self.cfg.target_activation_rate) - self.metrics.ema_activation_rate
         if abs(err) <= self._dead:
             err = 0.0
 
-        # Integrate & clamp integrator
-        self._int_err += err
         self._int_err = _clamp(
-            self._int_err,
-            -self.cfg.integral_clamp,
-            self.cfg.integral_clamp,
+            self._int_err + err, -self.cfg.integral_clamp, self.cfg.integral_clamp
         )
 
-        # PI output: positive delta when under-target → threshold DOWN
         delta = self._kp * err + self._ki * self._int_err
 
-        # Energy pressure: lower energy → conservative → threshold UP
-        press = 0.0
-        try:
-            frac = float(getattr(self.energy, "value", 0.0)) / float(self.cfg.max_energy)
-            press = self._press * (1.0 - _clamp(frac, 0.0, 1.0))
-        except Exception:
-            press = 0.0
+        frac = float(getattr(self.energy, "value", 0.0)) / float(self.cfg.max_energy)
+        press = self._press * (1.0 - _clamp(frac, 0.0, 1.0))
 
-        # Apply and clamp
-        self.threshold = _clamp(
-            self.threshold - delta + press,
-            self._min_thr,
-            self._max_thr,
-        )
+        self.threshold = _clamp(self.threshold - delta + press, self._min_thr, self._max_thr)
 
     def _tick_dormant_energy(self) -> None:
-        # Subtract dormant cost; add small random regen
         v = float(getattr(self.energy, "value", 0.0))
         v = max(0.0, v - self._dorm_cost)
-        v = min(
-            float(self.cfg.max_energy),
-            v + random.uniform(self._regen_min, self._regen_max),
-        )
+        v = min(float(self.cfg.max_energy), v + random.uniform(self._regen_min, self._regen_max))
         self.energy.value = v
 
     def _spend_energy(self, amount: float) -> None:

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.23"  # bump before tagging a new release
+version = "0.1.24"  # bump before tagging a new release
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -58,7 +58,7 @@ Issues     = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
 
 [project.scripts]
 sundew = "sundew.cli:main"
-sundew-ecg  = "benchmarks.run_ecg:main"
+sundew-ecg  = "sundew.ecg_cli:main"
 [tool.setuptools]
 package-dir = { "" = "src" }
 

@@ -1,4 +1,36 @@
+# .pre-commit-config.yaml
+# Run "pre-commit install" once, then hooks run on every commit.
+# You can test all hooks on the repo with: pre-commit run -a
+
+default_language_version:
+  python: python3
+
 repos:
+  # --- Quality checks for text files / configs ---
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-yaml
+      - id: check-toml
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+
+  # --- Ruff (linter + import sorting) ---
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.13.0
-    hooks: [{id: ruff}, {id: ruff-format}]
+    hooks:
+      - id: ruff
+        name: ruff (lint+fix)
+        args: ["--fix"]         # auto-fix what it safely can
+      - id: ruff-format         # code formatter (Black-compatible)
+
+  # --- mypy (reads settings from pyproject.toml) ---
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.17.1
+    hooks:
+      - id: mypy
+        name: mypy (src package only)
+        files: ^src/            # only type-check library code
+        args: ["--config-file=pyproject.toml"]
+        # Keep this empty: we don't want heavy extras in CI just to type-check src/.
+        additional_dependencies: []
