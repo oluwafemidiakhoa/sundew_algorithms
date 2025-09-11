@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.19"  # bump before tagging a new release
+version = "0.1.20"  # bump before tagging a new release
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
