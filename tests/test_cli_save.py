@@ -3,8 +3,8 @@ from __future__ import annotations
 
 import argparse
 import json
-import sys
 from pathlib import Path
+import sys
 
 try:
     # Prefer package-relative imports (installed or editable)

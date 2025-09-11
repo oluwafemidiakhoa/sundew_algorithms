@@ -1,6 +1,5 @@
 # tests/test_invariants.py
-from hypothesis import given
-from hypothesis import strategies as st
+from hypothesis import given, strategies as st
 
 from sundew.config import SundewConfig
 from sundew.core import SundewAlgorithm

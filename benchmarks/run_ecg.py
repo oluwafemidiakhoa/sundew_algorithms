@@ -4,10 +4,10 @@ from __future__ import annotations
 
 import argparse
 import csv
+from dataclasses import asdict
 import json
 import math
 import os
-from dataclasses import asdict
 from typing import Dict, Iterable, Iterator, List, Optional
 
 from sundew import SundewAlgorithm

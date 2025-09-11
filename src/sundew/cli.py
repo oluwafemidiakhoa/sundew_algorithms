@@ -2,10 +2,10 @@
 from __future__ import annotations
 
 import argparse
-import json
-import sys
 from dataclasses import asdict, is_dataclass
+import json
 from pathlib import Path
+import sys
 from typing import Any, Dict
 
 from . import get_preset, list_presets

@@ -1,10 +1,10 @@
 # src/sundew/demo.py
 from __future__ import annotations
 
-import random as _random
-import time
 from dataclasses import asdict, is_dataclass
 from datetime import datetime
+import random as _random
+import time
 from typing import Any, Dict, List, Tuple, TypedDict
 
 from .config import SundewConfig

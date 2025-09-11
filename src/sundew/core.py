@@ -1,10 +1,10 @@
 # src/sundew/core.py
 from __future__ import annotations
 
+from dataclasses import dataclass
 import random
 import sys
 import time
-from dataclasses import dataclass
 from typing import Any, Dict, Optional
 
 from .config import SundewConfig
