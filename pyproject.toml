@@ -1,16 +1,15 @@
-# pyproject.toml
+# pyproject.toml (full)
+
 [build-system]
 requires = ["setuptools>=77.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.15"
+version = "0.1.14"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
-
-# PEP 639 license fields
 license = "MIT"
 license-files = ["LICENSE"]
 
@@ -34,13 +33,11 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 
+# Core library is intentionally dependency-free.
 dependencies = []
 
 [project.optional-dependencies]
-benchmarks = [
-  "numpy>=1.23,<2.0",
-  "matplotlib>=3.3",
-]
+# Developer / CI extras.
 dev = [
   "numpy>=1.23,<2.0",
   "pytest>=8.0",
@@ -50,6 +47,12 @@ dev = [
   "ruff>=0.5.0",
   "mypy>=1.10.0",
   "pre-commit>=3.5.0",
+  "matplotlib>=3.3",   # for plotting scripts used in benchmarks and type resolution on CI
+]
+# Optional extras for running the public benchmarks and plots.
+benchmarks = [
+  "numpy>=1.23,<2.0",
+  "matplotlib>=3.3",
 ]
 
 [project.urls]
@@ -61,17 +64,20 @@ Issues     = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
 [project.scripts]
 sundew = "sundew.cli:main"
 
+# -----------------
+# Setuptools (src/)
+# -----------------
 [tool.setuptools]
 package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["sundew*"]
-exclude = ["tests*"]
+exclude = ["tests*", "benchmarks*"]
 
-# -------------------------
-# Testing / Coverage config
-# -------------------------
+# ---------------
+# Pytest / Cov
+# ---------------
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
@@ -86,9 +92,9 @@ show_missing = true
 skip_covered = false
 precision = 1
 
-# ---------------
+# -----
 # Ruff
-# ---------------
+# -----
 [tool.ruff]
 target-version = "py310"
 line-length = 100
@@ -98,35 +104,27 @@ extend-exclude = [
 ]
 
 [tool.ruff.lint]
-extend-select = ["I"]  # enable import sorting
+# Include import sort (isort rules) and basic E/F checks.
+extend-select = ["I", "E", "F"]
 
-# Let isort know our first-party packages to fix I001 reliably
 [tool.ruff.lint.isort]
-known-first-party = ["sundew", "tests"]
-section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+known-first-party = ["sundew"]
 combine-as-imports = true
-force-sort-within-sections = true
+lines-after-imports = 2
 
-# -------
-# Flake8
-# -------
-[tool.flake8]
-max-line-length = 100
-exclude = [
-  ".venv", ".mypy_cache", ".pytest_cache",
-  "build", "dist", ".hypothesis",
-]
-
-# -------
+# ----
 # MyPy
-# -------
+# ----
 [tool.mypy]
 python_version = "3.10"
-files = ["src"]
+# src/ layout support
 mypy_path = ["src"]
 explicit_package_bases = true
-warn_unused_ignores = true
-warn_redundant_casts = true
-no_implicit_optional = true
-show_column_numbers = true
-exclude = "(^build/|^dist/|^\\.mypy_cache/)"
+# restrict to our code and tests/benchmarks
+files = ["src", "tests", "benchmarks"]
+exclude = "(^build/|^dist/|^\\.mypy_cache/|^\\.pytest_cache/|^\\.venv/)"
+
+# Allow missing type info from plotting libs used in benchmarks.
+[[tool.mypy.overrides]]
+module = ["matplotlib.*"]
+ignore_missing_imports = true
