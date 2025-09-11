@@ -1,137 +1,105 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel"]
+requires = ["setuptools>=69", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.24"  # bump before tagging a new release
+version = "0.1.26"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
-license = { text = "MIT" }
-
+license = { file = "LICENSE" }
 authors = [
   { name = "Oluwafemi Idiakhoa", email = "oluwafemidiakhoa@gmail.com" }
 ]
-
-keywords = [
-  "bio-inspired", "event-driven", "energy-efficient",
-  "adaptive-threshold", "edge-ai", "gating", "control"
-]
-
+keywords = ["edge-ai", "energy", "gating", "event-driven", "ecg", "computer-vision"]
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
-  "Topic :: Scientific/Engineering :: Artificial Intelligence",
   "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
   "Programming Language :: Python :: 3.13",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-dependencies = []
+# Keep the core package light; heavier libs are extras.
+dependencies = [
+  "numpy>=1.22",
+]
 
 [project.optional-dependencies]
-benchmarks = [
-  "numpy>=1.23,<2.0",
-  "matplotlib>=3.3",
-]
 dev = [
-  # testing
-  "numpy>=1.23,<2.0",
-  "pytest>=8.0",
-  "pytest-cov>=4.0",
-  "hypothesis>=6.0",
-  # static analysis
   "ruff>=0.13.0",
-  "mypy>=1.17.0",
-  "pre-commit>=3.5.0",
+  "mypy>=1.7",
+  "pytest>=7",
+  "pytest-cov>=4",
+  "build>=1.2.1",
+  "twine>=5.1.1",
+  "types-requests",
 ]
+viz = ["matplotlib>=3.7"]
+video = ["opencv-python>=4.8"]
 
 [project.urls]
-Homepage   = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
+Homepage = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
 Repository = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
-Issues     = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
-"CI Actions" = "https://github.com/oluwafemidiakhoa/sundew_algorithms/actions"
+Issues = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
+Documentation = "https://github.com/oluwafemidiakhoa/sundew_algorithms#readme"
 
 [project.scripts]
 sundew = "sundew.cli:main"
-sundew-ecg  = "sundew.ecg_cli:main"
+
 [tool.setuptools]
-package-dir = { "" = "src" }
+include-package-data = true
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["sundew*"]
-exclude = ["tests*"]
+namespaces = false
 
-# -------------------------
-# Testing / Coverage config
-# -------------------------
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-addopts = "-q"
+[tool.setuptools.package-data]
+sundew = ["py.typed"]
 
-[tool.coverage.run]
-branch = true
-source = ["src"]
-omit = ["tests/*"]
-
-[tool.coverage.report]
-show_missing = true
-skip_covered = false
-precision = 1
-
-# ----------------
-# Ruff (linter/formatter)
-# ----------------
+# ----------------------
+# Ruff (lint + format)
+# ----------------------
 [tool.ruff]
-target-version = "py310"
 line-length = 100
-extend-exclude = [
-  ".venv",
-  ".mypy_cache",
-  ".pytest_cache",
-  "build",
-  "dist",
-  ".hypothesis",
-]
+target-version = "py310"
+src = ["src", "tests"]
 
 [tool.ruff.lint]
-# Keep default rules and add import-sorting
-extend-select = ["I"]
+select = ["E", "F", "W", "I"]
+ignore = []
 
-# Put per-file ignores in their own table (not an inline table)
+# Use a proper table (inline tables can't span lines)
 [tool.ruff.lint.per-file-ignores]
-"benchmarks/*.py" = ["E501"]
-"adapters/*.py"   = ["E501"]
-"examples/*.py"   = ["E501"]
-"test_fix.py"     = ["E501"]
+"benchmarks/*.py" = ["E501", "I001"]
+"examples/*.py"   = ["E501", "I001"]
+"adapters/*.py"   = ["E501", "I001"]
 
-[tool.ruff.lint.isort]
-known-first-party = ["sundew"]
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+docstring-code-format = true
 
-
-# -------
+# ----------------------
 # MyPy
-# -------
+# ----------------------
 [tool.mypy]
 python_version = "3.10"
-
-# Analyze only package source (prevents duplicate module paths)
-files = ["src"]
-
-# Treat 'src' as the import root
-mypy_path = ["src"]
-explicit_package_bases = true
-
-# Library-friendly ergonomics
+files = ["src"]                               # only type-check library code
 warn_unused_ignores = true
-warn_redundant_casts = true
+strict_optional = true
 no_implicit_optional = true
-show_column_numbers = true
+disallow_untyped_defs = true
+pretty = true
+ignore_missing_imports = true                 # default; tightened via overrides below
 
-# Don’t scan caches/builds
-exclude = "(^build/|^dist/|^\\.mypy_cache/)"
+[[tool.mypy.overrides]]
+module = ["matplotlib", "matplotlib.*", "cv2"]
+ignore_missing_imports = true

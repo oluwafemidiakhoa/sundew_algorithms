@@ -1,26 +1,77 @@
-# .github/workflows/publish-testpypi.yml
 name: Publish to TestPyPI
+
 on:
   push:
-    tags: ["v*"]
+    tags:
+      - "v*"            # e.g., v26, v0.1.26
   workflow_dispatch:
 
 permissions:
   contents: read
-  id-token: write
+  id-token: write       # REQUIRED for PyPI Trusted Publishing (OIDC)
+
+concurrency:
+  group: publish-testpypi-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
+  test:
+    name: Lint & typecheck (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Install dev deps
+        run: |
+          python -m pip install --upgrade pip
+          pip install .[dev]
+
+      - name: Ruff (lint)
+        run: ruff check .
+
+      - name: Ruff (format check)
+        run: ruff format --check .
+
+      - name: MyPy (src only)
+        run: mypy src
+
   build-and-publish:
+    name: Build & Publish (TestPyPI)
+    needs: test
     runs-on: ubuntu-latest
     environment: testpypi
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
-      - run: python -m pip install --upgrade pip build
-      - run: python -m build
-      - name: Publish to TestPyPI via OIDC
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Build sdist & wheel
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build
+
+      - name: Publish to TestPyPI (Trusted Publishing)
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           repository-url: https://test.pypi.org/legacy/
+          skip-existing: true
+          verbose: true
+          print-hash: true

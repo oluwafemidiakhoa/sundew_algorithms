@@ -1,20 +1,23 @@
-# test_fix.py
+# tests/test_fix.py
+from __future__ import annotations
 
-import sys
+import importlib
+from typing import Any, Dict
 
-from tests.conftest import get_preset
+from sundew.config_presets import get_preset
+from sundew.core import SundewAlgorithm
+from sundew.demo import synth_event
 
-from src.sundew.core import SundewAlgorithm
 
-# Remove any cached versions of sundew so we import fresh
-for name in list(sys.modules):
-    if name.startswith("sundew"):
-        del sys.modules[name]
+def test_process_smoke() -> None:
+    """Simple smoke test: one synthetic event flows through the core."""
+    importlib.invalidate_caches()
 
-cfg = get_preset(
-    "tuned_v2",
-    overrides={"gate_temperature": 0.15, "energy_pressure": 0.04},
-)
-algo = SundewAlgorithm(cfg)
-stats = algo.report()
-print(f"Activated count: {stats.get('activated', 'KEY_MISSING')}")
+    algo = SundewAlgorithm(get_preset("tuned_v2"))
+    event: Dict[str, Any] = synth_event(temperature=0.1)
+
+    res = algo.process(event)
+
+    # Basic sanity checks
+    assert 0.0 <= res.significance <= 1.0
+    assert 0.0 <= algo.threshold <= 0.9
