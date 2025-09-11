@@ -10,7 +10,7 @@ description = "Sundew Algorithm — bio-inspired, energy-aware selective activat
 readme = "README.md"
 requires-python = ">=3.10"
 
-# PEP 639 style
+# PEP 639 license fields
 license = "MIT"
 license-files = ["LICENSE"]
 
@@ -99,6 +99,13 @@ extend-exclude = [
 
 [tool.ruff.lint]
 extend-select = ["I"]  # enable import sorting
+
+# Let isort know our first-party packages to fix I001 reliably
+[tool.ruff.lint.isort]
+known-first-party = ["sundew", "tests"]
+section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
+combine-as-imports = true
+force-sort-within-sections = true
 
 # -------
 # Flake8
