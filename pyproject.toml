@@ -1,17 +1,14 @@
-# pyproject.toml (full)
-
 [build-system]
-requires = ["setuptools>=77.0", "wheel"]
+requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.16"
+version = "0.1.18"  # bump before tagging a new release
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
-license = "MIT"
-license-files = ["LICENSE"]
+license = { text = "MIT" }
 
 authors = [
   { name = "Oluwafemi Idiakhoa", email = "oluwafemidiakhoa@gmail.com" }
@@ -26,6 +23,7 @@ classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
+  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
@@ -33,26 +31,23 @@ classifiers = [
   "Programming Language :: Python :: 3.13",
 ]
 
-# Core library is intentionally dependency-free.
 dependencies = []
 
 [project.optional-dependencies]
-# Developer / CI extras.
+benchmarks = [
+  "numpy>=1.23,<2.0",
+  "matplotlib>=3.3",
+]
 dev = [
+  # testing
   "numpy>=1.23,<2.0",
   "pytest>=8.0",
   "pytest-cov>=4.0",
   "hypothesis>=6.0",
-  "flake8>=7.0.0",
-  "ruff>=0.5.0",
+  # static analysis
+  "ruff>=0.13.0",
   "mypy>=1.10.0",
   "pre-commit>=3.5.0",
-  "matplotlib>=3.3",   # for plotting scripts used in benchmarks and type resolution on CI
-]
-# Optional extras for running the public benchmarks and plots.
-benchmarks = [
-  "numpy>=1.23,<2.0",
-  "matplotlib>=3.3",
 ]
 
 [project.urls]
@@ -64,20 +59,17 @@ Issues     = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
 [project.scripts]
 sundew = "sundew.cli:main"
 
-# -----------------
-# Setuptools (src/)
-# -----------------
 [tool.setuptools]
 package-dir = { "" = "src" }
 
 [tool.setuptools.packages.find]
 where = ["src"]
 include = ["sundew*"]
-exclude = ["tests*", "benchmarks*"]
+exclude = ["tests*"]
 
-# ---------------
-# Pytest / Cov
-# ---------------
+# -------------------------
+# Testing / Coverage config
+# -------------------------
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-q"
@@ -92,39 +84,54 @@ show_missing = true
 skip_covered = false
 precision = 1
 
-# -----
-# Ruff
-# -----
+# ----------------
+# Ruff (linter/formatter)
+# ----------------
 [tool.ruff]
 target-version = "py310"
 line-length = 100
 extend-exclude = [
-  ".venv", ".mypy_cache", ".pytest_cache",
-  "build", "dist", ".hypothesis",
+  ".venv",
+  ".mypy_cache",
+  ".pytest_cache",
+  "build",
+  "dist",
+  ".hypothesis",
 ]
 
 [tool.ruff.lint]
-# Include import sort (isort rules) and basic E/F checks.
-extend-select = ["I", "E", "F"]
+# Keep default rules and add import-sorting
+extend-select = ["I"]
+
+# Put per-file ignores in their own table (not an inline table)
+[tool.ruff.lint.per-file-ignores]
+"benchmarks/*.py" = ["E501"]
+"adapters/*.py"   = ["E501"]
+"examples/*.py"   = ["E501"]
+"test_fix.py"     = ["E501"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["sundew"]
-combine-as-imports = true
-lines-after-imports = 2
 
-# ----
+
+# -------
 # MyPy
-# ----
+# -------
 [tool.mypy]
 python_version = "3.10"
-# src/ layout support
+
+# Analyze only package source (prevents duplicate module paths)
+files = ["src"]
+
+# Treat 'src' as the import root
 mypy_path = ["src"]
 explicit_package_bases = true
-# restrict to our code and tests/benchmarks
-files = ["src", "tests", "benchmarks"]
-exclude = "(^build/|^dist/|^\\.mypy_cache/|^\\.pytest_cache/|^\\.venv/)"
 
-# Allow missing type info from plotting libs used in benchmarks.
-[[tool.mypy.overrides]]
-module = ["matplotlib.*"]
-ignore_missing_imports = true
+# Library-friendly ergonomics
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+show_column_numbers = true
+
+# Don’t scan caches/builds
+exclude = "(^build/|^dist/|^\\.mypy_cache/)"

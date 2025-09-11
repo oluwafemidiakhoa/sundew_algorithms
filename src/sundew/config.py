@@ -1,8 +1,8 @@
 # src/sundew/config.py
 from __future__ import annotations
 
-from dataclasses import dataclass
 import sys
+from dataclasses import dataclass
 from typing import Tuple
 
 # Compatibility: dataclass(slots=...) is only available on Python >= 3.10.

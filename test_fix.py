@@ -2,8 +2,9 @@
 
 import sys
 
-from src.sundew.core import SundewAlgorithm
 from tests.conftest import get_preset
+
+from src.sundew.core import SundewAlgorithm
 
 # Remove any cached versions of sundew so we import fresh
 for name in list(sys.modules):

@@ -2,10 +2,10 @@
 # Robust ECG CSV adapter for Sundew
 from __future__ import annotations
 
-from collections import deque
 import csv
 import math
 import statistics
+from collections import deque
 from typing import Dict, Generator, List, Optional, Tuple
 
 # --- Beat symbol → urgency mapping (tweak as needed) ---
