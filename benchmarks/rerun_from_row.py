@@ -13,22 +13,22 @@ Usage
 python -m benchmarks.rerun_from_row ^
   --sweep results\best_strict.csv ^
   --row-index 3 ^
-  --data "data\MIT-BIH Arrhythmia Database.csv" ^
+  --data "data\\MIT-BIH Arrhythmia Database.csv" ^
   --save results\repro_row3.json ^
   --eval
 
 # Re-run by matching values instead of index
 python -m benchmarks.rerun_from_row ^
-  --sweep results\sweep.csv ^
+  --sweep results\\sweep.csv ^
   --match "activation_threshold=0.58,gate_temperature=0.08,target_activation_rate=0.15,refractory=0" ^
-  --data "data\MIT-BIH Arrhythmia Database.csv" ^
+  --data "data\\MIT-BIH Arrhythmia Database.csv" ^
   --save results\repro_thr058_T008_p015.json
 
 # Limit samples and override preset on the fly
 python -m benchmarks.rerun_from_row ^
   --sweep results\best.csv ^
   --row-index 1 ^
-  --data "data\MIT-BIH Arrhythmia Database.csv" ^
+  --data "data\\MIT-BIH Arrhythmia Database.csv" ^
   --preset ecg_v1 ^
   --limit 50000 ^
   --save results\repro_best1.json

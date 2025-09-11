@@ -4,7 +4,7 @@ Run multiple Sundew presets and write a single combined CSV.
 Examples (from repo root, Windows):
   python benchmarks\run_presets.py --events 300 --repeats 3 ^
     --presets baseline tuned_v2 aggressive energy_saver ^
-    --out results\grid_multi.csv --logdir results\runs_multi
+    --out results\\grid_multi.csv --logdir results\runs_multi
 
 PowerShell:
   python benchmarks/run_presets.py --events 300 --repeats 3 `
@@ -12,7 +12,7 @@ PowerShell:
     --out results/grid_multi.csv --logdir results/runs_multi
 
 The combined CSV can be plotted directly with:
-  python benchmarks\plot_grid.py --csv results\grid_multi.csv --out results\plots_multi
+  python benchmarks\\plot_grid.py --csv results\\grid_multi.csv --out results\\plots_multi
 """
 
 from __future__ import annotations

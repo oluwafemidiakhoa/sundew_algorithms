@@ -2,7 +2,7 @@
 Grid benchmark for Sundew Algorithm with config presets.
 
 Examples (Windows, from repo root):
-  python benchmarks\grid_search.py --preset tuned_v2 --events 300 --repeats 3 --out results\grid.csv --logdir results\runs
+  python benchmarks\\grid_search.py --preset tuned_v2 --events 300 --repeats 3 --out results\\grid.csv --logdir results\runs
 """
 
 from __future__ import annotations

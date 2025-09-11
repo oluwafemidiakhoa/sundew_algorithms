@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.27"
+version = "0.1.26"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,7 +26,6 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
-# Keep the core package light; heavier libs are extras.
 dependencies = [
   "numpy>=1.22",
 ]
@@ -63,42 +62,52 @@ namespaces = false
 [tool.setuptools.package-data]
 sundew = ["py.typed"]
 
-# ----------------------
-# Ruff (lint + format)
-# ----------------------
+# --------------------------- Ruff ---------------------------------
 [tool.ruff]
 line-length = 100
 target-version = "py310"
 src = ["src", "tests"]
 
+# Don’t lint generated/extra trees.
+exclude = [
+  ".git",
+  ".hg",
+  ".mypy_cache",
+  ".ruff_cache",
+  ".venv",
+  ".venv-*",
+  "build",
+  "dist",
+  "results",
+  "sundew_algorithms",
+  "sundew_algorithms/**",
+  "**/__pycache__",
+]
+
+# Extra project-specific folders we don’t want to enforce style on.
+extend-exclude = ["benchmarks", "examples", "adapters"]
+
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
 ignore = []
 
-# Use a proper table (inline tables can't span lines)
+# ✅ Mapping-style per-file-ignores (supported by Ruff 0.13)
 [tool.ruff.lint.per-file-ignores]
 "benchmarks/*.py" = ["E501", "I001"]
 "examples/*.py"   = ["E501", "I001"]
 "adapters/*.py"   = ["E501", "I001"]
+"tools/*.py"      = ["E501", "I001"]
+"video_gate.py"   = ["E501"]
 
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-skip-magic-trailing-comma = false
-docstring-code-format = true
-
-# ----------------------
-# MyPy
-# ----------------------
+# --------------------------- MyPy --------------------------------
 [tool.mypy]
 python_version = "3.10"
-files = ["src"]                               # only type-check library code
+files = ["src"]
 warn_unused_ignores = true
 strict_optional = true
 no_implicit_optional = true
 disallow_untyped_defs = true
 pretty = true
-ignore_missing_imports = true                 # default; tightened via overrides below
 
 [[tool.mypy.overrides]]
 module = ["matplotlib", "matplotlib.*", "cv2"]

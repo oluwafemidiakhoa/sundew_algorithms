@@ -1,17 +1,41 @@
+from __future__ import annotations
+
 import math
 import random
+from typing import Any, Mapping
 
 
 def clamp(x: float, lo: float, hi: float) -> float:
     return max(lo, min(hi, x))
 
 
-def significance_score(x, w_mag, w_ano, w_ctx, w_urg) -> float:
-    mag = clamp(float(x.get("magnitude", 0.0)) / 100.0, 0.0, 1.0)
-    ano = clamp(float(x.get("anomaly_score", 0.0)), 0.0, 1.0)
-    ctx = clamp(float(x.get("context_relevance", 0.0)), 0.0, 1.0)
-    urg = clamp(float(x.get("urgency", 0.0)), 0.0, 1.0)
-    sig = w_mag * mag + w_ano * ano + w_ctx * ctx + w_urg * urg
+def _get_float(d: Mapping[str, Any], key: str, default: float = 0.0) -> float:
+    """Robustly pull a float from a dict-like mapping."""
+    v = d.get(key, default)
+    # Concrete numeric types are fine for mypy (bool is a subclass of int; acceptable here).
+    if isinstance(v, (int, float)):
+        return float(v)
+    if isinstance(v, str):
+        try:
+            return float(v.strip())
+        except ValueError:
+            return default
+    return default
+
+
+def significance_score(
+    x: Mapping[str, Any],
+    w_mag: float,
+    w_ano: float,
+    w_ctx: float,
+    w_urg: float,
+) -> float:
+    mag = clamp(_get_float(x, "magnitude", 0.0) / 100.0, 0.0, 1.0)
+    ano = clamp(_get_float(x, "anomaly_score", 0.0), 0.0, 1.0)
+    ctx = clamp(_get_float(x, "context_relevance", 0.0), 0.0, 1.0)
+    urg = clamp(_get_float(x, "urgency", 0.0), 0.0, 1.0)
+
+    sig = (w_mag * mag) + (w_ano * ano) + (w_ctx * ctx) + (w_urg * urg)
     sig += random.uniform(-0.03, 0.03)
     return clamp(sig, 0.0, 1.0)
 
