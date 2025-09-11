@@ -1,122 +1,233 @@
 # Sundew Algorithms
 
 > **Bio-inspired, energy-aware selective activation for streaming data.**
-> Sundew decides when to fully process an input and when to skip, trading a small drop in accuracy for **large energy savings**.
+> Sundew decides when to fully process an input and when to skip, trading a tiny drop in accuracy for very large energy savings—ideal for edge devices, wearables, and high-throughput pipelines.
 
 [![PyPI version](https://badge.fury.io/py/sundew-algorithms.svg)](https://badge.fury.io/py/sundew-algorithms)
 [![CI Status](https://github.com/your-username/sundew-algorithms/workflows/CI/badge.svg)](https://github.com/your-username/sundew-algorithms/actions)
-[![License: Apache-2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
-
-## What is Sundew?
-
-Sundew is an adaptive gating algorithm inspired by the carnivorous sundew plant, which selectively opens and closes its traps based on prey quality and energy reserves. In streaming data applications, Sundew intelligently decides whether to fully process each incoming sample or skip it, maintaining system responsiveness while dramatically reducing computational costs.
-
-The algorithm continuously adjusts its selectivity threshold based on available "energy" (computational budget), data characteristics, and performance targets. This creates a dynamic trade-off between processing accuracy and resource consumption—perfect for battery-powered devices, edge computing, or high-throughput systems where every cycle counts.
-
-## Why gating helps
-
-```
-Traditional Processing:           Sundew Gating:
-┌─────────────────────┐          ┌─────────────────────┐
-│ Input Stream        │          │ Input Stream        │
-│ ████████████████    │          │ ████████████████    │
-└──────────┬──────────┘          └──────────┬──────────┘
-           │                                │
-           ▼                                ▼
-┌─────────────────────┐          ┌─────────────────────┐
-│ Process EVERYTHING  │          │ Adaptive Gate       │
-│ • High CPU usage    │          │ • Smart filtering   │
-│ • Battery drain     │          │ • Energy-aware      │
-│ • Thermal issues    │          │ • Quality-conscious │
-└──────────┬──────────┘          └──────────┬──────────┘
-           │                                │
-           ▼                                ▼
-┌─────────────────────┐          ┌─────────────────────┐
-│ Results: 100%       │          │ Process: ~10-20%    │
-│ Energy: 100%        │          │ ████  ░░░░  ████    │
-│ Accuracy: 100%      │          │ Results: ~85% acc   │
-│                     │          │ Energy: ~15% usage  │
-└─────────────────────┘          └─────────────────────┘
-
-Key insight: Most samples contain redundant or low-value information.
-Sundew learns to focus processing power on the samples that matter most.
-```
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ---
 
-## Benchmarks & Results (ECG)
+## Contents
 
-This repository ships a small benchmarking harness around the Sundew Algorithm for event gating on ECG-like streams.
+- [Quick start](#quick-start)
+- [Why gating helps](#why-gating-helps)
+- [Minimal API example](#minimal-api-example)
+- [CLI demo](#cli-demo)
+- [ECG benchmark (reproduce numbers & plots)](#ecg-benchmark-reproduce-numbers--plots)
+- [API cheatsheet](#api-cheatsheet)
+- [Configuration presets](#configuration-presets)
+- [Results you can paste in blogs/papers](#results-you-can-paste-in-blogspapers)
+- [Project structure](#project-structure)
+- [License & disclaimer](#license--disclaimer)
 
-### Dataset Reference
+---
 
-**MIT-BIH Arrhythmia Database** - The benchmark uses the MIT-BIH Arrhythmia Database, a widely-used reference for cardiac arrhythmia research.
-
-- **Source**: PhysioNet (https://physionet.org/content/mitdb/1.0.0/)
-- **Citation**: Moody GB, Mark RG. The impact of the MIT-BIH Arrhythmia Database. IEEE Eng in Med and Biol 20(3):45-50 (May-June 2001).
-- **Local path**: `C:\Users\adminidiakhoa\sundew_algorithms\data\MIT-BIH Arrhythmia Database.csv`
-
-The CSV schema is auto-detected with fallback logic:
-- **Signal columns**: `ml2`, `signal`, `ecg`, `value`, `val`, `amplitude`, `lead*`
-- **Label columns**: `label`, `annotation`, `ann`, `class`, `arrhythmia`, `beat_type`
-
-## TL;DR
-
-**Savings at ~10% activation rate:** ~85% estimated energy savings, with F1≈0.158 (savings_012.json).
-
-**Recall-leaning run:** F1≈0.162 at ~12% activation (recall_016_r0.json).
-
-**Aggressive sweep:** up to F1≈0.185 when we allow ~20% activation (tune_ep001_thr085_probe50.json).
-
-All metrics come from results/*.json; the table and plots are generated automatically. See "Reproduce the plots" below.
-
-![summary](summary)
-
-## How to reproduce
+## Quick start
 
 ```bash
-# 1) Run a benchmark (examples)
-sundew-ecg --csv "C:\Users\adminidiakhoa\sundew_algorithms\data\MIT-BIH Arrhythmia Database.csv" ^
-  --preset tuned_v2 --limit 50000 ^
-  --overrides "target_activation_rate=0.12,gate_temperature=0.07,probe_every=100" ^
-  --save "results/savings_012.json"
+# Latest release
+pip install -U sundew-algorithms
 
-sundew-ecg --csv "C:\Users\adminidiakhoa\sundew_algorithms\data\MIT-BIH Arrhythmia Database.csv" ^
-  --preset tuned_v2 --limit 50000 --refractory 3 ^
-  --overrides "target_activation_rate=0.14,energy_pressure=0.03,max_threshold=0.90,gate_temperature=0.08,probe_every=75" ^
-  --save "results/balanced_014_r3.json"
-
-# 2) Summarize & plot (advanced tool)
-python tools/summarize_and_plot.py ^
-  --dir results ^
-  --out results/summary.csv ^
-  --md results/summary.md ^
-  --plots results/plots
+# Check it installed (Windows examples)
+py -3.13 -m sundew --help
+py -3.13 -c "import importlib.metadata as m, sundew, sys; print(sundew.__file__); print(m.version('sundew-algorithms')); print(sys.executable)"
 ```
 
-This produces:
+## Why gating helps
 
-- **results/summary.csv** — collated metrics
-- **results/summary.md** — nice Markdown table with links
-- **results/plots/precision_recall.png, f1_and_rate.png, f1_vs_savings.png, pareto_frontier.png**
+**Traditional: process EVERYTHING**
+- High compute, heat, battery drain
 
-## At-a-glance results
+**Sundew: process ONLY the valuable ~10–30%**
+- Learns a threshold from stream statistics & energy
+- Keeps accuracy competitive while slashing energy cost
 
-| file | rate | savings% | P | R | F1 | thr | E_left |
-|------|------|----------|---|---|----|----|--------|
-| savings_012.json | 0.103 | 85.44% | 0.158 | 0.158 | 0.158 | 0.671 | 90.0 |
-| recall_016_r0.json | 0.122 | 83.65% | 0.150 | 0.177 | 0.162 | 0.879 | 64.9 |
-| balanced_016.json | 0.126 | 83.32% | 0.142 | 0.173 | 0.156 | 0.853 | 70.7 |
-| balanced_014_r2.json | 0.115 | 84.29% | 0.154 | 0.140 | 0.146 | 0.459 | 84.2 |
-| tune_ep001_thr085_probe50.json | 0.201 | 76.13% | 0.140 | 0.273 | 0.185 | 0.820 | 0.0 |
+## Minimal API example
 
-Full table and exact numbers live in results/summary.md (auto-generated).
+```python
+# minimal_api.py
+from sundew import SundewAlgorithm
+from sundew.config import SundewConfig
 
-![summary](summary)
+cfg = SundewConfig(  # tuned for balanced savings/recall
+    activation_threshold=0.78,
+    target_activation_rate=0.15,
+    gate_temperature=0.08,
+    max_threshold=0.92,
+    energy_pressure=0.04,
+)
 
-## Figures
+algo = SundewAlgorithm(cfg)
 
-Drop these directly in your README:
+# Dummy input with signal features Sundew understands
+x = {"magnitude": 63, "anomaly_score": 0.52, "context_relevance": 0.31, "urgency": 0.18}
+
+res = algo.process(x)
+if res:
+    print(f"Activated: significance={res.significance:.3f}, energy={res.energy_consumed:.2f}")
+else:
+    print("Skipped (gate dormant)")
+
+# Summary after any loop:
+print(algo.report())
+```
+
+**Run:**
+```bash
+py -3.13 minimal_api.py
+```
+
+## CLI demo
+
+Interactive demo with emojis and a final report:
+
+```bash
+py -3.13 -m sundew --demo --events 50 --temperature 0.08 --save "%USERPROFILE%\Downloads\demo_run.json"
+```
+
+You'll see lines like:
+```
+07. health_monitor  ✅ processed (sig=0.710, 0.003s, ΔE≈11.4) | energy   73.5 | thr 0.816
+…
+🏁 Final Report
+  activation_rate               : 0.160
+  energy_remaining              : 66.659
+  estimated_energy_savings_pct  : 80.04%
+```
+
+**Small helper to summarize that JSON:**
+```bash
+py -3.13 tools\summarize_demo_json.py
+```
+
+**And a quick histogram of processed event significances:**
+```bash
+pip install matplotlib
+py -3.13 tools\plot_significance_hist.py --json "%USERPROFILE%\Downloads\demo_run.json" --bins 24
+```
+
+## ECG benchmark (reproduce numbers & plots)
+
+We include a simple CSV benchmark for the MIT-BIH Arrhythmia dataset (CSV export). Paths below match your local setup.
+
+### 1) Run the benchmark
+
+**PowerShell (Windows):**
+```powershell
+py -3.13 -m benchmarks.bench_ecg_from_csv `
+  --csv "data\MIT-BIH Arrhythmia Database.csv" `
+  --limit 50000 `
+  --activation-threshold 0.70 `
+  --target-rate 0.12 `
+  --gate-temperature 0.07 `
+  --energy-pressure 0.04 `
+  --max-threshold 0.92 `
+  --refractory 0 `
+  --save results\ecg_bench_50000.json
+```
+
+**Typical output (what you observed):**
+```
+activations               : 5159
+activation_rate           : 0.103
+energy_remaining          : 89.649
+estimated_energy_savings_pct: 85.45% ~ 85.96%
+```
+
+### 2) Plot the "energy cost" bar chart
+```bash
+py -3.13 tools\plot_ecg_bench.py --json results\ecg_bench_50000.json
+# writes results\ecg_bench_50000.png
+```
+
+### 3) Gallery scripts (optional)
+
+`tools\summarize_and_plot.py` — builds `results\summary.csv`, `summary.md`, and a `results\plots\` set:
+
+- `precision_recall.png`
+- `f1_and_rate.png`
+- `f1_vs_savings.png`
+- `pareto_frontier.png`
+
+## API cheatsheet
+
+### Core types
+
+- **SundewConfig** — dataclass of all knobs (validated via `validate()`).
+- **SundewAlgorithm** — the controller/gate.
+- **ProcessingResult** — returned when an input is processed (contains `significance`, `processing_time`, `energy_consumed`).
+
+### SundewConfig (key fields)
+
+**Activation & rate control**
+- `activation_threshold: float` — starting threshold.
+- `target_activation_rate: float` — long-term target fraction to process.
+- `ema_alpha: float` — smoothing for the observed activation rate.
+
+**PI controller**
+- `adapt_kp, adapt_ki: float` — controller gains.
+- `error_deadband: float, integral_clamp: float`.
+
+**Threshold bounds**
+- `min_threshold, max_threshold: float`.
+
+**Energy model & gating**
+- `energy_pressure: float` — how quickly we tighten when energy drops.
+- `gate_temperature: float` — 0 = hard gate; >0 = soft/probing.
+- `max_energy, dormant_tick_cost, dormancy_regen, eval_cost, base_processing_cost`.
+
+**Significance weights (sum to 1.0)**
+- `w_magnitude, w_anomaly, w_context, w_urgency`.
+
+**Extras**
+- `rng_seed: int, refractory: int, probe_every: int`.
+
+You can also load curated presets; see below.
+
+### SundewAlgorithm (most used)
+```python
+algo = SundewAlgorithm(cfg)
+r = algo.process(x: dict[str, float]) -> ProcessingResult | None
+rep = algo.report() -> dict[str, float | int]
+algo.threshold: float             # live threshold
+algo.energy.value: float          # remaining "energy"
+```
+
+**Input `x` should contain:**
+`magnitude` (0–100 scale), `anomaly_score` [0,1], `context_relevance` [0,1], `urgency` [0,1].
+
+## Configuration presets
+
+Shipped in `sundew.config_presets` and available through helpers:
+
+```python
+from sundew import get_preset, list_presets
+print(list_presets())
+cfg = get_preset("tuned_v2")                  # recommended general-purpose
+cfg = get_preset("ecg_v1")                    # ECG-leaning recall
+cfg = get_preset("conservative")              # maximize savings
+cfg = get_preset("aggressive")                # maximize activations
+cfg = get_preset("tuned_v2", {"target_activation_rate": 0.30})
+```
+
+The default tuning in `SundewConfig` (as of v0.1.28) is the balanced, modern set you demonstrated:
+
+```python
+SundewConfig(
+  activation_threshold=0.78, target_activation_rate=0.15,
+  gate_temperature=0.08, max_threshold=0.92, energy_pressure=0.04, ...
+)
+```
+
+## Results you can paste in blogs/papers
+
+**Demo run (50 events):** activation≈0.16, savings≈80.0%, final thr≈0.581, EMA rate≈0.302.
+
+**ECG 50k samples (your run):** activation≈0.103, savings≈85.5%, energy_left≈89.6.
+
+Include your figures:
 
 ```markdown
 ![Precision vs Recall](results/plots/precision_recall.png)
@@ -125,106 +236,40 @@ Drop these directly in your README:
 ![Pareto frontier (F1 vs Savings)](results/plots/pareto_frontier.png)
 ```
 
-(Your sample renders look good; they're clear and labeled. Keep the default Matplotlib style to stay dependency-light.)
+…and the benchmark cost bars:
 
-## Interpreting the knobs
-
-- **Activation rate** ≈ fraction of inputs you fully process. Lower is cheaper.
-- **Estimated energy savings** is computed vs. a baseline "always process" policy.
-- **Precision / Recall / F1** are from binary labels in the CSV.
-
-**Useful overrides:**
-
-- `target_activation_rate` — pushes the gate to be more/less selective.
-- `gate_temperature` — softens the gate; lower is harsher.
-- `max_threshold` — caps how strict the system can get.
-- `energy_pressure` — how quickly the threshold rises when energy is low.
-- `probe_every` — occasional probes to avoid starvation.
-- `refractory` — suppress repeated activations for N samples after a hit.
-
-## Suggested presets to document
-
-**Savings-first:**
-```bash
---overrides "target_activation_rate=0.12,gate_temperature=0.07,probe_every=100"
-```
-→ good savings with balanced F1 (savings_012.json).
-
-**Recall-leaning:**
-```bash
---overrides "target_activation_rate=0.16,energy_pressure=0.035,max_threshold=0.88,gate_temperature=0.08,probe_every=60"
-```
-(recall_016_r0.json).
-
-**Burst control:**
-Add `--refractory 3` to dampen rapid re-fires (balanced_014_r3.json).
-
-## CI Integration & Quality Assurance
-
-### Smoke Test
-```yaml
-# .github/workflows/ci.yml
-- name: Benchmark Smoke Test
-  run: |
-    sundew-ecg --csv "data/MIT-BIH Arrhythmia Database.csv" --preset tuned_v2 --limit 5000 --save results/smoke.json
-    python tools/summarize_and_plot.py --dir results --out results/summary.csv --md results/summary.md --plots results/plots
-
-- name: Upload Results
-  uses: actions/upload-artifact@v3
-  with:
-    name: benchmark-results
-    path: |
-      results/summary.md
-      results/plots/
+```markdown
+![ECG energy cost](results/ecg_bench_50000.png)
 ```
 
-### Development Workflow
-```bash
-# Quick validation during development
-sundew-ecg --csv "C:\Users\adminidiakhoa\sundew_algorithms\data\MIT-BIH Arrhythmia Database.csv" --preset tuned_v2 --limit 5000 --save results/smoke.json
-
-# Assert that key metrics exist
-python -c "import json; data=json.load(open('results/smoke.json')); assert 'f1' in data and 'savings_pct' in data"
-```
-
-## Project Structure
+## Project structure
 
 ```
 sundew_algorithms/
-├── data/                           # Keep in .gitignore (large files)
-│   └── MIT-BIH Arrhythmia Database.csv
-├── results/                        # Generated outputs (.gitignore)
-│   ├── *.json                      # Individual benchmark runs
-│   ├── summary.md                  # Auto-generated leaderboard
-│   ├── summary.csv                 # Machine-readable metrics
-│   └── plots/                      # Auto-generated visualizations
-├── tools/
-│   └── summarize_and_plot.py       # Advanced analysis script
-├── README.md                       # This file (check into git)
-└── pyproject.toml                  # Package configuration
+├─ src/sundew/                 # library (packaged to PyPI)
+│   ├─ cli.py, core.py, energy.py, gating.py, ecg.py
+│   ├─ config.py, config_presets.py
+│   └─ __main__.py (CLI entry: `python -m sundew`)
+├─ benchmarks/                 # repo-only scripts (not shipped to PyPI)
+│   └─ bench_ecg_from_csv.py
+├─ tools/                      # plotting & summaries
+│   ├─ summarize_demo_json.py
+│   ├─ plot_significance_hist.py
+│   └─ plot_ecg_bench.py
+├─ results/ (gitignored)       # JSON runs, plots, CSV summaries
+└─ data/    (gitignored)       # local datasets (e.g., MIT-BIH CSV)
 ```
 
-**Git Strategy:**
-- Keep `results/` in `.gitignore` for local development
-- Check in `results/summary.md` and key plots you want to showcase
-- Regenerate all results in CI for consistency
+## License & disclaimer
 
-## Is this suitable for the project?
+**MIT License** (see LICENSE)
 
-**Yes.** From a maintainer's perspective you now have:
-
-- **Reproducibility:** single-command runs + deterministic plots.
-- **Observability:** summary table + three complementary charts (PR space, F1 vs rate, F1 vs savings).
-- **Actionable knobs:** clear guidance on how each parameter shifts the trade-offs.
-- **Quality assurance:** CI smoke tests with artifact uploads.
-- **Documentation:** Clear dataset provenance and schema detection.
-
-## License
-
-**Apache-2.0**
-
-© 2025 Your Name. This repository is provided for research purposes; this is not a medical device and must not be used for clinical diagnosis.
+Research/benchmarking only. Not a medical device; not for diagnosis.
 
 ---
 
-**⚠️ Medical Disclaimer:** This software is a research prototype for algorithm development and benchmarking. It is not intended for medical use, diagnosis, or treatment of any condition. Always consult qualified healthcare professionals for medical decisions.
+### Notes for maintainers
+
+- PyPI is live at 0.1.28; `pip install -U sundew-algorithms==0.1.28` works.
+- CI pre-commit: ruff, ruff-format, mypy (src only).
+- Future-proofing (optional): move to a SPDX license string in `pyproject.toml` to satisfy upcoming setuptools deprecations.

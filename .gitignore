@@ -1,4 +1,16 @@
-﻿/*
-!sundew_algorithms/
-!benchmarks/
-!benchmarks/*.py
+﻿# build
+/dist/
+/build/
+/*.egg-info/
+/src/*.egg-info
+
+# caches
+__pycache__/
+*.py[cod]
+*.pyo
+
+# local data / results
+/results/
+/data/
+/benchmarks/*.csv
+*.zip
