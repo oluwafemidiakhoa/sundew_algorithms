@@ -1,0 +1,31 @@
+# Include documentation files
+include README.md
+include LICENSE
+include Whitepaper.md
+include DATASET_DOCUMENTATION.md
+
+# Include research dashboard
+include index.html
+
+# Include all visualization images
+recursive-include visualizations *.png
+
+# Include research data
+recursive-include data *.csv
+
+# Include example and demo scripts
+include comprehensive_research_study.py
+include create_visualizations.py
+include simple_test.py
+
+# Include advanced feature modules
+recursive-include src/sundew *.py
+
+# Exclude temporary and build files
+global-exclude __pycache__
+global-exclude *.py[co]
+global-exclude .DS_Store
+global-exclude .git*
+global-exclude .hypothesis/
+global-exclude .pytest_cache/
+global-exclude .coverage

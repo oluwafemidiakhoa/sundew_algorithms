@@ -1,7 +1,8 @@
+# src/sundew/config.py
 from __future__ import annotations
 
 from dataclasses import dataclass, replace
-from typing import Any, Dict, Iterable, Mapping, Tuple
+from typing import Any, Dict, Mapping, Tuple
 
 
 @dataclass(slots=True)
@@ -12,7 +13,7 @@ class SundewConfig:
     Notes
     -----
     * Call :meth:`validate` to perform sanity checks.
-    * All defaults match the stricter energy-saving profile you're currently using.
+    * Defaults reflect a conservative, energy-saving profile.
     * Field names and semantics are stable for external users.
     """
 
@@ -38,8 +39,7 @@ class SundewConfig:
     # Energy model
     max_energy: float = 100.0
     dormant_tick_cost: float = 0.5
-    # (min, max) regen per dormant tick
-    dormancy_regen: Tuple[float, float] = (1.0, 3.0)
+    dormancy_regen: Tuple[float, float] = (1.0, 3.0)  # (min, max) regen per dormant tick
     eval_cost: float = 0.6
     base_processing_cost: float = 10.0
 
@@ -53,10 +53,8 @@ class SundewConfig:
     rng_seed: int = 42
 
     # Optional features
-    # ticks to sleep after activation
-    refractory: int = 0
-    # force a probe every N events (0=off)
-    probe_every: int = 0
+    refractory: int = 0         # ticks to sleep after activation
+    probe_every: int = 0        # force a probe every N events (0 = off)
 
     # --------------------------- Validation & helpers ---------------------------
 
@@ -70,12 +68,10 @@ class SundewConfig:
         if self.gate_temperature < 0.0:
             raise ValueError("gate_temperature must be non-negative.")
 
-        _require_range(
-            self.target_activation_rate, 0.0, 1.0, "target_activation_rate"
-        )
+        _require_range(self.target_activation_rate, 0.0, 1.0, "target_activation_rate")
         _require_range(self.activation_threshold, 0.0, 1.0, "activation_threshold")
 
-        # The starting threshold should lie within the permitted band.
+        # Starting threshold must lie within the permitted band.
         if not (self.min_threshold <= self.activation_threshold <= self.max_threshold):
             raise ValueError(
                 "activation_threshold must lie within [min_threshold, max_threshold]."
@@ -154,21 +150,20 @@ class SundewConfig:
         }
 
     @classmethod
-    def from_dict(cls, cfg: Mapping[str, Any]) -> "SundewConfig":
+    def from_dict(cls, cfg: Mapping[str, Any]) -> SundewConfig:
         """
         Create a config from a mapping, ignoring unknown keys.
         Does *not* call :meth:`validate` automatically.
         """
-        known: Dict[str, Any] = {k: cfg[k] for k in cfg.keys() if k in _CONFIG_KEYS}
+        known: Dict[str, Any] = {k: cfg[k] for k in _CONFIG_KEYS if k in cfg}
         return cls(**known)
 
-    def with_overrides(self, **updates: Any) -> "SundewConfig":
+    def with_overrides(self, **updates: Any) -> SundewConfig:
         """Return a copy with the given field overrides."""
-        # Let dataclasses/typing enforce field names/types.
         return replace(self, **updates)
 
     def weights(self) -> Tuple[float, float, float, float]:
-        """Tuple of (w_magnitude, w_anomaly, w_context, w_urgency)."""
+        """Return (w_magnitude, w_anomaly, w_context, w_urgency)."""
         return (self.w_magnitude, self.w_anomaly, self.w_context, self.w_urgency)
 
 

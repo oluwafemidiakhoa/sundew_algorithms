@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.1.29"
+version = "0.2.0"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -27,6 +27,7 @@ classifiers = [
 ]
 
 dependencies = [
+  "matplotlib>=3.10.6",
   "numpy>=1.22",
 ]
 

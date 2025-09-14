@@ -1,16 +1,17 @@
-﻿# build
-/dist/
-/build/
-/*.egg-info/
-/src/*.egg-info
-
+﻿# build/dist/venv
+dist/
+build/
+*.egg-info/
+.venv/
 # caches
 __pycache__/
-*.py[cod]
-*.pyo
-
-# local data / results
-/results/
-/data/
-/benchmarks/*.csv
-*.zip
+*.pyc
+.pytest_cache/
+.coverage
+.hypothesis/
+# local outputs
+results/
+*.csv
+*.png
+*.svg
+*.mp4
