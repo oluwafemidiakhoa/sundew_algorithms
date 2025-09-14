@@ -22,7 +22,7 @@
 Sundew is a **bio-inspired selective activation algorithm** that intelligently decides when to fully process data and when to skip it, achieving massive energy savings (up to 99.5%) while maintaining competitive accuracy. Perfect for:
 
 - 📱 **Edge Devices** - Extend battery life dramatically
-- 🏭 **IoT Networks** - Reduce network bandwidth and processing costs  
+- 🏭 **IoT Networks** - Reduce network bandwidth and processing costs
 - 🎥 **Streaming Data** - Handle high-throughput pipelines efficiently
 - 🏥 **Real-time Systems** - Critical processing with energy constraints
 - 🧠 **AI Inference** - Smart gating for neural network inference
@@ -44,7 +44,7 @@ First algorithm to achieve **>99% energy savings** across fundamentally differen
 ### 🏆 Research Quality Evolution
 
 - **v0.1.x**: 6.5/10 prototype quality
-- **v0.2.0**: 7.8/10 with enhanced features  
+- **v0.2.0**: 7.8/10 with enhanced features
 - **v0.3.0**: **8.5/10** research-grade system with neural models
 
 ## 🚀 Quick Start
@@ -76,7 +76,7 @@ algorithm = SundewAlgorithm(config)
 sample = {
     "magnitude": 75,
     "anomaly_score": 0.8,
-    "context_relevance": 0.6, 
+    "context_relevance": 0.6,
     "urgency": 0.9
 }
 
@@ -132,7 +132,7 @@ sundew --demo --preset aggressive    # Maximum processing
 Initial threshold: 0.780 | Energy: 100.0
 
 01. environmental   ✅ processed (sig=0.850, 0.002s, ΔE≈9.5) | energy   90.5 | thr 0.779
-02. security        ⏸ dormant | energy   91.1 | thr 0.775  
+02. security        ⏸ dormant | energy   91.1 | thr 0.775
 03. emergency       ✅ processed (sig=0.932, 0.003s, ΔE≈11.7) | energy   79.3 | thr 0.785
 
 🏁 Final Report
@@ -184,7 +184,7 @@ from sundew.benchmarking import BenchmarkRunner
 # Run comprehensive benchmark across domains
 runner = BenchmarkRunner()
 results = runner.run_multi_domain_benchmark([
-    "financial", "environmental", "cybersecurity", 
+    "financial", "environmental", "cybersecurity",
     "smart_city", "space_weather"
 ])
 
@@ -210,7 +210,7 @@ python tools/plot_ecg_bench.py --json results/ecg_benchmark.json
 
 **Typical Results:**
 - **Energy Savings**: 84-87%
-- **Activation Rate**: 10-15%  
+- **Activation Rate**: 10-15%
 - **Processing Speed**: 500K+ samples/sec
 - **Accuracy**: Competitive with full processing
 
@@ -255,21 +255,21 @@ config = SundewConfig(
     activation_threshold=0.78,
     target_activation_rate=0.15,
     gate_temperature=0.08,
-    
+
     # Energy management
     energy_pressure=0.04,
     max_energy=100.0,
-    
+
     # Significance weights (must sum to 1.0)
     w_magnitude=0.3,
-    w_anomaly=0.3, 
+    w_anomaly=0.3,
     w_context=0.2,
     w_urgency=0.2,
-    
+
     # Control system
     adapt_kp=0.012,  # Proportional gain
     adapt_ki=0.004,  # Integral gain
-    
+
     # Constraints
     min_threshold=0.45,
     max_threshold=0.92
@@ -281,7 +281,7 @@ config = SundewConfig(
 Sundew uses a modular architecture with pluggable components:
 
 - **Significance Models**: Linear, Neural with Attention
-- **Control Policies**: PI Controller, Model Predictive Control  
+- **Control Policies**: PI Controller, Model Predictive Control
 - **Gating Strategies**: Temperature-based, Adaptive Multi-objective
 - **Energy Models**: Simple, Hardware-realistic with Thermal
 
@@ -299,7 +299,7 @@ monitor = RealTimeMonitor(
 # Register alert callbacks
 def energy_alert(alert_type, data):
     print(f"⚠️ Energy Alert: {data}")
-    
+
 monitor.register_alert_callback(energy_alert)
 
 # Start monitoring
@@ -349,7 +349,7 @@ pip install -e ".[dev,viz]"
 sundew_algorithms/
 ├── src/sundew/                 # 📦 Core Package
 │   ├── core.py                # 🧠 Main algorithm
-│   ├── enhanced_core.py       # 🚀 Research-grade system  
+│   ├── enhanced_core.py       # 🚀 Research-grade system
 │   ├── config.py              # ⚙️ Configuration
 │   ├── energy.py              # ⚡ Energy modeling
 │   ├── gating.py              # 🚪 Gating logic
@@ -396,7 +396,7 @@ pre-commit install
 - **Environmental Sensors**: Smart pollution and weather monitoring
 - **Smart Agriculture**: Optimize irrigation and crop monitoring
 
-### 🚗 Automotive & Transportation  
+### 🚗 Automotive & Transportation
 - **Autonomous Vehicles**: Energy-efficient sensor fusion
 - **Fleet Management**: Smart telemetry and diagnostics
 - **Traffic Systems**: Intelligent traffic light and flow control

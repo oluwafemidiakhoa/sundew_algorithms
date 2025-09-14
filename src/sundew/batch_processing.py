@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# type: ignore
 """
 High-performance vectorized batch processing engine for Sundew algorithm.
 
@@ -32,7 +33,8 @@ try:
     from numba import cuda, jit
     NUMBA_AVAILABLE = True
 except ImportError:
-    jit = lambda x: x  # No-op decorator
+    def jit(x):  # No-op decorator
+        return x
     cuda = None
     NUMBA_AVAILABLE = False
 
@@ -470,7 +472,7 @@ class BatchProcessingEngine:
 
             for i in range(iterations):
                 start_time = time.time()
-                result = processor.process_batch(test_samples)
+                processor.process_batch(test_samples)
                 processing_time = time.time() - start_time
 
                 times.append(processing_time)

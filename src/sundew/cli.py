@@ -4,6 +4,8 @@ from __future__ import annotations
 import argparse
 import json
 import sys
+import threading
+import time
 from dataclasses import asdict, is_dataclass
 from pathlib import Path
 from typing import Any
@@ -66,53 +68,151 @@ def cmd_print_config(ns: argparse.Namespace) -> int:
 
 def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
     """Inline demo (interactive printout) with optional save."""
-    cfg = SundewConfig(gate_temperature=ns.temperature)
-    algo = SundewAlgorithm(cfg)
+    # Enhanced CLI demo function v0.3.0 with improved stability and formatting
+    try:
+        # Validate inputs
+        if ns.events <= 0:
+            print("ERROR: Number of events must be positive")
+            return 1
+        if ns.events > 10000:
+            print("WARNING: Large number of events may take a while")
+
+        if not 0.0 <= ns.temperature <= 1.0:
+            print("ERROR: Temperature must be between 0.0 and 1.0")
+            return 1
+
+        cfg = SundewConfig(gate_temperature=ns.temperature)
+        cfg.validate()  # Ensure configuration is valid
+        algo = SundewAlgorithm(cfg)
+    except ValueError as e:
+        print(f"Configuration Error: {e}")
+        return 1
+    except Exception as e:
+        print(f"Unexpected Error: {e}")
+        return 1
+
+    # Output lock for thread safety
+    output_lock = threading.Lock()
 
     print(f"{BULLET} Sundew Algorithm — Demo")
     print("=" * 60)
-    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}\n")
+    print(f"Initial threshold: {algo.threshold:.3f} | Energy: {_energy_float(algo):.1f}")
+    print()
 
-    processed: list[ProcessingResult] = []
-    for i in range(ns.events):
-        x = synth_event(i)
-        res = algo.process(x)
-        if res is None:
-            print(
-                f"{i + 1:02d}. {x['type']:<15} {PAUSE} dormant "
-                f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
-            )
-        else:
-            processed.append(res)
-            print(
-                f"{i + 1:02d}. {x['type']:<15} {CHECK} processed "
-                f"(sig={res.significance:.3f}, {res.processing_time:.3f}s, "
-                f"{DELTA}E{APPROX}{res.energy_consumed:.1f}) "
-                f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
-            )
+    # Flush output to prevent buffering issues
+    sys.stdout.flush()
 
-    print(f"\n{FLAG_DONE} Final Report")
+    try:
+        processed: list[ProcessingResult] = []
+        last_activation_rate = 0.0
+
+        for i in range(ns.events):
+            try:
+                x = synth_event(i)
+                res = algo.process(x)
+
+                with output_lock:
+                    if res is None:
+                        # Format dormant events with consistent spacing
+                        line = f"{i + 1:02d}. {x['type']:<15} {PAUSE} dormant"
+                        status = f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
+                        print(f"{line:35} {status}")
+                    else:
+                        processed.append(res)
+                        # Format processed events with detailed info
+                        line = f"{i + 1:02d}. {x['type']:<15} {CHECK} processed"
+                        details = f"(sig={res.significance:.3f}, {res.processing_time:.3f}s, {DELTA}E{APPROX}{res.energy_consumed:.1f})"
+                        status = f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
+                        print(f"{line:35} {details:35} {status}")
+
+                    # Flush output immediately for real-time display
+                    sys.stdout.flush()
+
+                    # Brief delay to prevent overwhelming output
+                    time.sleep(0.01)
+
+            except KeyboardInterrupt:
+                print(f"\nDemo interrupted at event {i + 1}")
+                break
+            except Exception as e:
+                print(f"\nError processing event {i + 1}: {e}")
+                continue
+
+    except Exception as e:
+        print(f"Critical error during demo: {e}")
+        return 1
+
+    print(f"\n{FLAG_DONE} Final Report (Enhanced v0.3.0)")
+    print("=" * 60)
+
     report = algo.report()
-    for k, v in report.items():
-        if isinstance(v, float):
-            if "pct" in k:
-                print(f"  {k:30s}: {v:7.2f}%")
-            else:
-                print(f"  {k:30s}: {v:10.3f}")
-        else:
-            print(f"  {k:30s}: {v}")
+
+    # Core metrics with improved formatting
+    print("Performance Metrics:")
+    print(f"  Total Events              : {report.get('total_inputs', 0):>8}")
+    print(f"  Activations               : {report.get('activations', 0):>8}")
+    print(f"  Activation Rate           : {report.get('activation_rate', 0):>7.1%}")
+    print(f"  EMA Activation Rate       : {report.get('ema_activation_rate', 0):>7.1%}")
+    print()
+
+    # Energy analysis
+    energy_savings = report.get('estimated_energy_savings_pct', 0)
+    print("Energy Analysis:")
+    print(f"  Energy Remaining          : {report.get('energy_remaining', 0):>7.1f}")
+    print(f"  Total Energy Spent        : {report.get('total_energy_spent', 0):>7.1f}")
+    print(f"  Energy Savings            : {energy_savings:>7.1f}%")
+
+    # Performance rating based on energy savings
+    if energy_savings > 90:
+        rating = "Excellent"
+    elif energy_savings > 80:
+        rating = "Good"
+    elif energy_savings > 70:
+        rating = "Fair"
+    else:
+        rating = "Poor"
+    print(f"  Performance Rating        : {rating}")
+    print()
+
+    # Control system status
+    print("Control System:")
+    print(f"  Final Threshold           : {algo.threshold:>7.3f}")
+    print(f"  Avg Processing Time       : {report.get('avg_processing_time', 0):>7.3f}s")
+
+    # Convergence analysis
+    rate_diff = abs(report.get('activation_rate', 0) - report.get('ema_activation_rate', 0))
+    convergence_status = "Converged" if rate_diff < 0.05 else "Oscillating"
+    print(f"  Convergence Status        : {convergence_status}")
+
+    if rate_diff > 0.1:
+        print("  Suggestion: Consider tuning PI controller gains for better stability")
 
     if ns.save:
-        out = {
-            "config": _to_plain(cfg),
-            "report": report,
-            "processed_events": [_to_plain(r) for r in processed],
-        }
-        path = Path(ns.save)
-        path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path, "w", encoding="utf-8") as f:
-            json.dump(out, f, indent=2)
-        print(f"\n{DISK} Results saved to {path}")
+        try:
+            out = {
+                "config": _to_plain(cfg),
+                "report": report,
+                "processed_events": [_to_plain(r) for r in processed],
+                "metadata": {
+                    "version": "0.3.0",
+                    "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+                    "total_events": len(processed) + (ns.events - len(processed))
+                }
+            }
+            path = Path(ns.save)
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with open(path, "w", encoding="utf-8") as f:
+                json.dump(out, f, indent=2)
+            print(f"\nResults saved to {path}")
+        except PermissionError:
+            print(f"\nError: Permission denied writing to {ns.save}")
+            return 1
+        except OSError as e:
+            print(f"\nError saving file: {e}")
+            return 1
+        except Exception as e:
+            print(f"\nUnexpected error saving results: {e}")
+            return 1
 
     return 0
 

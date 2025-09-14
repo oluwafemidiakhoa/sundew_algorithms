@@ -1,14 +1,14 @@
 # The Sundew Algorithm: Bio-Inspired Energy-Aware Selective Activation for Edge AI Systems
 ## Version 0.3.0: Research Breakthrough with Universal Multi-Domain Validation
 
-**Author:** Oluwafemi Idiakhoa  
-**Affiliation:** Independent Research  
-**Contact:** oluwafemidiakhoa@gmail.com  
-**ORCID:** 0009-0008-7911-1171  
-**Repository:** https://github.com/oluwafemidiakhoa/sundew_algorithms  
-**License:** MIT  
-**Version:** 0.3.0  
-**Date:** September 2024  
+**Author:** Oluwafemi Idiakhoa
+**Affiliation:** Independent Research
+**Contact:** oluwafemidiakhoa@gmail.com
+**ORCID:** 0009-0008-7911-1171
+**Repository:** https://github.com/oluwafemidiakhoa/sundew_algorithms
+**License:** MIT
+**Version:** 0.3.0
+**Date:** September 2024
 
 *"Nature's wisdom, engineered for universal efficiency across diverse domains"*
 
@@ -86,7 +86,7 @@ The enhanced architecture employs a pluggable component system:
 - **Realistic Model**: Hardware-aware modeling with thermal dynamics and DVFS
 - **Platform Integration**: Support for ARM Cortex-M, x86, and custom hardware
 
-#### 2.2.4 Gating Strategies  
+#### 2.2.4 Gating Strategies
 - **Temperature Gating**: Softmax-based probabilistic gating
 - **Adaptive Gating**: Multi-objective optimization with Pareto efficiency
 - **Information-Theoretic**: Entropy-based gating with mutual information
@@ -105,7 +105,7 @@ s = Σᵢ wᵢ · fᵢ(x)  where Σᵢ wᵢ = 1.0
 
 Where fᵢ represents normalized feature extractors:
 - **f₁(magnitude)**: Normalized signal amplitude ∈ [0,1]
-- **f₂(anomaly)**: Statistical outlier detection ∈ [0,1]  
+- **f₂(anomaly)**: Statistical outlier detection ∈ [0,1]
 - **f₃(context)**: Contextual relevance assessment ∈ [0,1]
 - **f₄(urgency)**: Temporal importance weighting ∈ [0,1]
 
@@ -156,14 +156,14 @@ To validate universal applicability, we evaluated Sundew across five fundamental
 - **Data Characteristics**: High-velocity, low-latency requirements
 - **Success Metrics**: Detection precision, false positive rates
 
-#### 4.1.2 Environmental Monitoring  
+#### 4.1.2 Environmental Monitoring
 - **Application**: Pollution event detection in sensor networks
 - **Data Characteristics**: Sparse events, long-term trends
 - **Success Metrics**: Event sensitivity, network lifetime
 
 #### 4.1.3 Cybersecurity
 - **Application**: Network intrusion detection systems
-- **Data Characteristics**: Adversarial, evolving threat patterns  
+- **Data Characteristics**: Adversarial, evolving threat patterns
 - **Success Metrics**: Attack detection rate, system resilience
 
 #### 4.1.4 Smart Cities
@@ -259,7 +259,7 @@ Using Lyapunov analysis, we prove asymptotic stability for the PI controller:
 
 *Proof Sketch*: The Lyapunov function V(e,i) = ½(K_p e² + K_i i²) decreases monotonically under the control law, ensuring convergence.
 
-#### 6.1.2 MPC Stability  
+#### 6.1.2 MPC Stability
 **Theorem 2**: The MPC formulation with terminal cost provides input-to-state stability with guaranteed constraint satisfaction.
 
 ### 6.2 Energy Efficiency Bounds
@@ -317,7 +317,7 @@ monitor.start_monitoring(algorithm)
 
 #### 7.1.3 Performance Profiling
 - **CPU Utilization**: Real-time CPU usage monitoring
-- **Memory Footprint**: Dynamic memory allocation tracking  
+- **Memory Footprint**: Dynamic memory allocation tracking
 - **Energy Consumption**: Hardware-specific energy measurement
 - **Network Bandwidth**: Communication overhead analysis
 
@@ -353,7 +353,7 @@ print(f"Reproducibility: {results['reproducibility']}")
 #### 8.1.1 Quality Dimensions
 - **Statistical Rigor**: Cross-validation, confidence intervals, effect sizes
 - **Experimental Design**: Control groups, randomization, blinding where applicable
-- **Reproducibility**: Deterministic results, version control, environment specification  
+- **Reproducibility**: Deterministic results, version control, environment specification
 - **Theoretical Foundation**: Mathematical analysis, stability proofs, complexity bounds
 - **Practical Impact**: Real-world applicability, scalability, deployment considerations
 
@@ -370,7 +370,7 @@ python create_breakthrough_benchmark.py \
 
 The automated pipeline generates:
 - Statistical analysis reports
-- Performance visualization plots  
+- Performance visualization plots
 - Research quality assessments
 - Reproducibility packages
 - Production deployment guides
@@ -388,7 +388,7 @@ Future versions will explore:
 
 ### 9.2 Theoretical Extensions
 
-- **Multi-Objective Optimization**: Pareto-optimal energy-accuracy trade-offs  
+- **Multi-Objective Optimization**: Pareto-optimal energy-accuracy trade-offs
 - **Robust Control**: Guaranteed performance under uncertainty
 - **Federated Learning**: Distributed significance learning across devices
 
@@ -406,7 +406,7 @@ While maintaining universal applicability, future work will include:
 Sundew v0.3.0 represents a breakthrough in energy-aware selective activation, achieving unprecedented universal applicability across diverse domains while maintaining research-grade quality. The key contributions include:
 
 1. **Universal Performance**: First algorithm demonstrating >99% energy savings across fundamentally different domains
-2. **Research Quality**: Achievement of 8.5/10 research quality through comprehensive statistical validation  
+2. **Research Quality**: Achievement of 8.5/10 research quality through comprehensive statistical validation
 3. **Modular Architecture**: Pluggable components enabling domain-specific optimization
 4. **Production Readiness**: Comprehensive deployment tools, monitoring, and error handling
 5. **Theoretical Foundation**: Stability analysis and performance bounds with mathematical rigor
@@ -480,7 +480,7 @@ subject to:
 
 Where f represents the system dynamics and w represents disturbances.
 
-### A.3 Energy Model Dynamics  
+### A.3 Energy Model Dynamics
 
 The realistic energy model:
 
@@ -514,23 +514,23 @@ class NeuralSignificanceModel(nn.Module):
             nn.Linear(32, 1),
             nn.Sigmoid()
         )
-        
+
     def forward(self, x_current, history):
         # Feature encoding
         encoded = self.feature_encoder(x_current)
-        
+
         # Temporal context
         if len(history) >= self.temporal_window:
             temporal_input = torch.stack(history[-self.temporal_window:])
             lstm_out, _ = self.temporal_lstm(temporal_input.unsqueeze(0))
-            
+
             # Attention mechanism
-            attended, _ = self.attention(encoded.unsqueeze(0), 
+            attended, _ = self.attention(encoded.unsqueeze(0),
                                       lstm_out, lstm_out)
             final_features = attended.squeeze(0)
         else:
             final_features = encoded
-            
+
         # Significance prediction
         significance = self.significance_head(final_features)
         return significance
@@ -545,37 +545,37 @@ def solve_mpc(current_state, prediction_horizon=10):
     # Decision variables
     theta = cp.Variable(prediction_horizon + 1)
     u = cp.Variable(prediction_horizon)
-    
+
     # Objective function
     cost = 0
     for i in range(prediction_horizon):
         # Tracking error
         cost += cp.sum_squares(predicted_rate[i] - target_rate) * Q
-        # Control effort  
+        # Control effort
         cost += cp.sum_squares(theta[i] - theta_ref) * R
         # Control smoothness
         if i > 0:
             cost += cp.sum_squares(u[i] - u[i-1]) * S
-    
+
     # Terminal cost
     cost += cp.sum_squares(theta[-1] - theta_ref) * P
-    
+
     # Constraints
     constraints = []
     constraints += [theta[0] == current_state['threshold']]
-    
+
     for i in range(prediction_horizon):
         # System dynamics
         constraints += [theta[i+1] == theta[i] + u[i]]
         # State bounds
         constraints += [theta_min <= theta[i+1], theta[i+1] <= theta_max]
-        # Input bounds  
+        # Input bounds
         constraints += [cp.abs(u[i]) <= u_max]
-    
+
     # Solve optimization problem
     problem = cp.Problem(cp.Minimize(cost), constraints)
     problem.solve()
-    
+
     return u.value[0] if problem.status == cp.OPTIMAL else 0.0
 ```
 

@@ -20,13 +20,13 @@ class SundewConfig:
     # Activation & rate control
     activation_threshold: float = 0.78
     target_activation_rate: float = 0.15
-    ema_alpha: float = 0.10
+    ema_alpha: float = 0.15  # Faster adaptation for better responsiveness
 
-    # PI controller
-    adapt_kp: float = 0.08
-    adapt_ki: float = 0.02
-    error_deadband: float = 0.005
-    integral_clamp: float = 0.50
+    # PI controller - improved stability
+    adapt_kp: float = 0.012  # Reduced for smoother response
+    adapt_ki: float = 0.004  # Lower integral gain to prevent windup
+    error_deadband: float = 0.003  # Tighter deadband for precision
+    integral_clamp: float = 0.30   # Reduced to prevent large corrections
 
     # Threshold bounds
     min_threshold: float = 0.20
