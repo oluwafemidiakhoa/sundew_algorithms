@@ -5,10 +5,9 @@ Concrete implementations of energy models for different hardware platforms.
 
 from __future__ import annotations
 
-import math
 import random
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from dataclasses import dataclass
+from typing import Any, Dict, List
 
 import numpy as np
 

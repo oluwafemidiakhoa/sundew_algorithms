@@ -9,17 +9,17 @@ This module provides optimized batch processing capabilities with:
 - Performance profiling and optimization
 """
 
-import numpy as np
-from typing import Dict, List, Tuple, Any, Optional, Iterator, Callable, Union
-from dataclasses import dataclass
-import time
 import multiprocessing as mp
-from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-from functools import partial
-import threading
 import queue
+import threading
+import time
 import warnings
 from abc import ABC, abstractmethod
+from concurrent.futures import ProcessPoolExecutor, ThreadPoolExecutor
+from dataclasses import dataclass
+from typing import Any, Callable, Dict, Iterator, List, Optional, Tuple, Union
+
+import numpy as np
 
 try:
     import cupy as cp
@@ -29,7 +29,7 @@ except ImportError:
     GPU_AVAILABLE = False
 
 try:
-    from numba import jit, cuda
+    from numba import cuda, jit
     NUMBA_AVAILABLE = True
 except ImportError:
     jit = lambda x: x  # No-op decorator
@@ -641,7 +641,7 @@ if __name__ == "__main__":
     print(f"\nProcessing {len(test_samples)} samples...")
     result = engine.process_batch(test_samples)
 
-    print(f"Results:")
+    print("Results:")
     print(f"  Activation rate: {result.activation_rate:.1%}")
     print(f"  Total energy: {result.total_energy:.1f}")
     print(f"  Throughput: {result.metadata.get('throughput', 0):.0f} samples/sec")

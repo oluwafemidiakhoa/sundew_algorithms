@@ -5,9 +5,8 @@ Concrete implementations of control policies for threshold adaptation.
 
 from __future__ import annotations
 
-import math
-from dataclasses import dataclass, field
-from typing import Any, Dict, List, Tuple
+from dataclasses import dataclass
+from typing import Dict, List, Tuple
 
 import numpy as np
 

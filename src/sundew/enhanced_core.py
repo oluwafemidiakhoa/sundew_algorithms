@@ -8,19 +8,23 @@ from __future__ import annotations
 
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Tuple, Union
-from collections import defaultdict
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
+from .control_policies import MPCControlPolicy, PIControlPolicy
+from .energy_models import RealisticEnergyModel, SimpleEnergyModel
+from .gating_strategies import AdaptiveGatingStrategy, TemperatureGatingStrategy
 from .interfaces import (
-    ControlState, EnergyModel, GatingStrategy, ProcessingContext,
-    ProcessingResult, SignificanceModel, ControlPolicy
+    ControlPolicy,
+    ControlState,
+    EnergyModel,
+    GatingStrategy,
+    ProcessingContext,
+    ProcessingResult,
+    SignificanceModel,
 )
 from .significance_models import LinearSignificanceModel, NeuralSignificanceModel
-from .gating_strategies import TemperatureGatingStrategy, AdaptiveGatingStrategy
-from .control_policies import PIControlPolicy, MPCControlPolicy
-from .energy_models import SimpleEnergyModel, RealisticEnergyModel
 
 # Advanced features
 try:
@@ -31,7 +35,7 @@ except ImportError:
     INFORMATION_THEORY_AVAILABLE = False
 
 try:
-    from .batch_processing import BatchProcessingEngine, BatchProcessingConfig, GPU_AVAILABLE
+    from .batch_processing import GPU_AVAILABLE, BatchProcessingConfig, BatchProcessingEngine
     BATCH_PROCESSING_AVAILABLE = True
 except ImportError:
     BatchProcessingEngine = None

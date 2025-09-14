@@ -13,8 +13,7 @@ from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
 
-from .enhanced_core import EnhancedSundewAlgorithm, EnhancedMetrics
-from .interfaces import ControlState
+from .enhanced_core import EnhancedSundewAlgorithm
 
 
 @dataclass
@@ -315,8 +314,8 @@ class RealTimeMonitor:
     def _init_live_plots(self):
         """Initialize live plotting (requires matplotlib)."""
         try:
-            import matplotlib.pyplot as plt
             import matplotlib.animation as animation
+            import matplotlib.pyplot as plt
 
             self.fig, self.axes = plt.subplots(2, 2, figsize=(12, 8))
             self.fig.suptitle("Sundew Algorithm Real-Time Monitoring")

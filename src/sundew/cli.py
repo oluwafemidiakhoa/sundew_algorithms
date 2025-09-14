@@ -17,7 +17,9 @@ from .demo import synth_event
 def _stdout_supports_unicode() -> bool:
     enc = getattr(sys.stdout, "encoding", None) or ""
     try:
-        "🌿".encode(enc or "utf-8", errors="strict")
+        # Test both emoji and special characters
+        test_chars = "🌿✅⏸🏁ΔE≈"
+        test_chars.encode(enc or "utf-8", errors="strict")
         return True
     except Exception:
         return False
@@ -28,6 +30,8 @@ BULLET = "🌿" if EMOJI_OK else "[sundew]"
 CHECK = "✅" if EMOJI_OK else "[ok]"
 PAUSE = "⏸" if EMOJI_OK else "[idle]"
 FLAG_DONE = "🏁" if EMOJI_OK else "[done]"
+DELTA = "Δ" if EMOJI_OK else "d"
+APPROX = "≈" if EMOJI_OK else "~"
 DISK = "💾" if EMOJI_OK else "[saved]"
 
 
@@ -83,7 +87,7 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
             print(
                 f"{i + 1:02d}. {x['type']:<15} {CHECK} processed "
                 f"(sig={res.significance:.3f}, {res.processing_time:.3f}s, "
-                f"ΔE≈{res.energy_consumed:.1f}) "
+                f"{DELTA}E{APPROX}{res.energy_consumed:.1f}) "
                 f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
             )
 

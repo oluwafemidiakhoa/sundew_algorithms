@@ -10,21 +10,20 @@ This module provides automated hyperparameter tuning using:
 - Automated configuration selection and validation
 """
 
-import numpy as np
-from typing import Dict, List, Tuple, Any, Optional, Callable, Union
-from dataclasses import dataclass, asdict
-import time
 import json
-import pickle
-from abc import ABC, abstractmethod
-import warnings
-from collections import defaultdict
 import random
+import time
+import warnings
+from abc import ABC, abstractmethod
+from dataclasses import asdict, dataclass
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+
+import numpy as np
 
 # Optional dependencies for advanced optimization
 try:
     from sklearn.gaussian_process import GaussianProcessRegressor
-    from sklearn.gaussian_process.kernels import Matern, RBF, ConstantKernel
+    from sklearn.gaussian_process.kernels import RBF, ConstantKernel, Matern
     from sklearn.model_selection import cross_val_score
     SKLEARN_AVAILABLE = True
 except ImportError:
@@ -837,7 +836,7 @@ def create_evaluation_function(sundew_algorithm_class, test_data: List[Dict]) ->
                 'avg_significance': avg_significance
             }
 
-        except Exception as e:
+        except Exception:
             # Return poor metrics for failed configurations
             return {
                 'energy_savings': 0.0,
@@ -898,9 +897,9 @@ if __name__ == "__main__":
         n_trials=30  # Small for demo
     )
 
-    print(f"\nOptimization completed!")
+    print("\nOptimization completed!")
     print(f"Best score: {result.best_score:.4f}")
-    print(f"Best parameters:")
+    print("Best parameters:")
     for key, value in result.best_params.items():
         print(f"  {key}: {value}")
 

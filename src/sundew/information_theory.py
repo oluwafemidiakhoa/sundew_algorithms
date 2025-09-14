@@ -7,13 +7,12 @@ entropy measures, and information-theoretic criteria for optimal selective
 activation decisions.
 """
 
-import numpy as np
-from typing import Dict, List, Tuple, Any, Optional
-from dataclasses import dataclass
 from abc import ABC, abstractmethod
-import math
-from collections import deque, defaultdict
-import warnings
+from collections import defaultdict, deque
+from dataclasses import dataclass
+from typing import Any, Dict, List, Optional
+
+import numpy as np
 
 
 @dataclass

@@ -10,27 +10,23 @@ This module provides:
 - Formal verification components
 """
 
-import numpy as np
-from typing import Dict, List, Tuple, Any, Optional, Callable, Union
 from dataclasses import dataclass
-import warnings
+from typing import Any, Dict, List, Optional, Tuple
+
+import numpy as np
 import scipy.stats as stats
-from scipy import optimize
-from scipy.linalg import solve_continuous_lyapunov, eig
-import matplotlib.pyplot as plt
-from abc import ABC, abstractmethod
-import math
+from scipy.linalg import eig, solve_continuous_lyapunov
 
 try:
     import sympy as sp
-    from sympy import symbols, diff, solve, simplify, Matrix, latex
+    from sympy import Matrix, diff, latex, simplify, solve, symbols
     SYMPY_AVAILABLE = True
 except ImportError:
     SYMPY_AVAILABLE = False
     sp = None
 
 try:
-    from scipy.stats import kstest, shapiro, anderson
+    from scipy.stats import anderson, kstest, shapiro
     SCIPY_STATS_AVAILABLE = True
 except ImportError:
     SCIPY_STATS_AVAILABLE = False
@@ -139,7 +135,7 @@ class StabilityAnalyzer:
             [-kp * dp_dtheta, -ki * dp_dtheta]
         ])
 
-        proof_steps.append(f"\nState matrix A =")
+        proof_steps.append("\nState matrix A =")
         proof_steps.append(f"[[0, {ki}], [{-kp * dp_dtheta:.3f}, {-ki * dp_dtheta:.3f}]]")
 
         # Step 4: Eigenvalue analysis
@@ -165,7 +161,7 @@ class StabilityAnalyzer:
                 lyapunov_valid = all(np.real(ev) > 0 for ev in P_eigenvalues)
 
                 if lyapunov_valid:
-                    proof_steps.append(f"\nLyapunov function V(x) = xᵀPx with P:")
+                    proof_steps.append("\nLyapunov function V(x) = xᵀPx with P:")
                     proof_steps.append(f"P = {P}")
                     proof_steps.append("V̇(x) = -xᵀQx < 0, proving asymptotic stability")
 
@@ -578,7 +574,7 @@ class TheoreticalAnalysisEngine:
 
         if pi_result.converged:
             guarantees['formal_statements'].append(
-                f"∀ε>0, ∃T>0: t>T ⟹ |θ(t)-θ*| < ε (Asymptotic stability)"
+                "∀ε>0, ∃T>0: t>T ⟹ |θ(t)-θ*| < ε (Asymptotic stability)"
             )
             guarantees['formal_statements'].append(
                 f"Settling time ≤ {pi_result.settling_time:.2f} seconds"
