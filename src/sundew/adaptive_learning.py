@@ -36,6 +36,52 @@ try:
 except ImportError:
     PYTORCH_AVAILABLE = False
 
+    # Create mock classes for type safety when PyTorch is not available
+    class MockTensor:
+        def __init__(self, *args, **kwargs): pass
+        def transpose(self, *args): return self
+        def __getitem__(self, key): return self
+
+    class MockModule:
+        def __init__(self, *args, **kwargs): pass
+        def forward(self, x): return MockTensor(), MockTensor()
+        def parameters(self): return []
+
+    class MockLSTM:
+        def __init__(self, *args, **kwargs): pass
+        def __call__(self, x): return MockTensor(), (MockTensor(), MockTensor())
+
+    class MockMultiheadAttention:
+        def __init__(self, *args, **kwargs): pass
+        def __call__(self, *args): return MockTensor(), MockTensor()
+
+    class MockLinear:
+        def __init__(self, *args, **kwargs): pass
+        def __call__(self, x): return MockTensor()
+
+    class MockSequential:
+        def __init__(self, *args): pass
+        def __call__(self, x): return MockTensor()
+
+    class MockOptimizer:
+        def __init__(self, *args, **kwargs): pass
+        @property
+        def param_groups(self): return [{'lr': 0.001}]
+
+    # Mock torch module structure
+    class torch:
+        Tensor = MockTensor
+        class nn:
+            Module = MockModule
+            LSTM = MockLSTM
+            MultiheadAttention = MockMultiheadAttention
+            Linear = MockLinear
+            Sequential = MockSequential
+            ReLU = MockLinear
+            Dropout = MockLinear
+        class optim:
+            Adam = MockOptimizer
+
 try:
     from sklearn.ensemble import IsolationForest
     from sklearn.linear_model import LinearRegression
@@ -94,7 +140,7 @@ class AdaptiveLearningConfig:
     convergence_patience: int = 10
 
 
-class TemporalPatternLearner(nn.Module):
+class TemporalPatternLearner(torch.nn.Module):
     """LSTM-based temporal pattern recognition network"""
 
     def __init__(self, input_size: int, hidden_size: int, num_layers: int,
@@ -103,16 +149,16 @@ class TemporalPatternLearner(nn.Module):
         self.hidden_size = hidden_size
         self.num_layers = num_layers
 
-        self.lstm = nn.LSTM(
+        self.lstm = torch.nn.LSTM(
             input_size, hidden_size, num_layers,
             batch_first=True, dropout=dropout
         )
-        self.attention = nn.MultiheadAttention(hidden_size, num_heads=8)
-        self.fc = nn.Sequential(
-            nn.Linear(hidden_size, hidden_size // 2),
-            nn.ReLU(),
-            nn.Dropout(dropout),
-            nn.Linear(hidden_size // 2, output_size)
+        self.attention = torch.nn.MultiheadAttention(hidden_size, num_heads=8)
+        self.fc = torch.nn.Sequential(
+            torch.nn.Linear(hidden_size, hidden_size // 2),
+            torch.nn.ReLU(),
+            torch.nn.Dropout(dropout),
+            torch.nn.Linear(hidden_size // 2, output_size)
         )
 
     def forward(self, x: torch.Tensor) -> Tuple[torch.Tensor, torch.Tensor]:
@@ -404,7 +450,7 @@ class AdaptiveLearningSystem:
                 num_layers=config.lstm_num_layers,
                 output_size=5
             )
-            self.optimizer = optim.Adam(
+            self.optimizer = torch.optim.Adam(
                 self.temporal_learner.parameters(),
                 lr=config.base_learning_rate,
                 weight_decay=config.weight_decay
