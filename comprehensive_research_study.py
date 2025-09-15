@@ -33,12 +33,12 @@ import pandas as pd
 from sklearn.datasets import load_breast_cancer
 from sklearn.preprocessing import StandardScaler
 
-warnings.filterwarnings('ignore')
-
 # Add src to path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "src"))
 
 from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
+
+warnings.filterwarnings("ignore")
 
 
 class ComprehensiveResearchStudy:
@@ -57,14 +57,14 @@ class ComprehensiveResearchStudy:
 
         # Configure matplotlib for high-quality plots
         try:
-            plt.style.use('seaborn-v0_8-darkgrid')
-        except:
-            plt.style.use('seaborn-darkgrid')
-        plt.rcParams['figure.figsize'] = (12, 8)
-        plt.rcParams['font.size'] = 12
-        plt.rcParams['axes.titlesize'] = 14
-        plt.rcParams['axes.labelsize'] = 12
-        plt.rcParams['legend.fontsize'] = 10
+            plt.style.use("seaborn-v0_8-darkgrid")
+        except Exception:
+            plt.style.use("seaborn-darkgrid")
+        plt.rcParams["figure.figsize"] = (12, 8)
+        plt.rcParams["font.size"] = 12
+        plt.rcParams["axes.titlesize"] = 14
+        plt.rcParams["axes.labelsize"] = 12
+        plt.rcParams["legend.fontsize"] = 10
 
     def generate_uci_heart_disease_dataset(self) -> Tuple[pd.DataFrame, str]:
         """Generate UCI Heart Disease-like dataset."""
@@ -82,18 +82,18 @@ class ComprehensiveResearchStudy:
 
         # Create significance scores based on medical importance
         risk_score = (
-            (age - 20) / 60 * 0.3 +  # Age contribution
-            sex * 0.2 +  # Gender risk
-            chest_pain / 3 * 0.2 +  # Chest pain severity
-            (blood_pressure - 90) / 110 * 0.15 +  # BP contribution
-            (cholesterol - 120) / 280 * 0.15  # Cholesterol contribution
+            (age - 20) / 60 * 0.3  # Age contribution
+            + sex * 0.2  # Gender risk
+            + chest_pain / 3 * 0.2  # Chest pain severity
+            + (blood_pressure - 90) / 110 * 0.15  # BP contribution
+            + (cholesterol - 120) / 280 * 0.15  # Cholesterol contribution
         )
 
         # Add medical urgency and context
         urgency = np.where(
             (blood_pressure > 140) | (cholesterol > 300) | (chest_pain > 2),
             np.random.uniform(0.7, 1.0, n_samples),
-            np.random.uniform(0.1, 0.6, n_samples)
+            np.random.uniform(0.1, 0.6, n_samples),
         )
 
         context_relevance = np.random.uniform(0.6, 1.0, n_samples)  # High medical context
@@ -101,21 +101,25 @@ class ComprehensiveResearchStudy:
         # Convert to Sundew format
         data = []
         for i in range(n_samples):
-            data.append({
-                'magnitude': risk_score[i] * 100,
-                'anomaly_score': min(1.0, risk_score[i] + np.random.normal(0, 0.1)),
-                'context_relevance': context_relevance[i],
-                'urgency': urgency[i],
-                'age': age[i],
-                'sex': sex[i],
-                'chest_pain': chest_pain[i],
-                'blood_pressure': blood_pressure[i],
-                'cholesterol': cholesterol[i],
-                'ground_truth': (risk_score[i] > 0.5).astype(int)
-            })
+            data.append(
+                {
+                    "magnitude": risk_score[i] * 100,
+                    "anomaly_score": min(1.0, risk_score[i] + np.random.normal(0, 0.1)),
+                    "context_relevance": context_relevance[i],
+                    "urgency": urgency[i],
+                    "age": age[i],
+                    "sex": sex[i],
+                    "chest_pain": chest_pain[i],
+                    "blood_pressure": blood_pressure[i],
+                    "cholesterol": cholesterol[i],
+                    "ground_truth": (risk_score[i] > 0.5).astype(int),
+                }
+            )
 
         df = pd.DataFrame(data)
-        description = "UCI Heart Disease: 1000 samples with age, sex, chest pain, BP, cholesterol features"
+        description = (
+            "UCI Heart Disease: 1000 samples with age, sex, chest pain, BP, cholesterol features"
+        )
 
         # Save dataset
         df.to_csv(os.path.join(self.output_dir, "raw", "uci_heart_disease.csv"), index=False)
@@ -143,17 +147,19 @@ class ComprehensiveResearchStudy:
             context_relevance = np.random.uniform(0.8, 1.0)  # High medical relevance
             urgency = np.random.uniform(0.7, 1.0) if y[i] == 0 else np.random.uniform(0.3, 0.8)
 
-            data.append({
-                'magnitude': (magnitude + 3) * 20,  # Scale to reasonable range
-                'anomaly_score': anomaly_score,
-                'context_relevance': context_relevance,
-                'urgency': urgency,
-                'mean_radius': X[i, 0],
-                'mean_texture': X[i, 1],
-                'mean_perimeter': X[i, 2],
-                'mean_area': X[i, 3],
-                'ground_truth': y[i]
-            })
+            data.append(
+                {
+                    "magnitude": (magnitude + 3) * 20,  # Scale to reasonable range
+                    "anomaly_score": anomaly_score,
+                    "context_relevance": context_relevance,
+                    "urgency": urgency,
+                    "mean_radius": X[i, 0],
+                    "mean_texture": X[i, 1],
+                    "mean_perimeter": X[i, 2],
+                    "mean_area": X[i, 3],
+                    "ground_truth": y[i],
+                }
+            )
 
         df = pd.DataFrame(data)
         description = f"Breast Cancer Wisconsin: {len(data)} samples with tumor characteristics"
@@ -179,7 +185,6 @@ class ComprehensiveResearchStudy:
         volatility = pd.Series(returns).rolling(20).std().fillna(0.02)
 
         # Create momentum indicators
-        sma_20 = pd.Series(prices).rolling(20).mean().fillna(prices[0])
         rsi = np.random.uniform(20, 80, n_samples)  # Simplified RSI
 
         # Market anomaly detection
@@ -193,28 +198,34 @@ class ComprehensiveResearchStudy:
             magnitude = price_changes[i] / prices[i] * 1000  # Price change magnitude
 
             anomaly_score = (
-                (0.4 if volatility_spikes.iloc[i] else 0.1) +
-                (0.4 if volume_spikes[i] else 0.1) +
-                (0.2 if rsi[i] > 70 or rsi[i] < 30 else 0)
+                (0.4 if volatility_spikes.iloc[i] else 0.1)
+                + (0.4 if volume_spikes[i] else 0.1)
+                + (0.2 if rsi[i] > 70 or rsi[i] < 30 else 0)
             )
 
             context_relevance = np.random.uniform(0.7, 1.0)  # High financial relevance
-            urgency = np.random.uniform(0.8, 1.0) if anomaly_score > 0.6 else np.random.uniform(0.2, 0.5)
+            urgency = (
+                np.random.uniform(0.8, 1.0) if anomaly_score > 0.6 else np.random.uniform(0.2, 0.5)
+            )
 
-            data.append({
-                'magnitude': magnitude,
-                'anomaly_score': min(1.0, anomaly_score),
-                'context_relevance': context_relevance,
-                'urgency': urgency,
-                'price': prices[i],
-                'volume': volume[i],
-                'volatility': volatility.iloc[i],
-                'rsi': rsi[i],
-                'ground_truth': int(anomaly_score > 0.6)  # Trading signal
-            })
+            data.append(
+                {
+                    "magnitude": magnitude,
+                    "anomaly_score": min(1.0, anomaly_score),
+                    "context_relevance": context_relevance,
+                    "urgency": urgency,
+                    "price": prices[i],
+                    "volume": volume[i],
+                    "volatility": volatility.iloc[i],
+                    "rsi": rsi[i],
+                    "ground_truth": int(anomaly_score > 0.6),  # Trading signal
+                }
+            )
 
         df = pd.DataFrame(data)
-        description = f"Financial Time Series: {n_samples} samples with price, volume, volatility features"
+        description = (
+            f"Financial Time Series: {n_samples} samples with price, volume, volatility features"
+        )
 
         # Save dataset
         df.to_csv(os.path.join(self.output_dir, "raw", "financial_time_series.csv"), index=False)
@@ -252,23 +263,30 @@ class ComprehensiveResearchStudy:
             anomaly_score = min(1.0, (temp_dev * 0.4 + humidity_dev * 0.3 + pressure_dev * 0.3))
 
             context_relevance = np.random.uniform(0.6, 0.9)  # IoT context
-            urgency = np.random.uniform(0.7, 1.0) if i in anomaly_indices else np.random.uniform(0.1, 0.4)
+            urgency = (
+                np.random.uniform(0.7, 1.0) if i in anomaly_indices else np.random.uniform(0.1, 0.4)
+            )
 
-            data.append({
-                'magnitude': magnitude,
-                'anomaly_score': anomaly_score,
-                'context_relevance': context_relevance,
-                'urgency': urgency,
-                'temperature': temperature[i],
-                'humidity': humidity[i],
-                'pressure': pressure[i],
-                'light': light[i],
-                'motion': motion[i],
-                'ground_truth': int(i in anomaly_indices)
-            })
+            data.append(
+                {
+                    "magnitude": magnitude,
+                    "anomaly_score": anomaly_score,
+                    "context_relevance": context_relevance,
+                    "urgency": urgency,
+                    "temperature": temperature[i],
+                    "humidity": humidity[i],
+                    "pressure": pressure[i],
+                    "light": light[i],
+                    "motion": motion[i],
+                    "ground_truth": int(i in anomaly_indices),
+                }
+            )
 
         df = pd.DataFrame(data)
-        description = f"IoT Sensor Monitoring: {n_samples} samples with temperature, humidity, pressure sensors"
+        description = (
+            f"IoT Sensor Monitoring: {n_samples} samples with temperature, humidity, "
+            f"pressure sensors"
+        )
 
         # Save dataset
         df.to_csv(os.path.join(self.output_dir, "raw", "iot_sensor_monitoring.csv"), index=False)
@@ -307,32 +325,41 @@ class ComprehensiveResearchStudy:
             anomaly_score = min(1.0, size_anomaly * 0.6 + traffic_anomaly * 0.4)
 
             context_relevance = np.random.uniform(0.8, 1.0)  # High security relevance
-            urgency = np.random.uniform(0.8, 1.0) if i in intrusion_indices else np.random.uniform(0.1, 0.3)
+            urgency = (
+                np.random.uniform(0.8, 1.0)
+                if i in intrusion_indices
+                else np.random.uniform(0.1, 0.3)
+            )
 
-            data.append({
-                'magnitude': magnitude,
-                'anomaly_score': anomaly_score,
-                'context_relevance': context_relevance,
-                'urgency': urgency,
-                'packet_size': packet_size[i],
-                'duration': connection_duration[i],
-                'port': port_number[i],
-                'protocol': protocol[i],
-                'bytes_sent': bytes_sent[i],
-                'bytes_received': bytes_received[i],
-                'ground_truth': int(i in intrusion_indices)
-            })
+            data.append(
+                {
+                    "magnitude": magnitude,
+                    "anomaly_score": anomaly_score,
+                    "context_relevance": context_relevance,
+                    "urgency": urgency,
+                    "packet_size": packet_size[i],
+                    "duration": connection_duration[i],
+                    "port": port_number[i],
+                    "protocol": protocol[i],
+                    "bytes_sent": bytes_sent[i],
+                    "bytes_received": bytes_received[i],
+                    "ground_truth": int(i in intrusion_indices),
+                }
+            )
 
         df = pd.DataFrame(data)
-        description = f"Network Security: {n_samples} samples with packet size, duration, traffic patterns"
+        description = (
+            f"Network Security: {n_samples} samples with packet size, duration, traffic patterns"
+        )
 
         # Save dataset
         df.to_csv(os.path.join(self.output_dir, "raw", "network_security.csv"), index=False)
 
         return df, description
 
-    def evaluate_algorithm_on_dataset(self, dataset: pd.DataFrame, dataset_name: str,
-                                    config: EnhancedSundewConfig) -> Dict[str, Any]:
+    def evaluate_algorithm_on_dataset(
+        self, dataset: pd.DataFrame, dataset_name: str, config: EnhancedSundewConfig
+    ) -> Dict[str, Any]:
         """Evaluate algorithm on a dataset with comprehensive metrics."""
         print(f"  Evaluating {dataset_name} with {config.significance_model} model...")
 
@@ -340,7 +367,7 @@ class ComprehensiveResearchStudy:
         algorithm = EnhancedSundewAlgorithm(config)
 
         # Convert dataset to Sundew format (already done in generation)
-        samples = dataset.to_dict('records')
+        samples = dataset.to_dict("records")
 
         # Process all samples
         results = []
@@ -352,14 +379,16 @@ class ComprehensiveResearchStudy:
             result = algorithm.process(sample)
             sample_time = time.perf_counter() - sample_start
 
-            results.append({
-                'activated': result.activated,
-                'significance': result.significance,
-                'energy_consumed': result.energy_consumed,
-                'processing_time': result.processing_time,
-                'threshold_used': result.threshold_used,
-                'ground_truth': sample.get('ground_truth', 0)
-            })
+            results.append(
+                {
+                    "activated": result.activated,
+                    "significance": result.significance,
+                    "energy_consumed": result.energy_consumed,
+                    "processing_time": result.processing_time,
+                    "threshold_used": result.threshold_used,
+                    "ground_truth": sample.get("ground_truth", 0),
+                }
+            )
             processing_times.append(sample_time)
 
         total_time = time.time() - start_time
@@ -368,56 +397,54 @@ class ComprehensiveResearchStudy:
         results_df = pd.DataFrame(results)
 
         metrics = {
-            'dataset_name': dataset_name,
-            'config_name': f"{config.significance_model}_{config.gating_strategy}_{config.control_policy}",
-            'total_samples': len(samples),
-            'total_time': total_time,
-            'avg_processing_time': np.mean(processing_times),
-            'throughput': len(samples) / total_time,
-
+            "dataset_name": dataset_name,
+            "config_name": (
+                f"{config.significance_model}_{config.gating_strategy}_{config.control_policy}"
+            ),
+            "total_samples": len(samples),
+            "total_time": total_time,
+            "avg_processing_time": np.mean(processing_times),
+            "throughput": len(samples) / total_time,
             # Activation metrics
-            'activation_rate': results_df['activated'].mean(),
-            'target_activation_rate': config.target_activation_rate,
-            'activation_error': abs(results_df['activated'].mean() - config.target_activation_rate),
-
+            "activation_rate": results_df["activated"].mean(),
+            "target_activation_rate": config.target_activation_rate,
+            "activation_error": abs(results_df["activated"].mean() - config.target_activation_rate),
             # Energy metrics
-            'total_energy': results_df['energy_consumed'].sum(),
-            'avg_energy_per_sample': results_df['energy_consumed'].mean(),
-            'energy_efficiency': 1 - (results_df['energy_consumed'].mean() / 50.0),  # Normalized
-
+            "total_energy": results_df["energy_consumed"].sum(),
+            "avg_energy_per_sample": results_df["energy_consumed"].mean(),
+            "energy_efficiency": 1 - (results_df["energy_consumed"].mean() / 50.0),  # Normalized
             # Significance metrics
-            'avg_significance': results_df['significance'].mean(),
-            'significance_std': results_df['significance'].std(),
-
+            "avg_significance": results_df["significance"].mean(),
+            "significance_std": results_df["significance"].std(),
             # Quality metrics (if ground truth available)
-            'accuracy': None,
-            'precision': None,
-            'recall': None,
-            'f1_score': None
+            "accuracy": None,
+            "precision": None,
+            "recall": None,
+            "f1_score": None,
         }
 
         # Compute classification metrics if ground truth available
-        if 'ground_truth' in results_df.columns:
-            y_true = results_df['ground_truth']
-            y_pred = results_df['activated'].astype(int)
+        if "ground_truth" in results_df.columns:
+            y_true = results_df["ground_truth"]
+            y_pred = results_df["activated"].astype(int)
 
             from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
-            metrics['accuracy'] = accuracy_score(y_true, y_pred)
-            metrics['precision'] = precision_score(y_true, y_pred, zero_division=0)
-            metrics['recall'] = recall_score(y_true, y_pred, zero_division=0)
-            metrics['f1_score'] = f1_score(y_true, y_pred, zero_division=0)
+            metrics["accuracy"] = accuracy_score(y_true, y_pred)
+            metrics["precision"] = precision_score(y_true, y_pred, zero_division=0)
+            metrics["recall"] = recall_score(y_true, y_pred, zero_division=0)
+            metrics["f1_score"] = f1_score(y_true, y_pred, zero_division=0)
 
         # Get comprehensive algorithm report
         algorithm_report = algorithm.get_comprehensive_report()
-        metrics['research_quality_score'] = algorithm_report.get('research_quality_score', 0)
-        metrics['performance_score'] = algorithm_report.get('performance_score', 0)
+        metrics["research_quality_score"] = algorithm_report.get("research_quality_score", 0)
+        metrics["performance_score"] = algorithm_report.get("performance_score", 0)
 
         return {
-            'metrics': metrics,
-            'results': results_df,
-            'algorithm_report': algorithm_report,
-            'dataset': dataset
+            "metrics": metrics,
+            "results": results_df,
+            "algorithm_report": algorithm_report,
+            "dataset": dataset,
         }
 
     def run_comprehensive_study(self):
@@ -428,49 +455,56 @@ class ComprehensiveResearchStudy:
         # Generate all datasets
         datasets = {}
 
-        datasets['heart_disease'], self.dataset_info['heart_disease'] = self.generate_uci_heart_disease_dataset()
-        datasets['breast_cancer'], self.dataset_info['breast_cancer'] = self.generate_breast_cancer_dataset()
-        datasets['financial'], self.dataset_info['financial'] = self.generate_financial_time_series_dataset()
-        datasets['iot_sensors'], self.dataset_info['iot_sensors'] = self.generate_iot_sensor_dataset()
-        datasets['network_security'], self.dataset_info['network_security'] = self.generate_network_security_dataset()
+        (datasets["heart_disease"], self.dataset_info["heart_disease"]) = (
+            self.generate_uci_heart_disease_dataset()
+        )
+        (datasets["breast_cancer"], self.dataset_info["breast_cancer"]) = (
+            self.generate_breast_cancer_dataset()
+        )
+        (datasets["financial"], self.dataset_info["financial"]) = (
+            self.generate_financial_time_series_dataset()
+        )
+        (datasets["iot_sensors"], self.dataset_info["iot_sensors"]) = (
+            self.generate_iot_sensor_dataset()
+        )
+        (datasets["network_security"], self.dataset_info["network_security"]) = (
+            self.generate_network_security_dataset()
+        )
 
         print(f"\nGenerated {len(datasets)} datasets successfully!")
 
         # Define configuration variations for rigorous analysis
         configurations = {
-            'baseline_linear': EnhancedSundewConfig(
+            "baseline_linear": EnhancedSundewConfig(
                 significance_model="linear",
                 gating_strategy="temperature",
                 control_policy="pi",
                 energy_model="simple",
-                target_activation_rate=0.15
+                target_activation_rate=0.15,
             ),
-            'enhanced_neural': EnhancedSundewConfig(
+            "enhanced_neural": EnhancedSundewConfig(
                 significance_model="neural",
                 gating_strategy="adaptive",
                 control_policy="pi",
                 energy_model="realistic",
-                target_activation_rate=0.15
+                target_activation_rate=0.15,
             ),
-            'advanced_mpc': EnhancedSundewConfig(
+            "advanced_mpc": EnhancedSundewConfig(
                 significance_model="neural",
                 gating_strategy="adaptive",
                 control_policy="mpc",
                 energy_model="realistic",
-                target_activation_rate=0.15
+                target_activation_rate=0.15,
             ),
-            'edge_optimized': EnhancedSundewConfig.create_optimized_config(
-                application_domain="edge_computing",
-                performance_target="energy_efficient"
+            "edge_optimized": EnhancedSundewConfig.create_optimized_config(
+                application_domain="edge_computing", performance_target="energy_efficient"
             ),
-            'cloud_optimized': EnhancedSundewConfig.create_optimized_config(
-                application_domain="cloud_hpc",
-                performance_target="high_throughput"
+            "cloud_optimized": EnhancedSundewConfig.create_optimized_config(
+                application_domain="cloud_hpc", performance_target="high_throughput"
             ),
-            'real_time_optimized': EnhancedSundewConfig.create_optimized_config(
-                application_domain="real_time",
-                performance_target="low_latency"
-            )
+            "real_time_optimized": EnhancedSundewConfig.create_optimized_config(
+                application_domain="real_time", performance_target="low_latency"
+            ),
         }
 
         print(f"Testing {len(configurations)} algorithm configurations")
@@ -490,17 +524,21 @@ class ComprehensiveResearchStudy:
                     self.all_results[dataset_name][config_name] = evaluation_result
 
                     # Print key metrics
-                    metrics = evaluation_result['metrics']
-                    f1_part = f", F1={metrics['f1_score']:.3f}" if metrics['f1_score'] is not None else ""
-                    print(f"    {config_name}: "
-                          f"Activation={metrics['activation_rate']:.1%}, "
-                          f"Energy_Eff={metrics['energy_efficiency']:.1%}, "
-                          f"Throughput={metrics['throughput']:.0f} samples/sec"
-                          f"{f1_part}")
+                    metrics = evaluation_result["metrics"]
+                    f1_part = (
+                        f", F1={metrics['f1_score']:.3f}" if metrics["f1_score"] is not None else ""
+                    )
+                    print(
+                        f"    {config_name}: "
+                        f"Activation={metrics['activation_rate']:.1%}, "
+                        f"Energy_Eff={metrics['energy_efficiency']:.1%}, "
+                        f"Throughput={metrics['throughput']:.0f} samples/sec"
+                        f"{f1_part}"
+                    )
 
                 except Exception as e:
                     print(f"    {config_name}: FAILED - {e}")
-                    self.all_results[dataset_name][config_name] = {'error': str(e)}
+                    self.all_results[dataset_name][config_name] = {"error": str(e)}
 
         # Save comprehensive results
         self.save_all_results()
@@ -520,16 +558,16 @@ class ComprehensiveResearchStudy:
         for dataset_name in self.all_results:
             for config_name in self.all_results[dataset_name]:
                 result = self.all_results[dataset_name][config_name]
-                if 'metrics' in result:
-                    metrics = result['metrics'].copy()
+                if "metrics" in result:
+                    metrics = result["metrics"].copy()
                     summary_data.append(metrics)
 
                     # Add detailed results for each sample
-                    if 'results' in result:
-                        for idx, row in result['results'].iterrows():
+                    if "results" in result:
+                        for idx, row in result["results"].iterrows():
                             detailed_row = row.copy()
-                            detailed_row['dataset_name'] = dataset_name
-                            detailed_row['config_name'] = config_name
+                            detailed_row["dataset_name"] = dataset_name
+                            detailed_row["config_name"] = config_name
                             detailed_data.append(detailed_row)
 
         # Save summary results
@@ -542,11 +580,27 @@ class ComprehensiveResearchStudy:
             detailed_df.to_csv(os.path.join(self.results_dir, "detailed_results.csv"), index=False)
 
         # Save dataset information
-        dataset_info_df = pd.DataFrame([
-            {'dataset_name': name, 'description': desc, 'samples': len(self.all_results[name][list(self.all_results[name].keys())[0]]['dataset']) if self.all_results[name] else 0}
-            for name, desc in self.dataset_info.items()
-        ])
-        dataset_info_df.to_csv(os.path.join(self.results_dir, "dataset_information.csv"), index=False)
+        dataset_info_df = pd.DataFrame(
+            [
+                {
+                    "dataset_name": name,
+                    "description": desc,
+                    "samples": (
+                        len(
+                            self.all_results[name][list(self.all_results[name].keys())[0]][
+                                "dataset"
+                            ]
+                        )
+                        if self.all_results[name]
+                        else 0
+                    ),
+                }
+                for name, desc in self.dataset_info.items()
+            ]
+        )
+        dataset_info_df.to_csv(
+            os.path.join(self.results_dir, "dataset_information.csv"), index=False
+        )
 
         print(f"Saved summary: {len(summary_data)} configurations x datasets")
         print(f"Saved detailed: {len(detailed_data)} individual sample results")
