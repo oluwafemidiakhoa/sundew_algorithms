@@ -28,7 +28,7 @@ def demo_enhanced_medical_monitoring():
     print("[MEDICAL] ENHANCED MEDICAL MONITORING DEMO")
     print("=" * 50)
     print()
-    
+
     # Enhanced medical configuration
     medical_config = SundewConfig(
         activation_threshold=0.25,      # Lower threshold for medical safety
@@ -46,53 +46,53 @@ def demo_enhanced_medical_monitoring():
         w_urgency=0.1,           # Temporal urgency
         rng_seed=42,
     )
-    
+
     # Create enhanced medical algorithm
     medical_algorithm = SundewAlgorithm(medical_config)
-    
+
     print("Configuration:")
     print(f"  Activation threshold: {medical_config.activation_threshold}")
     print(f"  Target rate: {medical_config.target_activation_rate:.1%}")
     print(f"  Energy budget: {medical_config.max_energy}")
     print(f"  Medical-grade stability: Enhanced")
     print()
-    
+
     # Simulate various medical scenarios
     medical_scenarios = [
         # Normal vital signs
         {"name": "Normal BP", "magnitude": 20, "anomaly_score": 0.1, "context_relevance": 0.5, "urgency": 0.1},
         {"name": "Normal HR", "magnitude": 25, "anomaly_score": 0.15, "context_relevance": 0.5, "urgency": 0.1},
-        
+
         # Concerning trends
         {"name": "Elevated BP", "magnitude": 45, "anomaly_score": 0.4, "context_relevance": 0.7, "urgency": 0.3},
         {"name": "Rising HR", "magnitude": 40, "anomaly_score": 0.35, "context_relevance": 0.6, "urgency": 0.25},
-        
+
         # Critical medical events
         {"name": "Severe Hypertension", "magnitude": 75, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.8},
         {"name": "Cardiac Arrhythmia", "magnitude": 80, "anomaly_score": 0.85, "context_relevance": 0.95, "urgency": 0.9},
         {"name": "Fetal Distress", "magnitude": 70, "anomaly_score": 0.75, "context_relevance": 1.0, "urgency": 0.85},
-        
+
         # Emergency situations
         {"name": "Hemorrhage Pattern", "magnitude": 90, "anomaly_score": 0.95, "context_relevance": 1.0, "urgency": 1.0},
         {"name": "Cardiac Arrest", "magnitude": 95, "anomaly_score": 0.98, "context_relevance": 1.0, "urgency": 1.0},
-        
+
         # Post-intervention monitoring
         {"name": "Post-treatment", "magnitude": 35, "anomaly_score": 0.25, "context_relevance": 0.8, "urgency": 0.2},
         {"name": "Recovery", "magnitude": 30, "anomaly_score": 0.2, "context_relevance": 0.7, "urgency": 0.15},
     ]
-    
+
     print("Medical Event Processing:")
     print("-" * 30)
-    
+
     activations = 0
     critical_detected = 0
-    
+
     for i, scenario in enumerate(medical_scenarios):
         result = medical_algorithm.process(scenario)
-        
+
         if result:
             activations += 1
-            
+
             # Determine severity based on urgency
             if scenario["urgency"] >= 0.7:
                 severity = "[CRITICAL] CRITICAL"
@@ -101,18 +101,18 @@ def demo_enhanced_medical_monitoring():
                 severity = "[WARNING]  HIGH"
             else:
                 severity = "[MEDIUM] MEDIUM"
-            
+
             print(f"{i+1:2d}. {scenario['name']:<20} {severity}")
             print(f"     Significance: {result.significance:.3f} | Energy: {result.energy_consumed:.1f}")
         else:
             print(f"{i+1:2d}. {scenario['name']:<20} [OK] Normal")
-        
+
         print(f"     Energy remaining: {medical_algorithm.report()['energy_remaining']:.1f}")
         print()
-    
+
     # Final medical report
     report = medical_algorithm.report()
-    
+
     print("ENHANCED MEDICAL MONITORING RESULTS:")
     print("=" * 40)
     print(f"Total medical events: {len(medical_scenarios)}")
@@ -123,11 +123,11 @@ def demo_enhanced_medical_monitoring():
     print(f"Energy efficiency: {report['estimated_energy_savings_pct']:.1f}%")
     print(f"Processing time avg: {report.get('avg_processing_time_s', 0.003):.4f}s")
     print()
-    
+
     # Medical safety assessment
     sensitivity = critical_detected / 4  # 4 critical events expected
     specificity = (len(medical_scenarios) - activations) / (len(medical_scenarios) - 4)
-    
+
     print("MEDICAL SAFETY ASSESSMENT:")
     print("-" * 30)
     print(f"Sensitivity (critical detection): {sensitivity:.1%}")
@@ -142,11 +142,11 @@ def demo_energy_optimization():
     print("[ENERGY] ENERGY OPTIMIZATION FOR HUMANITARIAN DEPLOYMENT")
     print("=" * 55)
     print()
-    
+
     # Compare different energy configurations
     configs = {
         "Standard": SundewConfig(
-            max_energy=1000, adapt_kp=0.02, adapt_ki=0.005, 
+            max_energy=1000, adapt_kp=0.02, adapt_ki=0.005,
             energy_pressure=0.05, dormancy_regen=(1.0, 2.0)
         ),
         "Conservative": SundewConfig(
@@ -159,7 +159,7 @@ def demo_energy_optimization():
             target_activation_rate=0.03  # Only most critical events
         ),
     }
-    
+
     # Test data: mix of normal and critical events
     test_events = []
     for i in range(100):
@@ -170,29 +170,29 @@ def demo_energy_optimization():
         else:  # 85% normal events
             event = {"magnitude": 20 + (i % 5) * 3, "anomaly_score": 0.1, "context_relevance": 0.5, "urgency": 0.1}
         test_events.append(event)
-    
+
     results = {}
-    
+
     for config_name, config in configs.items():
         print(f"Testing {config_name} Configuration...")
-        
+
         algorithm = SundewAlgorithm(config)
         activations = 0
         critical_detected = 0
-        
+
         for i, event in enumerate(test_events):
             result = algorithm.process(event)
             if result:
                 activations += 1
                 if event["urgency"] >= 0.7:
                     critical_detected += 1
-        
+
         report = algorithm.report()
-        
+
         # Calculate deployment metrics
         days_operational = report['energy_remaining'] / 24  # Assuming 1 energy unit per hour
         cost_per_day = 0.10 * (1000 / config.max_energy)  # Scale cost by energy capacity
-        
+
         results[config_name] = {
             "activations": activations,
             "critical_detected": critical_detected,
@@ -201,23 +201,23 @@ def demo_energy_optimization():
             "days_operational": days_operational,
             "cost_per_day": cost_per_day,
         }
-        
+
         print(f"  Activations: {activations}/100 events")
         print(f"  Critical detected: {critical_detected}/5 expected")
         print(f"  Energy remaining: {report['energy_remaining']:.1f}")
         print(f"  Days operational: {days_operational:.1f}")
         print(f"  Cost per day: ${cost_per_day:.3f}")
         print()
-    
+
     # Comparison summary
     print("DEPLOYMENT COMPARISON:")
     print("=" * 25)
     print(f"{'Config':<15} {'Critical':<8} {'Days':<6} {'Cost/Day':<8} {'Efficiency'}")
     print("-" * 50)
-    
+
     for config_name, result in results.items():
         print(f"{config_name:<15} {result['critical_detected']}/5     {result['days_operational']:<6.1f} ${result['cost_per_day']:<7.3f} {result['efficiency']:.1f}%")
-    
+
     print()
     print("RECOMMENDATIONS:")
     print("• Standard: General clinical use with reliable power")
@@ -231,20 +231,20 @@ def demo_maternal_health_integration():
     print("[MATERNAL] MATERNAL HEALTH MONITORING INTEGRATION")
     print("=" * 45)
     print()
-    
+
     # Create maternal health monitor
     monitor = MaternalHealthMonitor("DEMO_PATIENT", gestational_age_weeks=32)
-    
+
     print("Integrated Maternal Health System:")
     print(f"  Patient: {monitor.patient_id}")
     print(f"  Gestational age: {monitor.gestational_age} weeks")
     print(f"  System energy: {monitor.sundew.report()['energy_remaining']:.1f}")
     print()
-    
+
     # Demonstrate real-time monitoring scenario
     print("Real-time Monitoring Scenario:")
     print("-" * 35)
-    
+
     # Progressive preeclampsia development
     monitoring_data = [
         {"time": "08:00", "bp": (118, 76), "hr": 78, "spo2": 98, "fhr": 145, "status": "Normal morning vitals"},
@@ -253,9 +253,9 @@ def demo_maternal_health_integration():
         {"time": "20:00", "bp": (148, 95), "hr": 88, "spo2": 95, "fhr": 158, "status": "Preeclampsia threshold"},
         {"time": "22:00", "bp": (165, 105), "hr": 92, "spo2": 94, "fhr": 165, "status": "Severe preeclampsia"},
     ]
-    
+
     alerts_generated = []
-    
+
     for reading in monitoring_data:
         vitals = MaternalVitals(
             timestamp=time.time(),
@@ -265,24 +265,24 @@ def demo_maternal_health_integration():
             oxygen_saturation=reading["spo2"],
             fetal_heart_rate=reading["fhr"]
         )
-        
+
         alert = monitor.process_vitals(vitals)
-        
+
         print(f"{reading['time']}: BP {reading['bp'][0]}/{reading['bp'][1]}, HR {reading['hr']}, SpO2 {reading['spo2']}%")
         print(f"         Fetal HR: {reading['fhr']} bpm")
-        
+
         if alert:
             alerts_generated.append(alert)
             print(f"         [CRITICAL] {alert.severity.upper()}: {alert.condition}")
             print(f"         Action: {alert.recommended_action}")
         else:
             print(f"         [OK] {reading['status']}")
-        
+
         print()
-    
+
     # Final integration report
     final_report = monitor.generate_health_report()
-    
+
     print("INTEGRATION RESULTS:")
     print("=" * 20)
     print(f"Alerts generated: {len(alerts_generated)}")
@@ -290,7 +290,7 @@ def demo_maternal_health_integration():
     print(f"Energy efficiency: {final_report['system_performance']['energy_efficiency_pct']:.1f}%")
     print(f"System status: {final_report['humanitarian_impact']['deployment_feasibility']}")
     print()
-    
+
     return len(alerts_generated) >= 2  # Should detect preeclampsia progression
 
 
@@ -303,55 +303,55 @@ def main():
         default="all",
         help="Demo mode to run"
     )
-    
+
     args = parser.parse_args()
-    
+
     print("[SUNDEW] SIMPLIFIED ENHANCED SUNDEW DEMONSTRATION")
     print("=" * 50)
     print("Life-saving health monitoring with bio-inspired algorithms")
     print()
-    
+
     success_count = 0
     total_tests = 0
-    
+
     if args.mode in ["medical", "all"]:
         demo_enhanced_medical_monitoring()
         total_tests += 1
         success_count += 1  # Assume success for demo
-        
+
         if args.mode != "all":
             return
-        
+
         print("\n" + "="*60 + "\n")
-    
+
     if args.mode in ["energy", "all"]:
         demo_energy_optimization()
         total_tests += 1
         success_count += 1
-        
+
         if args.mode != "all":
             return
-            
+
         print("\n" + "="*60 + "\n")
-    
+
     if args.mode in ["maternal", "all"]:
         maternal_success = demo_maternal_health_integration()
         total_tests += 1
         if maternal_success:
             success_count += 1
-        
+
         if args.mode != "all":
             return
-            
+
         print("\n" + "="*60 + "\n")
-    
+
     if args.mode == "all":
         print("[COMPLETE] DEMONSTRATION COMPLETE")
         print("=" * 30)
         print(f"Successful demonstrations: {success_count}/{total_tests}")
         print()
         print("[OK] Enhanced medical monitoring: WORKING")
-        print("[OK] Energy optimization: WORKING") 
+        print("[OK] Energy optimization: WORKING")
         print("[OK] Maternal health integration: WORKING")
         print()
         print("System ready for humanitarian deployment! [GLOBAL]")

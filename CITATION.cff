@@ -1,13 +1,17 @@
 cff-version: 1.2.0
 title: "Sundew: Energy-Constrained Autonomic Inference for Real-Time AI"
-message: "If you use Sundew, please cite this software."
-type: software
-version: "0.4.1"
-doi: 10.5281/zenodo.17118217
+message: "If you use Sundew, please cite:"
+title: "Sundew Algorithm: Energy-aware selective activation for edge AI"
+version: "0.5.0"
+doi: "10.5281/zenodo.17118217"
+date-released: "2025-09-15"
 authors:
   - family-names: Idiakhoa
     given-names: Oluwafemi
     orcid: "https://orcid.org/0009-0008-7911-1171"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.17118217
 repository-code: "https://github.com/oluwafemidiakhoa/sundew_algorithms"
 url: "https://oluwafemidiakhoa.github.io"
 abstract: >
@@ -15,11 +19,5 @@ abstract: >
   compute only when expected utility exceeds marginal cost. It provides
   selective activation, adaptive thresholds, and PI/MPC control with
   high energy-efficiency for edge deployments.
-keywords:
-  - energy-aware AI
-  - adaptive computation
-  - selective activation
-  - gating
-  - edge AI
-  - real-time inference
-license: Apache-2.0
+license: MIT
+keywords: [edge-ai, energy, gating, event-driven, ecg, computer-vision, healthcare]
