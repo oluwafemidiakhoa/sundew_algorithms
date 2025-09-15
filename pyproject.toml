@@ -4,19 +4,26 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "sundew-algorithms"
-version = "0.4.1"
+version = "0.5.0"
 description = "Sundew Algorithm — bio-inspired, energy-aware selective activation for edge AI systems."
 readme = "README.md"
 requires-python = ">=3.10"
+# Keep using your LICENSE file, but advertise the license via classifiers below.
 license = { file = "LICENSE" }
+
 authors = [
   { name = "Oluwafemi Idiakhoa", email = "oluwafemidiakhoa@gmail.com" }
 ]
-keywords = ["edge-ai", "energy", "gating", "event-driven", "ecg", "computer-vision"]
+
+keywords = [
+  "edge-ai", "energy", "gating", "event-driven", "ecg",
+  "computer-vision", "adaptive-computation", "selective-activation"
+]
+
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: Apache Software License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.10",
@@ -45,10 +52,13 @@ viz = ["matplotlib>=3.7"]
 video = ["opencv-python>=4.8"]
 
 [project.urls]
-Homepage = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
-Repository = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
-Issues = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
-Documentation = "https://github.com/oluwafemidiakhoa/sundew_algorithms#readme"
+Homepage      = "https://oluwafemidiakhoa.github.io"
+Repository    = "https://github.com/oluwafemidiakhoa/sundew_algorithms"
+Issues        = "https://github.com/oluwafemidiakhoa/sundew_algorithms/issues"
+Documentation = "https://oluwafemidiakhoa.github.io"
+PyPI          = "https://pypi.org/project/sundew-algorithms/"
+DOI           = "https://doi.org/10.5281/zenodo.17118217"
+ORCID         = "https://orcid.org/0009-0008-7911-1171"
 
 [project.scripts]
 sundew = "sundew.cli:main"

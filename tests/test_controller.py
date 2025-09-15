@@ -35,11 +35,14 @@ def test_threshold_moves_up_when_over_target_with_PI():
         min_threshold=0.2,
         max_threshold=0.9,
         gate_temperature=0.1,
+        max_energy=50.0,  # Lower energy to avoid cap-aware nudging
     )
     algo = SundewAlgorithm(cfg)
+    algo.energy.value = 40.0  # Set to non-cap level
 
     # Strongly over target
     algo.metrics.ema_activation_rate = 0.9
+    algo.metrics.ema_activation_rate_slow = 0.9
     t0 = algo.threshold
     for _ in range(5):
         algo._adapt_threshold()

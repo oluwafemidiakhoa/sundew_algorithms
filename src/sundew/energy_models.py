@@ -35,10 +35,7 @@ class SimpleEnergyModel(EnergyModel):
         self.current_energy = config.max_energy
 
     def compute_processing_cost(
-        self,
-        significance: float,
-        processing_type: str,
-        context: ProcessingContext
+        self, significance: float, processing_type: str, context: ProcessingContext
     ) -> float:
         """Compute energy cost based on significance and processing type."""
         base_cost = self.config.base_processing_cost
@@ -63,10 +60,7 @@ class SimpleEnergyModel(EnergyModel):
         return self.config.dormant_tick_cost * duration
 
     def update_energy_state(
-        self,
-        current_energy: float,
-        cost: float,
-        regeneration: float = 0.0
+        self, current_energy: float, cost: float, regeneration: float = 0.0
     ) -> float:
         """Update energy state with consumption and regeneration."""
         # Apply cost
@@ -82,10 +76,7 @@ class SimpleEnergyModel(EnergyModel):
         return float(np.clip(new_energy, 0.0, self.config.max_energy))
 
     def predict_energy_trajectory(
-        self,
-        current_energy: float,
-        predicted_activations: List[float],
-        horizon: int
+        self, current_energy: float, predicted_activations: List[float], horizon: int
     ) -> List[float]:
         """Predict energy levels over time."""
         trajectory = [current_energy]
@@ -193,22 +184,22 @@ class RealisticEnergyModel(EnergyModel):
                 "cache_size_kb": 64,
                 "memory_bandwidth_mbps": 100,
                 "typical_frequency_mhz": 168,
-                "power_efficiency_mips_per_mw": 20
+                "power_efficiency_mips_per_mw": 20,
             },
             "cortex_a7": {
                 "mips": 2500,
                 "cache_size_kb": 512,
                 "memory_bandwidth_mbps": 800,
                 "typical_frequency_mhz": 1000,
-                "power_efficiency_mips_per_mw": 10
+                "power_efficiency_mips_per_mw": 10,
             },
             "jetson_nano": {
                 "mips": 20000,
                 "cache_size_kb": 2048,
                 "memory_bandwidth_mbps": 25600,
                 "typical_frequency_mhz": 1430,
-                "power_efficiency_mips_per_mw": 5
-            }
+                "power_efficiency_mips_per_mw": 5,
+            },
         }
         return profiles.get(platform, profiles["cortex_m4"])
 
@@ -222,14 +213,11 @@ class RealisticEnergyModel(EnergyModel):
             "attention_computation": 1.5,  # mJ per attention head
             "memory_access": 0.01,  # mJ per KB accessed
             "control_computation": 0.05,  # mJ per control update
-            "communication": 0.8  # mJ per transmission
+            "communication": 0.8,  # mJ per transmission
         }
 
     def compute_processing_cost(
-        self,
-        significance: float,
-        processing_type: str,
-        context: ProcessingContext
+        self, significance: float, processing_type: str, context: ProcessingContext
     ) -> float:
         """Compute realistic energy cost based on actual operations."""
 
@@ -254,10 +242,7 @@ class RealisticEnergyModel(EnergyModel):
         return float(normalized_cost)
 
     def _estimate_computational_cost(
-        self,
-        significance: float,
-        processing_type: str,
-        context: ProcessingContext
+        self, significance: float, processing_type: str, context: ProcessingContext
     ) -> float:
         """Estimate computational energy cost in mJ."""
 
@@ -294,13 +279,13 @@ class RealisticEnergyModel(EnergyModel):
             "attention_gating": 20,  # KB
             "linear_significance": 2,  # KB
             "control_update": 5,  # KB
-            "default": 10  # KB
+            "default": 10,  # KB
         }
 
         memory_kb = memory_footprints.get(processing_type, memory_footprints["default"])
 
         # Scale by significance (more significant = more data)
-        memory_kb *= (1.0 + significance * 0.3)
+        memory_kb *= 1.0 + significance * 0.3
 
         return memory_kb * self.operation_costs["memory_access"]
 
@@ -314,7 +299,7 @@ class RealisticEnergyModel(EnergyModel):
             scaling *= 0.7  # Reduce performance to cool down
 
         # Power scaling (higher frequency = higher power)
-        power_scaling = scaling ** 2.5  # Approximate power-frequency relationship
+        power_scaling = scaling**2.5  # Approximate power-frequency relationship
 
         return power_scaling
 
@@ -331,15 +316,13 @@ class RealisticEnergyModel(EnergyModel):
             self.thermal_throttling_active = True
             # Reduce frequency to cool down
             self.current_frequency_ratio = max(
-                self.current_frequency_ratio * 0.9,
-                self.config.min_frequency_ratio
+                self.current_frequency_ratio * 0.9, self.config.min_frequency_ratio
             )
         else:
             self.thermal_throttling_active = False
             # Gradually increase frequency back to maximum
             self.current_frequency_ratio = min(
-                self.current_frequency_ratio * 1.05,
-                self.config.max_frequency_ratio
+                self.current_frequency_ratio * 1.05, self.config.max_frequency_ratio
             )
 
     def compute_idle_cost(self, duration: float) -> float:
@@ -351,16 +334,14 @@ class RealisticEnergyModel(EnergyModel):
         # Self-discharge
         if duration > 1000:  # For long idle periods
             hours = duration / 3600000  # Convert ms to hours
-            self_discharge_mj = (
-                self.battery_energy_mwh * self.config.self_discharge_rate * hours
-            )
+            self_discharge_mj = self.battery_energy_mwh * self.config.self_discharge_rate * hours
             idle_cost_mj += self_discharge_mj
 
         # Energy harvesting (if enabled)
         if self.config.harvesting_enabled:
             harvest_energy = min(
                 self.config.max_harvest_power * duration,
-                self.config.max_harvest_power * self.config.harvest_efficiency * duration
+                self.config.max_harvest_power * self.config.harvest_efficiency * duration,
             )
             idle_cost_mj -= harvest_energy
 
@@ -369,10 +350,7 @@ class RealisticEnergyModel(EnergyModel):
         return max(0.0, float(normalized_cost))
 
     def update_energy_state(
-        self,
-        current_energy: float,
-        cost: float,
-        regeneration: float = 0.0
+        self, current_energy: float, cost: float, regeneration: float = 0.0
     ) -> float:
         """Update energy state with realistic battery dynamics."""
 
@@ -390,14 +368,16 @@ class RealisticEnergyModel(EnergyModel):
         self.cumulative_energy_consumed += actual_cost
 
         # Store history for analysis
-        self.energy_history.append({
-            "timestamp": len(self.energy_history),
-            "energy_level": new_energy,
-            "cost": actual_cost,
-            "temperature": self.current_temperature,
-            "frequency_ratio": self.current_frequency_ratio,
-            "thermal_throttling": self.thermal_throttling_active
-        })
+        self.energy_history.append(
+            {
+                "timestamp": len(self.energy_history),
+                "energy_level": new_energy,
+                "cost": actual_cost,
+                "temperature": self.current_temperature,
+                "frequency_ratio": self.current_frequency_ratio,
+                "thermal_throttling": self.thermal_throttling_active,
+            }
+        )
 
         # Limit history size
         if len(self.energy_history) > 10000:
@@ -406,10 +386,7 @@ class RealisticEnergyModel(EnergyModel):
         return float(new_energy)
 
     def predict_energy_trajectory(
-        self,
-        current_energy: float,
-        predicted_activations: List[float],
-        horizon: int
+        self, current_energy: float, predicted_activations: List[float], horizon: int
     ) -> List[float]:
         """Predict energy trajectory considering thermal and battery dynamics."""
 
@@ -429,7 +406,7 @@ class RealisticEnergyModel(EnergyModel):
             if activation_prob > random.random():
                 # Processing step
                 processing_power = self._estimate_step_power_consumption("processing")
-                step_cost = processing_power * frequency_ratio ** 2.5  # Power scaling
+                step_cost = processing_power * frequency_ratio**2.5  # Power scaling
             else:
                 # Idle step
                 step_cost = self.config.idle_power
@@ -501,7 +478,9 @@ class RealisticEnergyModel(EnergyModel):
             "cumulative_energy_consumed_mj": self.cumulative_energy_consumed,
             "power_efficiency_mips_per_mw": self.hardware_profile["power_efficiency_mips_per_mw"],
             "estimated_battery_life_hours": (
-                (self.battery_energy_mwh - self.cumulative_energy_consumed) /
-                (self.config.idle_power * 1000 / 3600)
-            ) if self.cumulative_energy_consumed > 0 else float("inf")
+                (self.battery_energy_mwh - self.cumulative_energy_consumed)
+                / (self.config.idle_power * 1000 / 3600)
+            )
+            if self.cumulative_energy_consumed > 0
+            else float("inf"),
         }

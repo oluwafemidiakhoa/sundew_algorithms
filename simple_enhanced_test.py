@@ -49,7 +49,7 @@ def test_basic_enhanced():
 
         # Test comprehensive report
         report = algorithm.get_comprehensive_report()
-        print(f"[OK] Got comprehensive report")
+        print("[OK] Got comprehensive report")
         print(f"  - Research quality score: {report['research_quality_score']:.1f}/10")
         print(f"  - Available keys: {list(report.keys())}")
         print(f"  - Total processed: {report.get('total_processed', 'N/A')}")

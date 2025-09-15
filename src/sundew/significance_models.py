@@ -30,21 +30,15 @@ class LinearSignificanceModel(SignificanceModel):
 
     def __init__(self, config: LinearSignificanceConfig):
         self.config = config
-        self.weights = np.array([
-            config.w_magnitude,
-            config.w_anomaly,
-            config.w_context,
-            config.w_urgency
-        ])
+        self.weights = np.array(
+            [config.w_magnitude, config.w_anomaly, config.w_context, config.w_urgency]
+        )
 
         # Validate weights sum to 1.0
         if abs(self.weights.sum() - 1.0) > 1e-6:
             raise ValueError("Significance weights must sum to 1.0")
 
-    def compute_significance(
-        self,
-        context: ProcessingContext
-    ) -> Tuple[float, Dict[str, Any]]:
+    def compute_significance(self, context: ProcessingContext) -> Tuple[float, Dict[str, Any]]:
         """Compute linear combination of features."""
         features = context.features
 
@@ -58,12 +52,14 @@ class LinearSignificanceModel(SignificanceModel):
         urgency = self._safe_get(features, "urgency", 0.0)
 
         # Clamp all features to [0, 1]
-        feature_vector = np.array([
-            np.clip(magnitude, 0.0, 1.0),
-            np.clip(anomaly, 0.0, 1.0),
-            np.clip(context_rel, 0.0, 1.0),
-            np.clip(urgency, 0.0, 1.0)
-        ])
+        feature_vector = np.array(
+            [
+                np.clip(magnitude, 0.0, 1.0),
+                np.clip(anomaly, 0.0, 1.0),
+                np.clip(context_rel, 0.0, 1.0),
+                np.clip(urgency, 0.0, 1.0),
+            ]
+        )
 
         # Compute weighted sum
         significance = np.dot(self.weights, feature_vector)
@@ -83,24 +79,20 @@ class LinearSignificanceModel(SignificanceModel):
                 "magnitude": float(self.weights[0] * feature_vector[0]),
                 "anomaly": float(self.weights[1] * feature_vector[1]),
                 "context": float(self.weights[2] * feature_vector[2]),
-                "urgency": float(self.weights[3] * feature_vector[3])
+                "urgency": float(self.weights[3] * feature_vector[3]),
             },
             "raw_features": {
                 "magnitude": float(feature_vector[0]),
                 "anomaly": float(feature_vector[1]),
                 "context": float(feature_vector[2]),
-                "urgency": float(feature_vector[3])
+                "urgency": float(feature_vector[3]),
             },
-            "weights": self.weights.tolist()
+            "weights": self.weights.tolist(),
         }
 
         return float(significance), explanation
 
-    def update(
-        self,
-        context: ProcessingContext,
-        outcome: Optional[Dict[str, Any]]
-    ) -> None:
+    def update(self, context: ProcessingContext, outcome: Optional[Dict[str, Any]]) -> None:
         """Linear model has no learning - no update needed."""
         pass
 
@@ -114,8 +106,8 @@ class LinearSignificanceModel(SignificanceModel):
                 "w_context": self.config.w_context,
                 "w_urgency": self.config.w_urgency,
                 "noise_std": self.config.noise_std,
-                "feature_normalization": self.config.feature_normalization
-            }
+                "feature_normalization": self.config.feature_normalization,
+            },
         }
 
     def set_parameters(self, params: Dict[str, Any]) -> None:
@@ -183,31 +175,32 @@ class NeuralSignificanceModel(SignificanceModel):
 
         for i in range(len(layer_sizes) - 1):
             # He initialization
-            w = np.random.randn(layer_sizes[i], layer_sizes[i+1]) * np.sqrt(2.0 / layer_sizes[i])
-            b = np.zeros(layer_sizes[i+1])
+            w = np.random.randn(layer_sizes[i], layer_sizes[i + 1]) * np.sqrt(2.0 / layer_sizes[i])
+            b = np.zeros(layer_sizes[i + 1])
 
             self.weights.append(w)
             self.biases.append(b)
 
         # Attention weights for temporal model
         if self.config.use_temporal_attention:
-            self.attention_weights = np.random.randn(self.config.hidden_sizes[0], self.config.attention_heads) * 0.1
+            self.attention_weights = (
+                np.random.randn(self.config.hidden_sizes[0], self.config.attention_heads) * 0.1
+            )
             self.attention_bias = np.zeros(self.config.attention_heads)
 
-    def compute_significance(
-        self,
-        context: ProcessingContext
-    ) -> Tuple[float, Dict[str, Any]]:
+    def compute_significance(self, context: ProcessingContext) -> Tuple[float, Dict[str, Any]]:
         """Compute significance using neural network."""
         features = context.features
 
         # Extract and normalize features
-        feature_vector = np.array([
-            self._safe_get(features, "magnitude", 0.0) / 100.0,  # Normalize to [0,1]
-            self._safe_get(features, "anomaly_score", 0.0),
-            self._safe_get(features, "context_relevance", 0.0),
-            self._safe_get(features, "urgency", 0.0)
-        ])
+        feature_vector = np.array(
+            [
+                self._safe_get(features, "magnitude", 0.0) / 100.0,  # Normalize to [0,1]
+                self._safe_get(features, "anomaly_score", 0.0),
+                self._safe_get(features, "context_relevance", 0.0),
+                self._safe_get(features, "urgency", 0.0),
+            ]
+        )
 
         # Clamp to [0, 1]
         feature_vector = np.clip(feature_vector, 0.0, 1.0)
@@ -232,8 +225,10 @@ class NeuralSignificanceModel(SignificanceModel):
             "network_layers": len(self.weights),
             "temporal_context": len(self.history_buffer),
             "input_features": feature_vector.tolist(),
-            "attention_weights": attention_weights.tolist() if attention_weights is not None else None,
-            "network_output": float(significance)
+            "attention_weights": attention_weights.tolist()
+            if attention_weights is not None
+            else None,
+            "network_output": float(significance),
         }
 
         return float(significance), explanation
@@ -291,11 +286,7 @@ class NeuralSignificanceModel(SignificanceModel):
         exp_x = np.exp(x - np.max(x))
         return exp_x / np.sum(exp_x)
 
-    def update(
-        self,
-        context: ProcessingContext,
-        outcome: Optional[Dict[str, Any]]
-    ) -> None:
+    def update(self, context: ProcessingContext, outcome: Optional[Dict[str, Any]]) -> None:
         """Update network based on outcome (simplified online learning)."""
         if not self.learning_enabled or outcome is None:
             return
@@ -304,12 +295,14 @@ class NeuralSignificanceModel(SignificanceModel):
         reward = self._compute_reward(outcome)
 
         # Store for batch update
-        features = np.array([
-            self._safe_get(context.features, "magnitude", 0.0) / 100.0,
-            self._safe_get(context.features, "anomaly_score", 0.0),
-            self._safe_get(context.features, "context_relevance", 0.0),
-            self._safe_get(context.features, "urgency", 0.0)
-        ])
+        features = np.array(
+            [
+                self._safe_get(context.features, "magnitude", 0.0) / 100.0,
+                self._safe_get(context.features, "anomaly_score", 0.0),
+                self._safe_get(context.features, "context_relevance", 0.0),
+                self._safe_get(context.features, "urgency", 0.0),
+            ]
+        )
 
         self._batch_buffer.append((features, reward))
 
@@ -334,8 +327,12 @@ class NeuralSignificanceModel(SignificanceModel):
             return
 
         # Very simplified gradient update - in practice would use proper backprop
-        batch_features = np.array([item[0] for item in self._batch_buffer[-self.config.batch_size:]])
-        batch_rewards = np.array([item[1] for item in self._batch_buffer[-self.config.batch_size:]])
+        batch_features = np.array(
+            [item[0] for item in self._batch_buffer[-self.config.batch_size :]]
+        )
+        batch_rewards = np.array(
+            [item[1] for item in self._batch_buffer[-self.config.batch_size :]]
+        )
 
         # Simple policy gradient-style update
         for features, reward in zip(batch_features, batch_rewards):
@@ -360,8 +357,12 @@ class NeuralSignificanceModel(SignificanceModel):
         return {
             "weights": [w.tolist() for w in self.weights],
             "biases": [b.tolist() for b in self.biases],
-            "attention_weights": self.attention_weights.tolist() if hasattr(self, "attention_weights") else None,
-            "attention_bias": self.attention_bias.tolist() if hasattr(self, "attention_bias") else None,
+            "attention_weights": self.attention_weights.tolist()
+            if hasattr(self, "attention_weights")
+            else None,
+            "attention_bias": self.attention_bias.tolist()
+            if hasattr(self, "attention_bias")
+            else None,
             "config": {
                 "hidden_sizes": self.config.hidden_sizes,
                 "activation": self.config.activation,
@@ -369,8 +370,8 @@ class NeuralSignificanceModel(SignificanceModel):
                 "learning_rate": self.config.learning_rate,
                 "temporal_window": self.config.temporal_window,
                 "attention_heads": self.config.attention_heads,
-                "use_temporal_attention": self.config.use_temporal_attention
-            }
+                "use_temporal_attention": self.config.use_temporal_attention,
+            },
         }
 
     def set_parameters(self, params: Dict[str, Any]) -> None:

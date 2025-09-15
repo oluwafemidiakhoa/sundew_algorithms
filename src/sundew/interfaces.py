@@ -49,10 +49,7 @@ class SignificanceModel(ABC):
     """Abstract interface for computing significance scores from input features."""
 
     @abstractmethod
-    def compute_significance(
-        self,
-        context: ProcessingContext
-    ) -> Tuple[float, Dict[str, Any]]:
+    def compute_significance(self, context: ProcessingContext) -> Tuple[float, Dict[str, Any]]:
         """
         Compute significance score from input context.
 
@@ -67,11 +64,7 @@ class SignificanceModel(ABC):
         pass
 
     @abstractmethod
-    def update(
-        self,
-        context: ProcessingContext,
-        outcome: Optional[Dict[str, Any]]
-    ) -> None:
+    def update(self, context: ProcessingContext, outcome: Optional[Dict[str, Any]]) -> None:
         """
         Update model based on processing outcome (for learning models).
 
@@ -101,7 +94,7 @@ class GatingStrategy(ABC):
         significance: float,
         threshold: float,
         context: ProcessingContext,
-        control_state: ControlState
+        control_state: ControlState,
     ) -> GatingDecision:
         """
         Make gating decision based on significance and current state.
@@ -132,7 +125,7 @@ class ControlPolicy(ABC):
         current_state: ControlState,
         target_activation_rate: float,
         recent_activations: List[bool],
-        energy_state: Dict[str, float]
+        energy_state: Dict[str, float],
     ) -> Tuple[float, ControlState]:
         """
         Update activation threshold based on recent performance.
@@ -150,9 +143,7 @@ class ControlPolicy(ABC):
 
     @abstractmethod
     def predict_stability(
-        self,
-        current_state: ControlState,
-        horizon: int = 100
+        self, current_state: ControlState, horizon: int = 100
     ) -> Dict[str, float]:
         """
         Predict system stability metrics over given horizon.
@@ -177,10 +168,7 @@ class EnergyModel(ABC):
 
     @abstractmethod
     def compute_processing_cost(
-        self,
-        significance: float,
-        processing_type: str,
-        context: ProcessingContext
+        self, significance: float, processing_type: str, context: ProcessingContext
     ) -> float:
         """
         Compute energy cost for processing given input.
@@ -202,20 +190,14 @@ class EnergyModel(ABC):
 
     @abstractmethod
     def update_energy_state(
-        self,
-        current_energy: float,
-        cost: float,
-        regeneration: float = 0.0
+        self, current_energy: float, cost: float, regeneration: float = 0.0
     ) -> float:
         """Update energy state after consumption and regeneration."""
         pass
 
     @abstractmethod
     def predict_energy_trajectory(
-        self,
-        current_energy: float,
-        predicted_activations: List[float],
-        horizon: int
+        self, current_energy: float, predicted_activations: List[float], horizon: int
     ) -> List[float]:
         """
         Predict energy levels over time given activation pattern.

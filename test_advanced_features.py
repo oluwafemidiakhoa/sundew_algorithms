@@ -12,11 +12,12 @@ This script tests all advanced features including:
 Run this to verify that all advanced features are working correctly.
 """
 
-import sys
 import os
+import sys
 import time
+from typing import Any, Dict, List
+
 import numpy as np
-from typing import Dict, List, Any
 
 # Add src to path
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), 'src'))
@@ -202,7 +203,7 @@ def test_automl_optimization(algorithm, test_data):
         )
 
         if optimal_params:
-            print(f"  Optimization successful!")
+            print("  Optimization successful!")
             print(f"  Found {len(optimal_params)} optimal parameters")
 
             # Show a few key parameters
@@ -306,7 +307,7 @@ def test_comprehensive_integration(algorithm, test_data):
             print(f"  [WARNING] Missing report sections: {missing_sections}")
 
         # Display key metrics
-        print(f"  Final Results:")
+        print("  Final Results:")
         print(f"    Total Samples: {report.get('total_samples', 0)}")
         print(f"    Activation Rate: {report.get('activation_rate', 0):.1%}")
         print(f"    Energy Efficiency: {report.get('energy_efficiency', 0):.1%}")

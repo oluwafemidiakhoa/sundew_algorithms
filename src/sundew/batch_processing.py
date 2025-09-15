@@ -24,17 +24,22 @@ import numpy as np
 
 try:
     import cupy as cp
+
     GPU_AVAILABLE = True
 except ImportError:
     import numpy as cp  # Use numpy as fallback for type hints
+
     GPU_AVAILABLE = False
 
 try:
     from numba import cuda, jit
+
     NUMBA_AVAILABLE = True
 except ImportError:
+
     def jit(x):  # No-op decorator
         return x
+
     cuda = None
     NUMBA_AVAILABLE = False
 
@@ -42,6 +47,7 @@ except ImportError:
 @dataclass
 class BatchProcessingConfig:
     """Configuration for batch processing engine."""
+
     batch_size: int = 1000
     max_workers: int = None  # Auto-detect
     use_gpu: bool = False
@@ -55,6 +61,7 @@ class BatchProcessingConfig:
 @dataclass
 class BatchResult:
     """Result from batch processing."""
+
     processed_samples: int
     activations: np.ndarray
     significance_scores: np.ndarray
@@ -87,16 +94,14 @@ class BatchProcessor(ABC):
 class VectorizedProcessor(BatchProcessor):
     """High-performance vectorized processor using NumPy operations."""
 
-    def __init__(self,
-                 algorithm,
-                 config: BatchProcessingConfig = None):
+    def __init__(self, algorithm, config: BatchProcessingConfig = None):
         self.algorithm = algorithm
         self.config = config or BatchProcessingConfig()
         self.performance_stats = {
-            'batches_processed': 0,
-            'total_samples': 0,
-            'total_time': 0.0,
-            'memory_usage': []
+            "batches_processed": 0,
+            "total_samples": 0,
+            "total_time": 0.0,
+            "memory_usage": [],
         }
 
     @jit if NUMBA_AVAILABLE else lambda x: x
@@ -110,10 +115,12 @@ class VectorizedProcessor(BatchProcessor):
 
         # Vectorized weighted combination
         weights = np.array([0.3, 0.3, 0.2, 0.2])  # Default weights
-        significance = (magnitude * weights[0] +
-                       anomaly * weights[1] +
-                       context * weights[2] +
-                       urgency * weights[3])
+        significance = (
+            magnitude * weights[0]
+            + anomaly * weights[1]
+            + context * weights[2]
+            + urgency * weights[3]
+        )
 
         return np.clip(significance / 100.0, 0.0, 1.0)  # Normalize
 
@@ -137,12 +144,17 @@ class VectorizedProcessor(BatchProcessor):
         # Convert samples to feature matrix
         if isinstance(samples, list):
             # Convert list of dicts to numpy array
-            features = np.array([[
-                s.get('magnitude', 0),
-                s.get('anomaly_score', 0),
-                s.get('context_relevance', 0),
-                s.get('urgency', 0)
-            ] for s in samples])
+            features = np.array(
+                [
+                    [
+                        s.get("magnitude", 0),
+                        s.get("anomaly_score", 0),
+                        s.get("context_relevance", 0),
+                        s.get("urgency", 0),
+                    ]
+                    for s in samples
+                ]
+            )
         else:
             features = samples
 
@@ -152,7 +164,7 @@ class VectorizedProcessor(BatchProcessor):
         significance_scores = self._vectorized_significance(features)
 
         # Get current threshold from algorithm
-        current_threshold = getattr(self.algorithm, 'threshold', 0.5)
+        current_threshold = getattr(self.algorithm, "threshold", 0.5)
 
         # Vectorized gating
         activations = self._vectorized_gating(significance_scores, current_threshold)
@@ -165,9 +177,9 @@ class VectorizedProcessor(BatchProcessor):
 
         # Update performance stats
         processing_time = time.time() - start_time
-        self.performance_stats['batches_processed'] += 1
-        self.performance_stats['total_samples'] += batch_size
-        self.performance_stats['total_time'] += processing_time
+        self.performance_stats["batches_processed"] += 1
+        self.performance_stats["total_samples"] += batch_size
+        self.performance_stats["total_time"] += processing_time
 
         return BatchResult(
             processed_samples=batch_size,
@@ -176,11 +188,11 @@ class VectorizedProcessor(BatchProcessor):
             energy_consumed=energy_consumed,
             processing_times=processing_times,
             metadata={
-                'processing_time': processing_time,
-                'throughput': batch_size / processing_time,
-                'threshold_used': current_threshold,
-                'vectorized': True
-            }
+                "processing_time": processing_time,
+                "throughput": batch_size / processing_time,
+                "threshold_used": current_threshold,
+                "vectorized": True,
+            },
         )
 
 
@@ -216,12 +228,17 @@ class GPUProcessor(BatchProcessor):
             with self.device:
                 # Transfer data to GPU
                 if isinstance(samples, list):
-                    features = np.array([[
-                        s.get('magnitude', 0),
-                        s.get('anomaly_score', 0),
-                        s.get('context_relevance', 0),
-                        s.get('urgency', 0)
-                    ] for s in samples])
+                    features = np.array(
+                        [
+                            [
+                                s.get("magnitude", 0),
+                                s.get("anomaly_score", 0),
+                                s.get("context_relevance", 0),
+                                s.get("urgency", 0),
+                            ]
+                            for s in samples
+                        ]
+                    )
                 else:
                     features = samples
 
@@ -229,7 +246,7 @@ class GPUProcessor(BatchProcessor):
 
                 # GPU computations
                 significance_gpu = self._gpu_significance(features_gpu)
-                current_threshold = getattr(self.algorithm, 'threshold', 0.5)
+                current_threshold = getattr(self.algorithm, "threshold", 0.5)
                 activations_gpu = self._gpu_gating(significance_gpu, current_threshold)
 
                 # Energy calculation on GPU
@@ -256,21 +273,18 @@ class GPUProcessor(BatchProcessor):
             energy_consumed=energy_consumed,
             processing_times=processing_times,
             metadata={
-                'processing_time': processing_time,
-                'throughput': batch_size / processing_time,
-                'threshold_used': current_threshold,
-                'gpu_accelerated': True
-            }
+                "processing_time": processing_time,
+                "throughput": batch_size / processing_time,
+                "threshold_used": current_threshold,
+                "gpu_accelerated": True,
+            },
         )
 
 
 class ParallelProcessor(BatchProcessor):
     """Multi-core parallel batch processor."""
 
-    def __init__(self,
-                 algorithm,
-                 config: BatchProcessingConfig = None,
-                 use_processes: bool = True):
+    def __init__(self, algorithm, config: BatchProcessingConfig = None, use_processes: bool = True):
         self.algorithm = algorithm
         self.config = config or BatchProcessingConfig()
         self.use_processes = use_processes
@@ -286,7 +300,7 @@ class ParallelProcessor(BatchProcessor):
 
         for sample in chunk:
             # Use direct processing to avoid recursion
-            if hasattr(self.algorithm, '_process_single_direct'):
+            if hasattr(self.algorithm, "_process_single_direct"):
                 result = self.algorithm._process_single_direct(sample)
             else:
                 result = self.algorithm.process(sample)
@@ -300,9 +314,7 @@ class ParallelProcessor(BatchProcessor):
                 significance_scores.append(0.0)  # Unknown for gated samples
                 energy_consumed.append(0.5)  # Dormant cost
 
-        return (np.array(activations),
-                np.array(significance_scores),
-                np.array(energy_consumed))
+        return (np.array(activations), np.array(significance_scores), np.array(energy_consumed))
 
     def process_batch(self, samples: List[Dict]) -> BatchResult:
         """Process batch using parallel workers."""
@@ -310,8 +322,7 @@ class ParallelProcessor(BatchProcessor):
 
         # Split samples into chunks for workers
         chunk_size = max(1, len(samples) // self.config.max_workers)
-        chunks = [samples[i:i + chunk_size]
-                 for i in range(0, len(samples), chunk_size)]
+        chunks = [samples[i : i + chunk_size] for i in range(0, len(samples), chunk_size)]
 
         # Process chunks in parallel
         if self.use_processes:
@@ -336,20 +347,18 @@ class ParallelProcessor(BatchProcessor):
             energy_consumed=all_energy,
             processing_times=processing_times,
             metadata={
-                'processing_time': processing_time,
-                'throughput': len(samples) / processing_time,
-                'parallel_workers': self.config.max_workers,
-                'chunks_processed': len(chunks)
-            }
+                "processing_time": processing_time,
+                "throughput": len(samples) / processing_time,
+                "parallel_workers": self.config.max_workers,
+                "chunks_processed": len(chunks),
+            },
         )
 
 
 class StreamingProcessor:
     """Memory-efficient streaming processor for large datasets."""
 
-    def __init__(self,
-                 processor: BatchProcessor,
-                 config: BatchProcessingConfig = None):
+    def __init__(self, processor: BatchProcessor, config: BatchProcessingConfig = None):
         self.processor = processor
         self.config = config or BatchProcessingConfig()
         self.results_queue = queue.Queue(maxsize=self.config.prefetch_batches)
@@ -378,16 +387,15 @@ class StreamingProcessor:
                 self.results_queue.put(result)
 
         except Exception as e:
-            self.results_queue.put(('ERROR', e))
+            self.results_queue.put(("ERROR", e))
         finally:
-            self.results_queue.put('DONE')
+            self.results_queue.put("DONE")
 
     def process_stream(self, data_stream: Iterator) -> Iterator[BatchResult]:
         """Process data stream with background batching."""
         # Start background processing
         self.processing_thread = threading.Thread(
-            target=self._background_processor,
-            args=(data_stream,)
+            target=self._background_processor, args=(data_stream,)
         )
         self.processing_thread.start()
 
@@ -396,9 +404,9 @@ class StreamingProcessor:
             try:
                 result = self.results_queue.get(timeout=10.0)
 
-                if result == 'DONE':
+                if result == "DONE":
                     break
-                elif isinstance(result, tuple) and result[0] == 'ERROR':
+                elif isinstance(result, tuple) and result[0] == "ERROR":
                     raise result[1]
                 else:
                     yield result
@@ -423,10 +431,7 @@ class BatchProcessingEngine:
     - Performance requirements (latency vs throughput)
     """
 
-    def __init__(self,
-                 algorithm,
-                 config: BatchProcessingConfig = None,
-                 auto_optimize: bool = True):
+    def __init__(self, algorithm, config: BatchProcessingConfig = None, auto_optimize: bool = True):
         self.algorithm = algorithm
         self.config = config or BatchProcessingConfig()
         self.auto_optimize = auto_optimize
@@ -442,25 +447,22 @@ class BatchProcessingEngine:
     def _initialize_processors(self):
         """Initialize available processors based on capabilities."""
         # Always available: vectorized
-        self.processors['vectorized'] = VectorizedProcessor(
-            self.algorithm, self.config
-        )
+        self.processors["vectorized"] = VectorizedProcessor(self.algorithm, self.config)
 
         # GPU if available
         if GPU_AVAILABLE and self.config.use_gpu:
             try:
-                self.processors['gpu'] = GPUProcessor(self.algorithm, self.config)
+                self.processors["gpu"] = GPUProcessor(self.algorithm, self.config)
             except Exception as e:
                 warnings.warn(f"GPU processor initialization failed: {e}")
 
         # Parallel processing
         if self.config.max_workers != 1:
-            self.processors['parallel'] = ParallelProcessor(
-                self.algorithm, self.config
-            )
+            self.processors["parallel"] = ParallelProcessor(self.algorithm, self.config)
 
-    def benchmark_processors(self, test_samples: List[Dict],
-                           iterations: int = 3) -> Dict[str, Dict[str, float]]:
+    def benchmark_processors(
+        self, test_samples: List[Dict], iterations: int = 3
+    ) -> Dict[str, Dict[str, float]]:
         """Benchmark all available processors."""
         print("Benchmarking processors...")
 
@@ -479,39 +481,44 @@ class BatchProcessingEngine:
                 throughputs.append(len(test_samples) / processing_time)
 
             self.benchmark_results[processor_name] = {
-                'avg_time': np.mean(times),
-                'std_time': np.std(times),
-                'avg_throughput': np.mean(throughputs),
-                'std_throughput': np.std(throughputs)
+                "avg_time": np.mean(times),
+                "std_time": np.std(times),
+                "avg_throughput": np.mean(throughputs),
+                "std_throughput": np.std(throughputs),
             }
 
-            print(f"    Throughput: {np.mean(throughputs):.0f} ± {np.std(throughputs):.0f} samples/sec")
+            print(
+                f"    Throughput: {np.mean(throughputs):.0f} ± {np.std(throughputs):.0f} samples/sec"
+            )
 
         # Select optimal processor
         if self.auto_optimize:
-            best_processor = max(self.benchmark_results.keys(),
-                               key=lambda x: self.benchmark_results[x]['avg_throughput'])
+            best_processor = max(
+                self.benchmark_results.keys(),
+                key=lambda x: self.benchmark_results[x]["avg_throughput"],
+            )
             self.optimal_processor = best_processor
             print(f"  Selected optimal processor: {best_processor}")
 
         return self.benchmark_results
 
-    def process_batch(self, samples: List[Dict],
-                     processor_type: Optional[str] = None) -> BatchResult:
+    def process_batch(
+        self, samples: List[Dict], processor_type: Optional[str] = None
+    ) -> BatchResult:
         """Process batch using specified or optimal processor."""
         if processor_type is None:
-            processor_type = self.optimal_processor or 'vectorized'
+            processor_type = self.optimal_processor or "vectorized"
 
         if processor_type not in self.processors:
             raise ValueError(f"Processor {processor_type} not available")
 
         return self.processors[processor_type].process_batch(samples)
 
-    def process_large_dataset(self,
-                            data_source: Union[List[Dict], Iterator],
-                            processor_type: Optional[str] = None) -> Iterator[BatchResult]:
+    def process_large_dataset(
+        self, data_source: Union[List[Dict], Iterator], processor_type: Optional[str] = None
+    ) -> Iterator[BatchResult]:
         """Process large dataset with streaming and optimal batching."""
-        processor_type = processor_type or self.optimal_processor or 'vectorized'
+        processor_type = processor_type or self.optimal_processor or "vectorized"
         processor = self.processors[processor_type]
 
         # Use streaming processor for large datasets
@@ -525,35 +532,36 @@ class BatchProcessingEngine:
     def get_performance_report(self) -> Dict[str, Any]:
         """Get comprehensive performance report."""
         report = {
-            'config': {
-                'batch_size': self.config.batch_size,
-                'max_workers': self.config.max_workers,
-                'use_gpu': self.config.use_gpu,
-                'use_numba': self.config.use_numba
+            "config": {
+                "batch_size": self.config.batch_size,
+                "max_workers": self.config.max_workers,
+                "use_gpu": self.config.use_gpu,
+                "use_numba": self.config.use_numba,
             },
-            'available_processors': list(self.processors.keys()),
-            'optimal_processor': self.optimal_processor,
-            'benchmark_results': self.benchmark_results,
-            'hardware_info': {
-                'cpu_count': mp.cpu_count(),
-                'gpu_available': GPU_AVAILABLE,
-                'numba_available': NUMBA_AVAILABLE
-            }
+            "available_processors": list(self.processors.keys()),
+            "optimal_processor": self.optimal_processor,
+            "benchmark_results": self.benchmark_results,
+            "hardware_info": {
+                "cpu_count": mp.cpu_count(),
+                "gpu_available": GPU_AVAILABLE,
+                "numba_available": NUMBA_AVAILABLE,
+            },
         }
 
         # Add processor-specific stats
         for name, processor in self.processors.items():
-            if hasattr(processor, 'performance_stats'):
-                report[f'{name}_stats'] = processor.performance_stats
+            if hasattr(processor, "performance_stats"):
+                report[f"{name}_stats"] = processor.performance_stats
 
         return report
 
 
 # Utility functions for batch processing optimization
 
-def estimate_optimal_batch_size(sample_processor: Callable,
-                               test_samples: List[Dict],
-                               max_batch_size: int = 10000) -> int:
+
+def estimate_optimal_batch_size(
+    sample_processor: Callable, test_samples: List[Dict], max_batch_size: int = 10000
+) -> int:
     """Estimate optimal batch size for given processor."""
     batch_sizes = [10, 50, 100, 500, 1000, 2000, 5000]
     if max_batch_size > 5000:
@@ -584,6 +592,7 @@ def estimate_optimal_batch_size(sample_processor: Callable,
 def memory_usage_monitor():
     """Monitor memory usage during batch processing."""
     import psutil
+
     process = psutil.Process()
 
     def get_memory_mb():
@@ -604,34 +613,33 @@ if __name__ == "__main__":
 
         def process(self, sample):
             # Simple mock processing
-            significance = (sample.get('magnitude', 0) * 0.3 +
-                          sample.get('anomaly_score', 0) * 0.7)
+            significance = sample.get("magnitude", 0) * 0.3 + sample.get("anomaly_score", 0) * 0.7
 
             if significance >= self.threshold * 100:
                 from types import SimpleNamespace
-                return SimpleNamespace(
-                    significance=significance / 100,
-                    energy_consumed=50.0
-                )
+
+                return SimpleNamespace(significance=significance / 100, energy_consumed=50.0)
             return None
 
     # Create test data
     np.random.seed(42)
     test_samples = []
     for i in range(1000):
-        test_samples.append({
-            'magnitude': np.random.uniform(0, 100),
-            'anomaly_score': np.random.uniform(0, 1),
-            'context_relevance': np.random.uniform(0, 1),
-            'urgency': np.random.uniform(0, 1)
-        })
+        test_samples.append(
+            {
+                "magnitude": np.random.uniform(0, 100),
+                "anomaly_score": np.random.uniform(0, 1),
+                "context_relevance": np.random.uniform(0, 1),
+                "urgency": np.random.uniform(0, 1),
+            }
+        )
 
     # Initialize engine
     algorithm = MockAlgorithm()
     config = BatchProcessingConfig(
         batch_size=500,
         use_gpu=False,  # Set to True if you have CuPy installed
-        use_numba=NUMBA_AVAILABLE
+        use_numba=NUMBA_AVAILABLE,
     )
 
     engine = BatchProcessingEngine(algorithm, config)

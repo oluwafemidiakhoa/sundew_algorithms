@@ -39,7 +39,7 @@ class TemperatureGatingStrategy(GatingStrategy):
         significance: float,
         threshold: float,
         context: ProcessingContext,
-        control_state: ControlState
+        control_state: ControlState,
     ) -> GatingDecision:
         """Make gating decision using temperature-controlled sigmoid."""
 
@@ -76,8 +76,8 @@ class TemperatureGatingStrategy(GatingStrategy):
                 "threshold": threshold,
                 "significance": significance,
                 "exploration_used": random.random() < exploration_prob,
-                "z_score": (significance - threshold) / max(self.current_temperature, 1e-9)
-            }
+                "z_score": (significance - threshold) / max(self.current_temperature, 1e-9),
+            },
         )
 
         self.decision_count += 1
@@ -109,7 +109,7 @@ class TemperatureGatingStrategy(GatingStrategy):
         # Increase exploration if activation rate is far from target
         rate_error = abs(control_state.activation_rate - 0.15)  # Assume target ~0.15
         if rate_error > 0.05:
-            base_exploration *= (1.0 + rate_error)
+            base_exploration *= 1.0 + rate_error
 
         return min(base_exploration, 0.2)  # Cap at 20%
 
@@ -131,7 +131,7 @@ class AdaptiveGatingConfig:
                 "accuracy": 0.4,
                 "energy": 0.3,
                 "latency": 0.2,
-                "fairness": 0.1
+                "fairness": 0.1,
             }
 
 
@@ -157,7 +157,7 @@ class AdaptiveGatingStrategy(GatingStrategy):
             "accuracy": 0.5,
             "energy_efficiency": 0.5,
             "latency": 0.5,
-            "fairness": 0.5
+            "fairness": 0.5,
         }
 
         # Learning state
@@ -168,7 +168,7 @@ class AdaptiveGatingStrategy(GatingStrategy):
         significance: float,
         threshold: float,
         context: ProcessingContext,
-        control_state: ControlState
+        control_state: ControlState,
     ) -> GatingDecision:
         """Make gating decision using attention-based multi-objective optimization."""
 
@@ -215,17 +215,19 @@ class AdaptiveGatingStrategy(GatingStrategy):
                 "confidence": confidence,
                 "multi_objective_scores": self._get_objective_scores(context_vector, control_state),
                 "attention_weights": self.attention_weights.tolist(),
-                "context_features": context_vector.tolist()
-            }
+                "context_features": context_vector.tolist(),
+            },
         )
 
         # Store decision for learning
-        self.decision_history.append({
-            "context": context_vector,
-            "decision": should_process,
-            "significance": significance,
-            "timestamp": context.timestamp
-        })
+        self.decision_history.append(
+            {
+                "context": context_vector,
+                "decision": should_process,
+                "significance": significance,
+                "timestamp": context.timestamp,
+            }
+        )
 
         if len(self.decision_history) > self.config.context_window * 2:
             self.decision_history.pop(0)
@@ -234,34 +236,38 @@ class AdaptiveGatingStrategy(GatingStrategy):
         return decision
 
     def _extract_context_features(
-        self,
-        context: ProcessingContext,
-        control_state: ControlState
+        self, context: ProcessingContext, control_state: ControlState
     ) -> np.ndarray:
         """Extract relevant features for attention mechanism."""
         features = context.features
 
         # Basic features (normalized)
-        basic_features = np.array([
-            min(1.0, features.get("magnitude", 0.0) / 100.0),
-            min(1.0, features.get("anomaly_score", 0.0)),
-            min(1.0, features.get("context_relevance", 0.0)),
-            min(1.0, features.get("urgency", 0.0))
-        ])
+        basic_features = np.array(
+            [
+                min(1.0, features.get("magnitude", 0.0) / 100.0),
+                min(1.0, features.get("anomaly_score", 0.0)),
+                min(1.0, features.get("context_relevance", 0.0)),
+                min(1.0, features.get("urgency", 0.0)),
+            ]
+        )
 
         # System state features
-        system_features = np.array([
-            control_state.activation_rate,
-            control_state.energy_level,
-            control_state.threshold,
-            len(self.context_history) / self.config.context_window
-        ])
+        system_features = np.array(
+            [
+                control_state.activation_rate,
+                control_state.energy_level,
+                control_state.threshold,
+                len(self.context_history) / self.config.context_window,
+            ]
+        )
 
         # Temporal features
-        temporal_features = np.array([
-            context.sequence_id % 100 / 100.0,  # Position in sequence
-            len(context.history) / 10.0,  # History length
-        ])
+        temporal_features = np.array(
+            [
+                context.sequence_id % 100 / 100.0,  # Position in sequence
+                len(context.history) / 10.0,  # History length
+            ]
+        )
 
         # Combine all features
         return np.concatenate([basic_features, system_features, temporal_features])
@@ -278,17 +284,17 @@ class AdaptiveGatingStrategy(GatingStrategy):
         history_matrix = np.array(self.context_history[:-1])  # Exclude current
 
         # Simplified dot-product attention
-        attention_scores = np.dot(history_matrix, context_vector[:len(history_matrix[0])])
+        attention_scores = np.dot(history_matrix, context_vector[: len(history_matrix[0])])
         attention_weights = self._softmax(attention_scores)
 
         # Weighted combination
         weighted_history = np.dot(attention_weights, history_matrix)
 
         # Combine with current context
-        combined_context = 0.7 * context_vector[:len(weighted_history)] + 0.3 * weighted_history
+        combined_context = 0.7 * context_vector[: len(weighted_history)] + 0.3 * weighted_history
 
         # Project to scalar score
-        score = np.dot(combined_context, self.context_weights[:len(combined_context)].flatten())
+        score = np.dot(combined_context, self.context_weights[: len(combined_context)].flatten())
         return float(np.clip(score, 0.0, 1.0))
 
     def _compute_confidence(self, context_vector: np.ndarray, attention_score: float) -> float:
@@ -319,7 +325,7 @@ class AdaptiveGatingStrategy(GatingStrategy):
         significance: float,
         attention_score: float,
         confidence: float,
-        control_state: ControlState
+        control_state: ControlState,
     ) -> float:
         """Compute multi-objective decision score."""
         weights = self.config.multi_objective_weights
@@ -338,19 +344,16 @@ class AdaptiveGatingStrategy(GatingStrategy):
 
         # Weighted combination
         combined_score = (
-            weights["accuracy"] * accuracy_score +
-            weights["energy"] * energy_score +
-            weights["latency"] * latency_score +
-            weights["fairness"] * fairness_score
+            weights["accuracy"] * accuracy_score
+            + weights["energy"] * energy_score
+            + weights["latency"] * latency_score
+            + weights["fairness"] * fairness_score
         )
 
         return float(np.clip(combined_score, 0.0, 1.0))
 
     def _adjust_threshold_for_uncertainty(
-        self,
-        base_threshold: float,
-        confidence: float,
-        control_state: ControlState
+        self, base_threshold: float, confidence: float, control_state: ControlState
     ) -> float:
         """Adjust threshold based on uncertainty and system state."""
         # Higher threshold when confidence is low (more conservative)
@@ -365,16 +368,18 @@ class AdaptiveGatingStrategy(GatingStrategy):
         return float(np.clip(adjusted_threshold, 0.0, 1.0))
 
     def _get_objective_scores(
-        self,
-        context_vector: np.ndarray,
-        control_state: ControlState
+        self, context_vector: np.ndarray, control_state: ControlState
     ) -> Dict[str, float]:
         """Get individual objective scores for interpretability."""
         return {
-            "predicted_accuracy": float(np.clip(np.dot(context_vector[:4], [0.3, 0.4, 0.2, 0.1]), 0.0, 1.0)),
+            "predicted_accuracy": float(
+                np.clip(np.dot(context_vector[:4], [0.3, 0.4, 0.2, 0.1]), 0.0, 1.0)
+            ),
             "energy_efficiency": float(control_state.energy_level),
             "decision_confidence": float(self._compute_confidence(context_vector, 0.5)),
-            "system_stability": float(1.0 - control_state.stability_metrics.get("oscillation", 0.0))
+            "system_stability": float(
+                1.0 - control_state.stability_metrics.get("oscillation", 0.0)
+            ),
         }
 
     def _softmax(self, x: np.ndarray) -> np.ndarray:

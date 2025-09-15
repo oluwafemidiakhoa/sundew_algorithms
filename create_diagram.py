@@ -4,11 +4,12 @@ Create a comprehensive Sundew project diagram showing architecture and research 
 """
 
 import matplotlib
+
 matplotlib.use('Agg')  # Use non-interactive backend
-import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
-from matplotlib.patches import FancyBboxPatch, ConnectionPatch
-import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.patches import FancyBboxPatch
+
 
 def create_sundew_diagram():
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(16, 20))

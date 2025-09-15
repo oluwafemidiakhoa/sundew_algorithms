@@ -18,6 +18,7 @@ import numpy as np
 @dataclass
 class InformationMetrics:
     """Container for information-theoretic metrics."""
+
     mutual_information: float
     entropy: float
     conditional_entropy: float
@@ -27,12 +28,12 @@ class InformationMetrics:
 
     def to_dict(self) -> Dict[str, float]:
         return {
-            'mutual_information': self.mutual_information,
-            'entropy': self.entropy,
-            'conditional_entropy': self.conditional_entropy,
-            'information_gain': self.information_gain,
-            'kl_divergence': self.kl_divergence,
-            'jensen_shannon_divergence': self.jensen_shannon_divergence
+            "mutual_information": self.mutual_information,
+            "entropy": self.entropy,
+            "conditional_entropy": self.conditional_entropy,
+            "information_gain": self.information_gain,
+            "kl_divergence": self.kl_divergence,
+            "jensen_shannon_divergence": self.jensen_shannon_divergence,
         }
 
 
@@ -40,14 +41,16 @@ class InformationTheoreticThreshold(ABC):
     """Abstract base class for information-theoretic threshold adaptation."""
 
     @abstractmethod
-    def update_threshold(self, significance_scores: np.ndarray,
-                        activations: np.ndarray, context: Dict[str, Any]) -> float:
+    def update_threshold(
+        self, significance_scores: np.ndarray, activations: np.ndarray, context: Dict[str, Any]
+    ) -> float:
         """Update threshold based on information-theoretic criteria."""
         pass
 
     @abstractmethod
-    def compute_metrics(self, significance_scores: np.ndarray,
-                       activations: np.ndarray) -> InformationMetrics:
+    def compute_metrics(
+        self, significance_scores: np.ndarray, activations: np.ndarray
+    ) -> InformationMetrics:
         """Compute comprehensive information-theoretic metrics."""
         pass
 
@@ -61,13 +64,15 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
     information transfer in selective processing.
     """
 
-    def __init__(self,
-                 history_size: int = 1000,
-                 n_bins: int = 50,
-                 alpha: float = 0.1,
-                 min_threshold: float = 0.1,
-                 max_threshold: float = 0.9,
-                 regularization: float = 1e-8):
+    def __init__(
+        self,
+        history_size: int = 1000,
+        n_bins: int = 50,
+        alpha: float = 0.1,
+        min_threshold: float = 0.1,
+        max_threshold: float = 0.9,
+        regularization: float = 1e-8,
+    ):
         self.history_size = history_size
         self.n_bins = n_bins
         self.alpha = alpha  # Adaptation rate
@@ -150,9 +155,7 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
             return self.current_threshold
 
         # Test multiple threshold candidates
-        threshold_candidates = np.linspace(
-            self.min_threshold, self.max_threshold, 20
-        )
+        threshold_candidates = np.linspace(self.min_threshold, self.max_threshold, 20)
 
         best_threshold = self.current_threshold
         best_mi = -1
@@ -174,8 +177,9 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
 
         return best_threshold
 
-    def update_threshold(self, significance_scores: np.ndarray,
-                        activations: np.ndarray, context: Dict[str, Any]) -> float:
+    def update_threshold(
+        self, significance_scores: np.ndarray, activations: np.ndarray, context: Dict[str, Any]
+    ) -> float:
         """Update threshold using mutual information maximization."""
         # Update history
         self.significance_history.extend(significance_scores)
@@ -206,8 +210,9 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
 
         return new_threshold
 
-    def compute_metrics(self, significance_scores: np.ndarray,
-                       activations: np.ndarray) -> InformationMetrics:
+    def compute_metrics(
+        self, significance_scores: np.ndarray, activations: np.ndarray
+    ) -> InformationMetrics:
         """Compute comprehensive information-theoretic metrics."""
         if len(significance_scores) == 0:
             return InformationMetrics(0, 0, 0, 0, 0, 0)
@@ -249,18 +254,20 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
             conditional_entropy=conditional_entropy,
             information_gain=information_gain,
             kl_divergence=kl_div,
-            jensen_shannon_divergence=js_div
+            jensen_shannon_divergence=js_div,
         )
 
     def get_adaptation_stats(self) -> Dict[str, Any]:
         """Get adaptation statistics."""
         return {
-            'total_samples': self.total_samples,
-            'adaptation_count': self.adaptation_count,
-            'current_threshold': self.current_threshold,
-            'threshold_history': list(self.threshold_history),
-            'history_size': len(self.significance_history),
-            'threshold_stability': np.std(list(self.threshold_history)) if self.threshold_history else 0
+            "total_samples": self.total_samples,
+            "adaptation_count": self.adaptation_count,
+            "current_threshold": self.current_threshold,
+            "threshold_history": list(self.threshold_history),
+            "history_size": len(self.significance_history),
+            "threshold_stability": np.std(list(self.threshold_history))
+            if self.threshold_history
+            else 0,
         }
 
 
@@ -272,13 +279,15 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
     providing control over information content in selective processing decisions.
     """
 
-    def __init__(self,
-                 target_entropy: float = 0.5,
-                 entropy_weight: float = 0.7,
-                 activation_rate_weight: float = 0.3,
-                 target_activation_rate: float = 0.15,
-                 adaptation_rate: float = 0.05,
-                 history_size: int = 500):
+    def __init__(
+        self,
+        target_entropy: float = 0.5,
+        entropy_weight: float = 0.7,
+        activation_rate_weight: float = 0.3,
+        target_activation_rate: float = 0.15,
+        adaptation_rate: float = 0.05,
+        history_size: int = 500,
+    ):
         self.target_entropy = target_entropy
         self.entropy_weight = entropy_weight
         self.activation_rate_weight = activation_rate_weight
@@ -303,8 +312,9 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
 
         return -p_active * np.log2(p_active) - p_inactive * np.log2(p_inactive)
 
-    def update_threshold(self, significance_scores: np.ndarray,
-                        activations: np.ndarray, context: Dict[str, Any]) -> float:
+    def update_threshold(
+        self, significance_scores: np.ndarray, activations: np.ndarray, context: Dict[str, Any]
+    ) -> float:
         """Update threshold to achieve target entropy."""
         if len(activations) == 0:
             return self.current_threshold
@@ -321,8 +331,10 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
         activation_rate_error = self.target_activation_rate - current_activation_rate
 
         # Combined error with weighting
-        combined_error = (self.entropy_weight * entropy_error +
-                         self.activation_rate_weight * activation_rate_error)
+        combined_error = (
+            self.entropy_weight * entropy_error
+            + self.activation_rate_weight * activation_rate_error
+        )
 
         # Adaptive threshold adjustment
         threshold_adjustment = self.adaptation_rate * combined_error
@@ -334,8 +346,9 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
         self.current_threshold = new_threshold
         return new_threshold
 
-    def compute_metrics(self, significance_scores: np.ndarray,
-                       activations: np.ndarray) -> InformationMetrics:
+    def compute_metrics(
+        self, significance_scores: np.ndarray, activations: np.ndarray
+    ) -> InformationMetrics:
         """Compute entropy-focused metrics."""
         entropy = self._compute_activation_entropy(activations)
 
@@ -346,7 +359,7 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
             conditional_entropy=0,
             information_gain=0,
             kl_divergence=abs(entropy - self.target_entropy),
-            jensen_shannon_divergence=0
+            jensen_shannon_divergence=0,
         )
 
 
@@ -359,9 +372,7 @@ class InformationTheoreticController:
     monitoring.
     """
 
-    def __init__(self,
-                 method: str = "mutual_information",
-                 **kwargs):
+    def __init__(self, method: str = "mutual_information", **kwargs):
         """
         Initialize information-theoretic controller.
 
@@ -392,27 +403,30 @@ class InformationTheoreticController:
         # Future: implement method switching based on performance
         return MutualInformationThreshold(**kwargs)
 
-    def update_threshold(self, significance_scores: np.ndarray,
-                        activations: np.ndarray,
-                        context: Optional[Dict[str, Any]] = None) -> float:
+    def update_threshold(
+        self,
+        significance_scores: np.ndarray,
+        activations: np.ndarray,
+        context: Optional[Dict[str, Any]] = None,
+    ) -> float:
         """Update threshold using selected information-theoretic method."""
         if context is None:
             context = {}
 
         # Update threshold
-        new_threshold = self.adapter.update_threshold(
-            significance_scores, activations, context
-        )
+        new_threshold = self.adapter.update_threshold(significance_scores, activations, context)
 
         # Compute and store metrics
         metrics = self.adapter.compute_metrics(significance_scores, activations)
 
-        self.performance_history.append({
-            'threshold': new_threshold,
-            'metrics': metrics.to_dict(),
-            'activation_rate': np.mean(activations) if len(activations) > 0 else 0,
-            'method': self.method
-        })
+        self.performance_history.append(
+            {
+                "threshold": new_threshold,
+                "metrics": metrics.to_dict(),
+                "activation_rate": np.mean(activations) if len(activations) > 0 else 0,
+                "method": self.method,
+            }
+        )
 
         return new_threshold
 
@@ -428,44 +442,45 @@ class InformationTheoreticController:
         recent_metrics = self.performance_history[-10:]  # Last 10 updates
 
         # Aggregate metrics
-        avg_mi = np.mean([m['metrics']['mutual_information'] for m in recent_metrics])
-        avg_entropy = np.mean([m['metrics']['entropy'] for m in recent_metrics])
-        avg_activation_rate = np.mean([m['activation_rate'] for m in recent_metrics])
-        threshold_stability = np.std([m['threshold'] for m in recent_metrics])
+        avg_mi = np.mean([m["metrics"]["mutual_information"] for m in recent_metrics])
+        avg_entropy = np.mean([m["metrics"]["entropy"] for m in recent_metrics])
+        avg_activation_rate = np.mean([m["activation_rate"] for m in recent_metrics])
+        threshold_stability = np.std([m["threshold"] for m in recent_metrics])
 
         report = {
-            'method': self.method,
-            'current_threshold': self.get_current_threshold(),
-            'performance_summary': {
-                'avg_mutual_information': avg_mi,
-                'avg_entropy': avg_entropy,
-                'avg_activation_rate': avg_activation_rate,
-                'threshold_stability': threshold_stability,
-                'total_adaptations': len(self.performance_history)
+            "method": self.method,
+            "current_threshold": self.get_current_threshold(),
+            "performance_summary": {
+                "avg_mutual_information": avg_mi,
+                "avg_entropy": avg_entropy,
+                "avg_activation_rate": avg_activation_rate,
+                "threshold_stability": threshold_stability,
+                "total_adaptations": len(self.performance_history),
             },
-            'recent_performance': recent_metrics[-5:],  # Last 5 for detail
+            "recent_performance": recent_metrics[-5:],  # Last 5 for detail
         }
 
         # Add method-specific stats
-        if hasattr(self.adapter, 'get_adaptation_stats'):
-            report['adaptation_stats'] = self.adapter.get_adaptation_stats()
+        if hasattr(self.adapter, "get_adaptation_stats"):
+            report["adaptation_stats"] = self.adapter.get_adaptation_stats()
 
         return report
 
     def export_analysis_data(self) -> Dict[str, Any]:
         """Export data for external analysis and visualization."""
         return {
-            'method': self.method,
-            'performance_history': self.performance_history,
-            'method_comparisons': dict(self.method_comparisons),
-            'configuration': {
-                'adapter_type': type(self.adapter).__name__,
-                'adapter_config': getattr(self.adapter, '__dict__', {})
-            }
+            "method": self.method,
+            "performance_history": self.performance_history,
+            "method_comparisons": dict(self.method_comparisons),
+            "configuration": {
+                "adapter_type": type(self.adapter).__name__,
+                "adapter_config": getattr(self.adapter, "__dict__", {}),
+            },
         }
 
 
 # Utility functions for information-theoretic analysis
+
 
 def compute_information_gain(before_entropy: float, after_entropy: float) -> float:
     """Compute information gain from entropy reduction."""
@@ -492,16 +507,14 @@ def mutual_information_score(x: np.ndarray, y: np.ndarray, bins: int = 20) -> fl
     for i in range(len(x_prob)):
         for j in range(len(y_prob)):
             if xy_prob[i, j] > 0:
-                mi += xy_prob[i, j] * np.log2(
-                    xy_prob[i, j] / (x_prob[i] * y_prob[j])
-                )
+                mi += xy_prob[i, j] * np.log2(xy_prob[i, j] / (x_prob[i] * y_prob[j]))
 
     return mi
 
 
-def entropy_based_feature_selection(features: np.ndarray,
-                                   targets: np.ndarray,
-                                   n_features: int = 5) -> List[int]:
+def entropy_based_feature_selection(
+    features: np.ndarray, targets: np.ndarray, n_features: int = 5
+) -> List[int]:
     """Select features based on mutual information with targets."""
     feature_scores = []
 
@@ -533,9 +546,7 @@ if __name__ == "__main__":
 
     # Initialize controller
     controller = InformationTheoreticController(
-        method="mutual_information",
-        history_size=200,
-        alpha=0.1
+        method="mutual_information", history_size=200, alpha=0.1
     )
 
     print(f"Testing with {n_samples} samples...")
@@ -543,21 +554,23 @@ if __name__ == "__main__":
     # Simulate adaptive threshold updates
     batch_size = 50
     for i in range(0, n_samples, batch_size):
-        batch_sig = significance_scores[i:i+batch_size]
-        batch_gt = ground_truth[i:i+batch_size]
+        batch_sig = significance_scores[i : i + batch_size]
+        batch_gt = ground_truth[i : i + batch_size]
 
         # Update threshold
         new_threshold = controller.update_threshold(batch_sig, batch_gt)
 
         if i % 200 == 0:
-            print(f"Batch {i//batch_size + 1}: Threshold = {new_threshold:.3f}")
+            print(f"Batch {i // batch_size + 1}: Threshold = {new_threshold:.3f}")
 
     # Get final report
     report = controller.get_comprehensive_report()
 
     print("\nFinal Analysis:")
     print(f"Final threshold: {report['current_threshold']:.3f}")
-    print(f"Average mutual information: {report['performance_summary']['avg_mutual_information']:.4f}")
+    print(
+        f"Average mutual information: {report['performance_summary']['avg_mutual_information']:.4f}"
+    )
     print(f"Average entropy: {report['performance_summary']['avg_entropy']:.4f}")
     print(f"Threshold stability (std): {report['performance_summary']['threshold_stability']:.4f}")
     print(f"Total adaptations: {report['performance_summary']['total_adaptations']}")

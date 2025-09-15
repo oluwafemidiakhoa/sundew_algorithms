@@ -16,11 +16,16 @@ Tip: If your CLI supports it, run:
 Then parse:
   python sundew_cli_tester_v2.py --from_json results.json
 """
-import argparse, subprocess, sys, re, json
+import argparse
+import json
+import re
+import subprocess
+import sys
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 # Robust line parser: minimal assumptions
 LINE_RE = re.compile(

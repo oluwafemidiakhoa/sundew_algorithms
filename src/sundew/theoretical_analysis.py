@@ -20,6 +20,7 @@ from scipy.linalg import eig, solve_continuous_lyapunov
 try:
     import sympy as sp
     from sympy import Matrix, diff, latex, simplify, solve, symbols
+
     SYMPY_AVAILABLE = True
 except ImportError:
     SYMPY_AVAILABLE = False
@@ -27,6 +28,7 @@ except ImportError:
 
 try:
     from scipy.stats import anderson, kstest, shapiro
+
     SCIPY_STATS_AVAILABLE = True
 except ImportError:
     SCIPY_STATS_AVAILABLE = False
@@ -35,6 +37,7 @@ except ImportError:
 @dataclass
 class ConvergenceResult:
     """Result of convergence analysis."""
+
     converged: bool
     convergence_rate: float
     stability_margin: float
@@ -46,20 +49,21 @@ class ConvergenceResult:
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            'converged': self.converged,
-            'convergence_rate': self.convergence_rate,
-            'stability_margin': self.stability_margin,
-            'settling_time': self.settling_time,
-            'overshoot': self.overshoot,
-            'steady_state_error': self.steady_state_error,
-            'lyapunov_exponent': self.lyapunov_exponent,
-            'proof_verification': len(self.proof_steps) > 0
+            "converged": self.converged,
+            "convergence_rate": self.convergence_rate,
+            "stability_margin": self.stability_margin,
+            "settling_time": self.settling_time,
+            "overshoot": self.overshoot,
+            "steady_state_error": self.steady_state_error,
+            "lyapunov_exponent": self.lyapunov_exponent,
+            "proof_verification": len(self.proof_steps) > 0,
         }
 
 
 @dataclass
 class PerformanceBounds:
     """Theoretical performance bounds."""
+
     energy_savings_lower_bound: float
     energy_savings_upper_bound: float
     activation_rate_bounds: Tuple[float, float]
@@ -72,15 +76,15 @@ class PerformanceBounds:
         """Validate empirical results against theoretical bounds."""
         validation = {}
 
-        if 'energy_savings' in empirical_metrics:
-            energy = empirical_metrics['energy_savings']
-            validation['energy_in_bounds'] = (
+        if "energy_savings" in empirical_metrics:
+            energy = empirical_metrics["energy_savings"]
+            validation["energy_in_bounds"] = (
                 self.energy_savings_lower_bound <= energy <= self.energy_savings_upper_bound
             )
 
-        if 'activation_rate' in empirical_metrics:
-            rate = empirical_metrics['activation_rate']
-            validation['activation_rate_in_bounds'] = (
+        if "activation_rate" in empirical_metrics:
+            rate = empirical_metrics["activation_rate"]
+            validation["activation_rate_in_bounds"] = (
                 self.activation_rate_bounds[0] <= rate <= self.activation_rate_bounds[1]
             )
 
@@ -98,9 +102,9 @@ class StabilityAnalyzer:
         """Analyze PI controller stability using Lyapunov methods."""
 
         # Extract parameters
-        kp = self.params.get('adapt_kp', 0.1)
-        ki = self.params.get('adapt_ki', 0.01)
-        target_rate = self.params.get('target_activation_rate', 0.15)
+        kp = self.params.get("adapt_kp", 0.1)
+        ki = self.params.get("adapt_ki", 0.01)
+        target_rate = self.params.get("target_activation_rate", 0.15)
 
         proof_steps = []
 
@@ -130,10 +134,7 @@ class StabilityAnalyzer:
         # State: x = [θ - θₑ, ∫e dτ]ᵀ
         # dx/dt = A·x where A = [[0, ki], [-kp·dp_dtheta, -ki·dp_dtheta]]
 
-        A = np.array([
-            [0, ki],
-            [-kp * dp_dtheta, -ki * dp_dtheta]
-        ])
+        A = np.array([[0, ki], [-kp * dp_dtheta, -ki * dp_dtheta]])
 
         proof_steps.append("\nState matrix A =")
         proof_steps.append(f"[[0, {ki}], [{-kp * dp_dtheta:.3f}, {-ki * dp_dtheta:.3f}]]")
@@ -183,9 +184,9 @@ class StabilityAnalyzer:
             steady_state_error = 0  # PI eliminates steady-state error
             lyapunov_exponent = -convergence_rate
         else:
-            settling_time = float('inf')
-            overshoot = float('inf')
-            steady_state_error = float('inf')
+            settling_time = float("inf")
+            overshoot = float("inf")
+            steady_state_error = float("inf")
             lyapunov_exponent = convergence_rate
 
         return ConvergenceResult(
@@ -196,7 +197,7 @@ class StabilityAnalyzer:
             overshoot=overshoot,
             steady_state_error=steady_state_error,
             lyapunov_exponent=lyapunov_exponent,
-            proof_steps=proof_steps
+            proof_steps=proof_steps,
         )
 
     def analyze_mpc_stability(self) -> ConvergenceResult:
@@ -212,7 +213,9 @@ class StabilityAnalyzer:
         proof_steps.append("MPC Stability Analysis:")
         proof_steps.append("1. Terminal set Ωf is positively invariant")
         proof_steps.append("2. Terminal cost Vf(x) satisfies Vf(f(x,κf(x))) - Vf(x) ≤ -ℓ(x,κf(x))")
-        proof_steps.append("3. Feasibility: if optimal solution exists at time k, then exists at k+1")
+        proof_steps.append(
+            "3. Feasibility: if optimal solution exists at time k, then exists at k+1"
+        )
 
         # Simplified analysis - assume stable terminal controller
         terminal_stable = True
@@ -227,7 +230,7 @@ class StabilityAnalyzer:
         else:
             convergence_rate = 0
             stability_margin = 0
-            settling_time = float('inf')
+            settling_time = float("inf")
 
         return ConvergenceResult(
             converged=terminal_stable,
@@ -237,7 +240,7 @@ class StabilityAnalyzer:
             overshoot=0.1,  # MPC typically low overshoot
             steady_state_error=0.01,  # Small due to model mismatch
             lyapunov_exponent=-convergence_rate,
-            proof_steps=proof_steps
+            proof_steps=proof_steps,
         )
 
 
@@ -251,9 +254,9 @@ class PerformanceBoundsAnalyzer:
         """Derive theoretical bounds on energy savings."""
 
         # Energy model parameters
-        dormant_cost = self.params.get('dormant_tick_cost', 0.5)
-        processing_cost = self.params.get('base_processing_cost', 50.0)
-        target_activation_rate = self.params.get('target_activation_rate', 0.15)
+        dormant_cost = self.params.get("dormant_tick_cost", 0.5)
+        processing_cost = self.params.get("base_processing_cost", 50.0)
+        target_activation_rate = self.params.get("target_activation_rate", 0.15)
 
         # Lower bound: worst case with maximum activations
         worst_case_rate = min(1.0, target_activation_rate * 2)  # Allow 100% overshoot
@@ -273,9 +276,9 @@ class PerformanceBoundsAnalyzer:
     def derive_activation_rate_bounds(self) -> Tuple[float, float]:
         """Derive bounds on activation rate based on control theory."""
 
-        target_rate = self.params.get('target_activation_rate', 0.15)
-        kp = self.params.get('adapt_kp', 0.1)
-        ki = self.params.get('adapt_ki', 0.01)
+        target_rate = self.params.get("target_activation_rate", 0.15)
+        kp = self.params.get("adapt_kp", 0.1)
+        ki = self.params.get("adapt_ki", 0.01)
 
         # Control system overshoot bounds
         # For PI controller: overshoot ≤ exp(-ζπ/√(1-ζ²))
@@ -301,8 +304,8 @@ class PerformanceBoundsAnalyzer:
     def derive_convergence_bounds(self) -> float:
         """Derive bounds on convergence time."""
 
-        kp = self.params.get('adapt_kp', 0.1)
-        ki = self.params.get('adapt_ki', 0.01)
+        kp = self.params.get("adapt_kp", 0.1)
+        ki = self.params.get("adapt_ki", 0.01)
 
         # Dominant pole method
         # For PI controller: τ = 4/|λ_dominant|
@@ -310,7 +313,7 @@ class PerformanceBoundsAnalyzer:
         # Approximate dominant pole
         lambda_dom = min(kp, ki) if ki > 0 else kp
 
-        convergence_time_bound = 4.0 / lambda_dom if lambda_dom > 0 else float('inf')
+        convergence_time_bound = 4.0 / lambda_dom if lambda_dom > 0 else float("inf")
 
         return convergence_time_bound
 
@@ -324,7 +327,9 @@ class PerformanceBoundsAnalyzer:
         # Additional bounds
         significance_error_bound = 0.1  # Assume 10% significance estimation error
         threshold_stability_bound = 0.05  # 5% threshold variation
-        robustness_margin = min(energy_lower, activation_bounds[0]) * 0.1  # 10% of minimum performance
+        robustness_margin = (
+            min(energy_lower, activation_bounds[0]) * 0.1
+        )  # 10% of minimum performance
 
         return PerformanceBounds(
             energy_savings_lower_bound=energy_lower,
@@ -333,7 +338,7 @@ class PerformanceBoundsAnalyzer:
             significance_error_bound=significance_error_bound,
             threshold_stability_bound=threshold_stability_bound,
             convergence_time_bound=convergence_bound,
-            robustness_margin=robustness_margin
+            robustness_margin=robustness_margin,
         )
 
 
@@ -347,7 +352,7 @@ class StatisticalAnalyzer:
         """Test statistical hypothesis of threshold convergence."""
 
         if len(threshold_history) < 10:
-            return {'status': 'insufficient_data'}
+            return {"status": "insufficient_data"}
 
         # Convert to numpy array
         data = np.array(threshold_history)
@@ -357,12 +362,14 @@ class StatisticalAnalyzer:
         n = len(data)
         if n >= 20:
             # Split data and compare variances
-            first_half = data[:n//2]
-            second_half = data[n//2:]
+            first_half = data[: n // 2]
+            second_half = data[n // 2 :]
 
             var_ratio = np.var(second_half) / np.var(first_half)
-            stationarity_pvalue = 2 * min(stats.f.cdf(var_ratio, len(second_half)-1, len(first_half)-1),
-                                        1 - stats.f.cdf(var_ratio, len(second_half)-1, len(first_half)-1))
+            stationarity_pvalue = 2 * min(
+                stats.f.cdf(var_ratio, len(second_half) - 1, len(first_half) - 1),
+                1 - stats.f.cdf(var_ratio, len(second_half) - 1, len(first_half) - 1),
+            )
         else:
             var_ratio = 1.0
             stationarity_pvalue = 0.5
@@ -385,28 +392,30 @@ class StatisticalAnalyzer:
 
         # Convergence criteria
         converged = (
-            abs(slope) < 0.001 and  # No significant trend
-            p_value > 0.05 and     # Trend not significant
-            cusum_max < 3 * np.std(data) and  # No structural breaks
-            np.std(data[-10:]) < 0.01  # Recent stability
+            abs(slope) < 0.001  # No significant trend
+            and p_value > 0.05  # Trend not significant
+            and cusum_max < 3 * np.std(data)  # No structural breaks
+            and np.std(data[-10:]) < 0.01  # Recent stability
         )
 
         return {
-            'converged': converged,
-            'trend_slope': slope,
-            'trend_pvalue': p_value,
-            'stationarity_pvalue': stationarity_pvalue,
-            'residuals_normality_pvalue': shapiro_p,
-            'recent_stability': np.std(data[-10:]),
-            'cusum_statistic': cusum_max,
-            'confidence_level': self.confidence_level
+            "converged": converged,
+            "trend_slope": slope,
+            "trend_pvalue": p_value,
+            "stationarity_pvalue": stationarity_pvalue,
+            "residuals_normality_pvalue": shapiro_p,
+            "recent_stability": np.std(data[-10:]),
+            "cusum_statistic": cusum_max,
+            "confidence_level": self.confidence_level,
         }
 
-    def analyze_performance_distribution(self, performance_metrics: List[Dict[str, float]]) -> Dict[str, Any]:
+    def analyze_performance_distribution(
+        self, performance_metrics: List[Dict[str, float]]
+    ) -> Dict[str, Any]:
         """Analyze statistical distribution of performance metrics."""
 
         if not performance_metrics:
-            return {'status': 'no_data'}
+            return {"status": "no_data"}
 
         results = {}
 
@@ -426,54 +435,56 @@ class StatisticalAnalyzer:
 
             # Descriptive statistics
             desc_stats = {
-                'mean': np.mean(values),
-                'std': np.std(values),
-                'median': np.median(values),
-                'min': np.min(values),
-                'max': np.max(values),
-                'q25': np.percentile(values, 25),
-                'q75': np.percentile(values, 75),
-                'skewness': stats.skew(values),
-                'kurtosis': stats.kurtosis(values)
+                "mean": np.mean(values),
+                "std": np.std(values),
+                "median": np.median(values),
+                "min": np.min(values),
+                "max": np.max(values),
+                "q25": np.percentile(values, 25),
+                "q75": np.percentile(values, 75),
+                "skewness": stats.skew(values),
+                "kurtosis": stats.kurtosis(values),
             }
 
             # Distribution fitting
             # Try normal distribution
             normal_params = stats.norm.fit(values)
-            normal_ks_stat, normal_ks_p = stats.kstest(values,
-                                                      lambda x: stats.norm.cdf(x, *normal_params))
+            normal_ks_stat, normal_ks_p = stats.kstest(
+                values, lambda x: stats.norm.cdf(x, *normal_params)
+            )
 
             # Try beta distribution (for bounded metrics like rates)
             if np.all(values >= 0) and np.all(values <= 1):
                 try:
                     beta_params = stats.beta.fit(values)
-                    beta_ks_stat, beta_ks_p = stats.kstest(values,
-                                                          lambda x: stats.beta.cdf(x, *beta_params))
+                    beta_ks_stat, beta_ks_p = stats.kstest(
+                        values, lambda x: stats.beta.cdf(x, *beta_params)
+                    )
                 except:
-                    beta_ks_stat, beta_ks_p = float('inf'), 0
+                    beta_ks_stat, beta_ks_p = float("inf"), 0
             else:
-                beta_ks_stat, beta_ks_p = float('inf'), 0
+                beta_ks_stat, beta_ks_p = float("inf"), 0
 
             # Select best distribution
             if beta_ks_p > normal_ks_p and beta_ks_p > 0.05:
-                best_distribution = 'beta'
+                best_distribution = "beta"
                 best_params = beta_params
                 best_ks_p = beta_ks_p
             elif normal_ks_p > 0.05:
-                best_distribution = 'normal'
+                best_distribution = "normal"
                 best_params = normal_params
                 best_ks_p = normal_ks_p
             else:
-                best_distribution = 'unknown'
+                best_distribution = "unknown"
                 best_params = None
                 best_ks_p = max(normal_ks_p, beta_ks_p)
 
             results[metric_name] = {
-                'descriptive_stats': desc_stats,
-                'best_distribution': best_distribution,
-                'distribution_params': best_params,
-                'distribution_fit_pvalue': best_ks_p,
-                'sample_size': len(values)
+                "descriptive_stats": desc_stats,
+                "best_distribution": best_distribution,
+                "distribution_params": best_params,
+                "distribution_fit_pvalue": best_ks_p,
+                "sample_size": len(values),
             }
 
         return results
@@ -488,8 +499,9 @@ class TheoreticalAnalysisEngine:
         self.bounds_analyzer = PerformanceBoundsAnalyzer(algorithm_parameters)
         self.statistical_analyzer = StatisticalAnalyzer()
 
-    def comprehensive_analysis(self,
-                             empirical_data: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    def comprehensive_analysis(
+        self, empirical_data: Optional[Dict[str, Any]] = None
+    ) -> Dict[str, Any]:
         """Perform comprehensive theoretical analysis."""
 
         print("Performing comprehensive theoretical analysis...")
@@ -510,81 +522,84 @@ class TheoreticalAnalysisEngine:
         if empirical_data:
             print("  Performing statistical analysis...")
 
-            if 'threshold_history' in empirical_data:
-                statistical_results['convergence_test'] = (
+            if "threshold_history" in empirical_data:
+                statistical_results["convergence_test"] = (
                     self.statistical_analyzer.test_convergence_hypothesis(
-                        empirical_data['threshold_history']
+                        empirical_data["threshold_history"]
                     )
                 )
 
-            if 'performance_metrics' in empirical_data:
-                statistical_results['performance_distribution'] = (
+            if "performance_metrics" in empirical_data:
+                statistical_results["performance_distribution"] = (
                     self.statistical_analyzer.analyze_performance_distribution(
-                        empirical_data['performance_metrics']
+                        empirical_data["performance_metrics"]
                     )
                 )
 
         # 4. Validation of empirical results against theory
         validation_results = {}
-        if empirical_data and 'final_metrics' in empirical_data:
-            validation_results = bounds.validate_empirical_results(
-                empirical_data['final_metrics']
-            )
+        if empirical_data and "final_metrics" in empirical_data:
+            validation_results = bounds.validate_empirical_results(empirical_data["final_metrics"])
 
         # 5. Compile comprehensive report
         analysis_report = {
-            'stability_analysis': {
-                'pi_controller': pi_stability.to_dict(),
-                'mpc_controller': mpc_stability.to_dict()
+            "stability_analysis": {
+                "pi_controller": pi_stability.to_dict(),
+                "mpc_controller": mpc_stability.to_dict(),
             },
-            'performance_bounds': {
-                'energy_savings_bounds': (bounds.energy_savings_lower_bound,
-                                        bounds.energy_savings_upper_bound),
-                'activation_rate_bounds': bounds.activation_rate_bounds,
-                'convergence_time_bound': bounds.convergence_time_bound,
-                'robustness_margin': bounds.robustness_margin
+            "performance_bounds": {
+                "energy_savings_bounds": (
+                    bounds.energy_savings_lower_bound,
+                    bounds.energy_savings_upper_bound,
+                ),
+                "activation_rate_bounds": bounds.activation_rate_bounds,
+                "convergence_time_bound": bounds.convergence_time_bound,
+                "robustness_margin": bounds.robustness_margin,
             },
-            'statistical_analysis': statistical_results,
-            'empirical_validation': validation_results,
-            'theoretical_guarantees': self._extract_theoretical_guarantees(pi_stability, mpc_stability, bounds),
-            'analysis_metadata': {
-                'parameters_analyzed': list(self.params.keys()),
-                'symbolic_computation_available': SYMPY_AVAILABLE,
-                'timestamp': str(np.datetime64('now'))
-            }
+            "statistical_analysis": statistical_results,
+            "empirical_validation": validation_results,
+            "theoretical_guarantees": self._extract_theoretical_guarantees(
+                pi_stability, mpc_stability, bounds
+            ),
+            "analysis_metadata": {
+                "parameters_analyzed": list(self.params.keys()),
+                "symbolic_computation_available": SYMPY_AVAILABLE,
+                "timestamp": str(np.datetime64("now")),
+            },
         }
 
         return analysis_report
 
-    def _extract_theoretical_guarantees(self, pi_result: ConvergenceResult,
-                                      mpc_result: ConvergenceResult,
-                                      bounds: PerformanceBounds) -> Dict[str, Any]:
+    def _extract_theoretical_guarantees(
+        self, pi_result: ConvergenceResult, mpc_result: ConvergenceResult, bounds: PerformanceBounds
+    ) -> Dict[str, Any]:
         """Extract key theoretical guarantees."""
 
         guarantees = {
-            'stability_guaranteed': pi_result.converged,
-            'convergence_guaranteed': pi_result.converged and pi_result.settling_time < float('inf'),
-            'energy_savings_guaranteed': bounds.energy_savings_lower_bound > 0,
-            'bounded_performance': True,  # Always true by construction
-            'robustness_margin': bounds.robustness_margin > 0
+            "stability_guaranteed": pi_result.converged,
+            "convergence_guaranteed": pi_result.converged
+            and pi_result.settling_time < float("inf"),
+            "energy_savings_guaranteed": bounds.energy_savings_lower_bound > 0,
+            "bounded_performance": True,  # Always true by construction
+            "robustness_margin": bounds.robustness_margin > 0,
         }
 
         # Formal statements
-        guarantees['formal_statements'] = []
+        guarantees["formal_statements"] = []
 
         if pi_result.converged:
-            guarantees['formal_statements'].append(
+            guarantees["formal_statements"].append(
                 "∀ε>0, ∃T>0: t>T ⟹ |θ(t)-θ*| < ε (Asymptotic stability)"
             )
-            guarantees['formal_statements'].append(
+            guarantees["formal_statements"].append(
                 f"Settling time ≤ {pi_result.settling_time:.2f} seconds"
             )
 
-        guarantees['formal_statements'].append(
+        guarantees["formal_statements"].append(
             f"Energy savings ∈ [{bounds.energy_savings_lower_bound:.3f}, {bounds.energy_savings_upper_bound:.3f}]"
         )
 
-        guarantees['formal_statements'].append(
+        guarantees["formal_statements"].append(
             f"Activation rate ∈ [{bounds.activation_rate_bounds[0]:.3f}, {bounds.activation_rate_bounds[1]:.3f}]"
         )
 
@@ -624,8 +639,8 @@ e(t) &= p^* - p(t) \\
 """
 
         # Add stability conditions
-        pi_result = analysis_result['stability_analysis']['pi_controller']
-        if pi_result['converged']:
+        pi_result = analysis_result["stability_analysis"]["pi_controller"]
+        if pi_result["converged"]:
             latex_doc += r"""
 If the linearized system has eigenvalues with negative real parts, then the equilibrium is asymptotically stable.
 \end{theorem}
@@ -644,7 +659,7 @@ where $A$ has eigenvalues with negative real parts.
 
 \begin{theorem}[Energy Savings Bounds]
 """
-        bounds = analysis_result['performance_bounds']
+        bounds = analysis_result["performance_bounds"]
         latex_doc += f"Energy savings are bounded: ${bounds['energy_savings_bounds'][0]:.3f} \\leq E_{{savings}} \\leq {bounds['energy_savings_bounds'][1]:.3f}$"
 
         latex_doc += r"""
@@ -658,8 +673,10 @@ where $A$ has eigenvalues with negative real parts.
 
 # Utility functions for theoretical analysis
 
-def analyze_system_robustness(parameters: Dict[str, float],
-                            perturbation_magnitude: float = 0.1) -> Dict[str, float]:
+
+def analyze_system_robustness(
+    parameters: Dict[str, float], perturbation_magnitude: float = 0.1
+) -> Dict[str, float]:
     """Analyze system robustness to parameter perturbations."""
 
     baseline_analyzer = TheoreticalAnalysisEngine(parameters)
@@ -677,15 +694,19 @@ def analyze_system_robustness(parameters: Dict[str, float],
         perturbed_analysis = perturbed_analyzer.comprehensive_analysis()
 
         # Compute sensitivity
-        baseline_convergence = baseline_analysis['stability_analysis']['pi_controller']['convergence_rate']
-        perturbed_convergence = perturbed_analysis['stability_analysis']['pi_controller']['convergence_rate']
+        baseline_convergence = baseline_analysis["stability_analysis"]["pi_controller"][
+            "convergence_rate"
+        ]
+        perturbed_convergence = perturbed_analysis["stability_analysis"]["pi_controller"][
+            "convergence_rate"
+        ]
 
         if baseline_convergence > 0:
             sensitivity = abs(perturbed_convergence - baseline_convergence) / baseline_convergence
         else:
-            sensitivity = float('inf')
+            sensitivity = float("inf")
 
-        robustness_metrics[f'{param_name}_sensitivity'] = sensitivity
+        robustness_metrics[f"{param_name}_sensitivity"] = sensitivity
 
     return robustness_metrics
 
@@ -697,12 +718,12 @@ if __name__ == "__main__":
 
     # Example parameters
     test_parameters = {
-        'adapt_kp': 0.1,
-        'adapt_ki': 0.01,
-        'target_activation_rate': 0.15,
-        'dormant_tick_cost': 0.5,
-        'base_processing_cost': 50.0,
-        'energy_pressure': 0.05
+        "adapt_kp": 0.1,
+        "adapt_ki": 0.01,
+        "target_activation_rate": 0.15,
+        "dormant_tick_cost": 0.5,
+        "base_processing_cost": 50.0,
+        "energy_pressure": 0.05,
     }
 
     # Create analyzer
@@ -710,19 +731,19 @@ if __name__ == "__main__":
 
     # Mock empirical data
     empirical_data = {
-        'threshold_history': [0.6 + 0.1 * np.sin(i/10) * np.exp(-i/50) + 0.02 * np.random.randn()
-                            for i in range(100)],
-        'performance_metrics': [
-            {'energy_savings': 0.85 + 0.05 * np.random.randn(),
-             'activation_rate': 0.15 + 0.02 * np.random.randn(),
-             'f1_score': 0.8 + 0.1 * np.random.randn()}
+        "threshold_history": [
+            0.6 + 0.1 * np.sin(i / 10) * np.exp(-i / 50) + 0.02 * np.random.randn()
+            for i in range(100)
+        ],
+        "performance_metrics": [
+            {
+                "energy_savings": 0.85 + 0.05 * np.random.randn(),
+                "activation_rate": 0.15 + 0.02 * np.random.randn(),
+                "f1_score": 0.8 + 0.1 * np.random.randn(),
+            }
             for _ in range(50)
         ],
-        'final_metrics': {
-            'energy_savings': 0.85,
-            'activation_rate': 0.15,
-            'processing_time': 1.2
-        }
+        "final_metrics": {"energy_savings": 0.85, "activation_rate": 0.15, "processing_time": 1.2},
     }
 
     # Run comprehensive analysis
@@ -730,29 +751,33 @@ if __name__ == "__main__":
 
     # Display key results
     print("Stability Analysis:")
-    pi_stability = analysis_result['stability_analysis']['pi_controller']
+    pi_stability = analysis_result["stability_analysis"]["pi_controller"]
     print(f"  PI Controller Stable: {pi_stability['converged']}")
     print(f"  Convergence Rate: {pi_stability['convergence_rate']:.4f}")
     print(f"  Settling Time: {pi_stability['settling_time']:.2f} seconds")
 
     print("\nPerformance Bounds:")
-    bounds = analysis_result['performance_bounds']
-    print(f"  Energy Savings: {bounds['energy_savings_bounds'][0]:.1%} - {bounds['energy_savings_bounds'][1]:.1%}")
-    print(f"  Activation Rate: {bounds['activation_rate_bounds'][0]:.3f} - {bounds['activation_rate_bounds'][1]:.3f}")
+    bounds = analysis_result["performance_bounds"]
+    print(
+        f"  Energy Savings: {bounds['energy_savings_bounds'][0]:.1%} - {bounds['energy_savings_bounds'][1]:.1%}"
+    )
+    print(
+        f"  Activation Rate: {bounds['activation_rate_bounds'][0]:.3f} - {bounds['activation_rate_bounds'][1]:.3f}"
+    )
 
     print("\nEmpirical Validation:")
-    validation = analysis_result['empirical_validation']
+    validation = analysis_result["empirical_validation"]
     for metric, valid in validation.items():
         print(f"  {metric}: {'✓' if valid else '✗'}")
 
     print("\nStatistical Analysis:")
-    if 'convergence_test' in analysis_result['statistical_analysis']:
-        conv_test = analysis_result['statistical_analysis']['convergence_test']
+    if "convergence_test" in analysis_result["statistical_analysis"]:
+        conv_test = analysis_result["statistical_analysis"]["convergence_test"]
         print(f"  Threshold Converged: {conv_test['converged']}")
         print(f"  Recent Stability: {conv_test['recent_stability']:.4f}")
 
     print("\nTheoretical Guarantees:")
-    guarantees = analysis_result['theoretical_guarantees']
+    guarantees = analysis_result["theoretical_guarantees"]
     print(f"  Stability Guaranteed: {guarantees['stability_guaranteed']}")
     print(f"  Convergence Guaranteed: {guarantees['convergence_guaranteed']}")
     print(f"  Energy Savings Guaranteed: {guarantees['energy_savings_guaranteed']}")
@@ -761,15 +786,15 @@ if __name__ == "__main__":
     print("\nRobustness Analysis:")
     robustness = analyze_system_robustness(test_parameters)
     for param, sensitivity in robustness.items():
-        if sensitivity < float('inf'):
+        if sensitivity < float("inf"):
             print(f"  {param}: {sensitivity:.4f}")
 
     print("\nTheoretical analysis engine ready for integration!")
 
     # Generate proof steps for PI controller
-    if len(pi_stability.get('proof_steps', [])) > 0:
+    if len(pi_stability.get("proof_steps", [])) > 0:
         print(f"\nProof Steps ({len(pi_stability['proof_steps'])} steps):")
-        for i, step in enumerate(pi_stability['proof_steps'][:5]):  # Show first 5 steps
-            print(f"  {i+1}. {step}")
-        if len(pi_stability['proof_steps']) > 5:
+        for i, step in enumerate(pi_stability["proof_steps"][:5]):  # Show first 5 steps
+            print(f"  {i + 1}. {step}")
+        if len(pi_stability["proof_steps"]) > 5:
             print(f"  ... and {len(pi_stability['proof_steps']) - 5} more steps")

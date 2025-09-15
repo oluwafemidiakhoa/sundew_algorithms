@@ -34,16 +34,24 @@ class BenchmarkConfig:
     bootstrap_samples: int = 1000
 
     # Performance metrics
-    metrics_to_compute: List[str] = field(default_factory=lambda: [
-        "activation_rate", "energy_efficiency", "f1_score", "precision", "recall",
-        "stability_index", "convergence_time", "energy_savings"
-    ])
+    metrics_to_compute: List[str] = field(
+        default_factory=lambda: [
+            "activation_rate",
+            "energy_efficiency",
+            "f1_score",
+            "precision",
+            "recall",
+            "stability_index",
+            "convergence_time",
+            "energy_savings",
+        ]
+    )
 
     # Baseline comparisons
     include_baselines: bool = True
-    baseline_strategies: List[str] = field(default_factory=lambda: [
-        "random", "fixed_threshold", "oracle", "no_gating"
-    ])
+    baseline_strategies: List[str] = field(
+        default_factory=lambda: ["random", "fixed_threshold", "oracle", "no_gating"]
+    )
 
     # Output configuration
     save_detailed_logs: bool = True
@@ -157,7 +165,7 @@ class ECGDatasetGenerator(DatasetGenerator):
                 "magnitude": np.clip(magnitude, 0, 100),
                 "anomaly_score": np.clip(anomaly_score, 0, 1),
                 "context_relevance": np.clip(context_relevance, 0, 1),
-                "urgency": np.clip(urgency, 0, 1)
+                "urgency": np.clip(urgency, 0, 1),
             }
 
             samples.append(sample)
@@ -173,7 +181,7 @@ class ECGDatasetGenerator(DatasetGenerator):
             "positive_class": "abnormal_beat",
             "negative_class": "normal_beat",
             "expected_positive_rate": 0.15,
-            "critical_metrics": ["recall", "f1_score", "energy_efficiency"]
+            "critical_metrics": ["recall", "f1_score", "energy_efficiency"],
         }
 
 
@@ -220,7 +228,7 @@ class VisionDatasetGenerator(DatasetGenerator):
                 "magnitude": np.clip(magnitude, 0, 100),
                 "anomaly_score": np.clip(anomaly_score, 0, 1),
                 "context_relevance": np.clip(context_relevance, 0, 1),
-                "urgency": np.clip(urgency, 0, 1)
+                "urgency": np.clip(urgency, 0, 1),
             }
 
             samples.append(sample)
@@ -236,7 +244,7 @@ class VisionDatasetGenerator(DatasetGenerator):
             "positive_class": "object_detected",
             "negative_class": "background",
             "expected_positive_rate": 0.3,
-            "critical_metrics": ["precision", "recall", "energy_efficiency"]
+            "critical_metrics": ["precision", "recall", "energy_efficiency"],
         }
 
 
@@ -276,7 +284,7 @@ class AudioDatasetGenerator(DatasetGenerator):
                 "magnitude": np.clip(magnitude, 0, 100),
                 "anomaly_score": np.clip(anomaly_score, 0, 1),
                 "context_relevance": np.clip(context_relevance, 0, 1),
-                "urgency": np.clip(urgency, 0, 1)
+                "urgency": np.clip(urgency, 0, 1),
             }
 
             samples.append(sample)
@@ -292,7 +300,7 @@ class AudioDatasetGenerator(DatasetGenerator):
             "positive_class": "event_detected",
             "negative_class": "background_noise",
             "expected_positive_rate": 0.2,
-            "critical_metrics": ["recall", "precision", "energy_efficiency"]
+            "critical_metrics": ["recall", "precision", "energy_efficiency"],
         }
 
 
@@ -374,8 +382,7 @@ class StatisticalAnalyzer:
 
     @staticmethod
     def compute_confidence_interval(
-        data: List[float],
-        confidence_level: float = 0.95
+        data: List[float], confidence_level: float = 0.95
     ) -> Tuple[float, float]:
         """Compute confidence interval using bootstrap."""
         if len(data) < 2:
@@ -396,9 +403,7 @@ class StatisticalAnalyzer:
 
     @staticmethod
     def perform_significance_test(
-        group1: List[float],
-        group2: List[float],
-        test_type: str = "welch"
+        group1: List[float], group2: List[float], test_type: str = "welch"
     ) -> Tuple[float, float]:
         """Perform statistical significance test."""
         if len(group1) < 2 or len(group2) < 2:
@@ -411,14 +416,18 @@ class StatisticalAnalyzer:
             n1, n2 = len(group1), len(group2)
 
             # t-statistic
-            pooled_se = np.sqrt(var1/n1 + var2/n2)
+            pooled_se = np.sqrt(var1 / n1 + var2 / n2)
             t_stat = (mean1 - mean2) / pooled_se
 
             # Degrees of freedom (Welch-Satterthwaite)
-            df = (var1/n1 + var2/n2)**2 / (var1**2/(n1**2*(n1-1)) + var2**2/(n2**2*(n2-1)))
+            df = (var1 / n1 + var2 / n2) ** 2 / (
+                var1**2 / (n1**2 * (n1 - 1)) + var2**2 / (n2**2 * (n2 - 1))
+            )
 
             # Simple p-value approximation (would use scipy.stats in practice)
-            p_value = 2 * (1 - 0.5 * (1 + np.sign(t_stat) * np.sqrt(1 - np.exp(-2*t_stat**2/df))))
+            p_value = 2 * (
+                1 - 0.5 * (1 + np.sign(t_stat) * np.sqrt(1 - np.exp(-2 * t_stat**2 / df)))
+            )
 
             return float(t_stat), float(p_value)
 
@@ -436,15 +445,14 @@ class BenchmarkRunner:
         self.dataset_generators = {
             "ecg": ECGDatasetGenerator(),
             "vision": VisionDatasetGenerator(),
-            "audio": AudioDatasetGenerator()
+            "audio": AudioDatasetGenerator(),
         }
 
         # Initialize statistical analyzer
         self.analyzer = StatisticalAnalyzer()
 
     def run_comprehensive_benchmark(
-        self,
-        algorithm_configs: List[Tuple[str, EnhancedSundewConfig]]
+        self, algorithm_configs: List[Tuple[str, EnhancedSundewConfig]]
     ) -> Dict[str, Any]:
         """Run comprehensive benchmark across all domains and configurations."""
 
@@ -497,7 +505,7 @@ class BenchmarkRunner:
         domain_name: str,
         generator: DatasetGenerator,
         config_name: str,
-        config: EnhancedSundewConfig
+        config: EnhancedSundewConfig,
     ) -> List[ExperimentResult]:
         """Run experiment with multiple random seeds."""
 
@@ -529,7 +537,7 @@ class BenchmarkRunner:
         labels: List[int],
         seed: int,
         config_name: str,
-        domain_name: str
+        domain_name: str,
     ) -> ExperimentResult:
         """Run a single experimental trial."""
 
@@ -572,7 +580,9 @@ class BenchmarkRunner:
 
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1_score = (
+            2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        )
         accuracy = (tp + tn) / len(labels) if len(labels) > 0 else 0.0
 
         # Get algorithm report
@@ -584,7 +594,6 @@ class BenchmarkRunner:
             config=algorithm.config.__dict__,
             dataset_name=domain_name,
             algorithm_type=config_name,
-
             # Performance metrics
             activation_rate=algo_report["activation_rate"],
             energy_efficiency=algo_report["energy_efficiency"],
@@ -592,35 +601,30 @@ class BenchmarkRunner:
             precision=precision,
             recall=recall,
             accuracy=accuracy,
-
             # Stability metrics
             convergence_time=int(algo_report["stability_metrics"].get("settling_time", 0)),
             oscillation_index=algo_report["stability_metrics"].get("oscillation", 0.0),
             settling_time=int(algo_report["stability_metrics"].get("settling_time", 0)),
             overshoot=algo_report["stability_metrics"].get("overshoot", 0.0),
-
             # Energy metrics
             total_energy_consumed=algo_report["total_energy_consumed"],
             energy_savings_pct=algo_report["energy_efficiency"] * 100,
-            average_processing_cost=algo_report["total_energy_consumed"] / max(1, algo_report["activations"]),
-
+            average_processing_cost=algo_report["total_energy_consumed"]
+            / max(1, algo_report["activations"]),
             # Timing metrics
             total_runtime=runtime,
             average_processing_time=algo_report["avg_processing_time"],
-
             # Raw data
             activation_history=activation_history,
             threshold_history=threshold_history,
             energy_history=energy_history,
-            significance_history=significance_history
+            significance_history=significance_history,
         )
 
         return result
 
     def _run_baseline_experiments(
-        self,
-        domain_name: str,
-        generator: DatasetGenerator
+        self, domain_name: str, generator: DatasetGenerator
     ) -> Dict[str, List[ExperimentResult]]:
         """Run baseline strategy experiments."""
 
@@ -663,7 +667,7 @@ class BenchmarkRunner:
         labels: List[int],
         seed: int,
         strategy_name: str,
-        domain_name: str
+        domain_name: str,
     ) -> ExperimentResult:
         """Run a single baseline trial."""
 
@@ -687,7 +691,9 @@ class BenchmarkRunner:
 
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1_score = (
+            2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        )
         accuracy = (tp + tn) / len(labels) if len(labels) > 0 else 0.0
 
         activation_rate = sum(activations) / len(activations)
@@ -695,7 +701,10 @@ class BenchmarkRunner:
         # Baseline energy model (simple)
         energy_per_activation = 10.0
         energy_per_idle = 0.5
-        total_energy = sum(activations) * energy_per_activation + (len(activations) - sum(activations)) * energy_per_idle
+        total_energy = (
+            sum(activations) * energy_per_activation
+            + (len(activations) - sum(activations)) * energy_per_idle
+        )
         baseline_energy = len(activations) * energy_per_activation
         energy_efficiency = 1.0 - (total_energy / baseline_energy) if baseline_energy > 0 else 0.0
 
@@ -704,30 +713,25 @@ class BenchmarkRunner:
             config={"strategy": strategy_name},
             dataset_name=domain_name,
             algorithm_type=strategy_name,
-
             activation_rate=activation_rate,
             energy_efficiency=energy_efficiency,
             f1_score=f1_score,
             precision=precision,
             recall=recall,
             accuracy=accuracy,
-
             convergence_time=0,
             oscillation_index=0.0,
             settling_time=0,
             overshoot=0.0,
-
             total_energy_consumed=total_energy,
             energy_savings_pct=energy_efficiency * 100,
             average_processing_cost=energy_per_activation,
-
             total_runtime=runtime,
             average_processing_time=0.001,  # Baseline is fast
-
             activation_history=activations,
             threshold_history=[0.5] * len(activations),  # Dummy
-            energy_history=[1.0] * len(activations),     # Dummy
-            significance_history=[0.5] * len(activations)  # Dummy
+            energy_history=[1.0] * len(activations),  # Dummy
+            significance_history=[0.5] * len(activations),  # Dummy
         )
 
     def _perform_statistical_analysis(self, all_results: Dict[str, Any]) -> Dict[str, Any]:
@@ -746,7 +750,7 @@ class BenchmarkRunner:
                     "energy_efficiency": [r.energy_efficiency for r in results],
                     "activation_rate": [r.activation_rate for r in results],
                     "precision": [r.precision for r in results],
-                    "recall": [r.recall for r in results]
+                    "recall": [r.recall for r in results],
                 }
                 algorithm_metrics[algo_name] = metrics
 
@@ -765,7 +769,7 @@ class BenchmarkRunner:
                             "std": float(std_val),
                             "ci_lower": ci_lower,
                             "ci_upper": ci_upper,
-                            "values": values
+                            "values": values,
                         }
 
                 summary_stats[algo_name] = algo_stats
@@ -774,24 +778,26 @@ class BenchmarkRunner:
             significance_tests = {}
             algo_names = list(algorithm_metrics.keys())
             for i, algo1 in enumerate(algo_names):
-                for j, algo2 in enumerate(algo_names[i+1:], i+1):
+                for j, algo2 in enumerate(algo_names[i + 1 :], i + 1):
                     for metric_name in ["f1_score", "energy_efficiency"]:
                         values1 = algorithm_metrics[algo1][metric_name]
                         values2 = algorithm_metrics[algo2][metric_name]
 
                         if values1 and values2:
-                            t_stat, p_value = self.analyzer.perform_significance_test(values1, values2)
+                            t_stat, p_value = self.analyzer.perform_significance_test(
+                                values1, values2
+                            )
 
                             test_key = f"{algo1}_vs_{algo2}_{metric_name}"
                             significance_tests[test_key] = {
                                 "t_statistic": t_stat,
                                 "p_value": p_value,
-                                "significant": p_value < self.config.significance_threshold
+                                "significant": p_value < self.config.significance_threshold,
                             }
 
             domain_analysis = {
                 "summary_statistics": summary_stats,
-                "significance_tests": significance_tests
+                "significance_tests": significance_tests,
             }
 
             analysis[domain_name] = domain_analysis
@@ -799,10 +805,7 @@ class BenchmarkRunner:
         return analysis
 
     def _generate_comprehensive_report(
-        self,
-        all_results: Dict[str, Any],
-        statistical_analysis: Dict[str, Any],
-        total_time: float
+        self, all_results: Dict[str, Any], statistical_analysis: Dict[str, Any], total_time: float
     ) -> Dict[str, Any]:
         """Generate comprehensive benchmark report."""
 
@@ -813,19 +816,17 @@ class BenchmarkRunner:
                 "configuration": self.config.__dict__,
                 "num_domains": len(all_results),
                 "num_seeds": self.config.num_seeds,
-                "samples_per_domain": self.config.num_samples
+                "samples_per_domain": self.config.num_samples,
             },
             "domain_results": all_results,
             "statistical_analysis": statistical_analysis,
-            "summary": self._compute_overall_summary(all_results, statistical_analysis)
+            "summary": self._compute_overall_summary(all_results, statistical_analysis),
         }
 
         return report
 
     def _compute_overall_summary(
-        self,
-        all_results: Dict[str, Any],
-        statistical_analysis: Dict[str, Any]
+        self, all_results: Dict[str, Any], statistical_analysis: Dict[str, Any]
     ) -> Dict[str, Any]:
         """Compute overall performance summary."""
 
@@ -855,7 +856,7 @@ class BenchmarkRunner:
             best_performers[domain_name] = {
                 "best_f1": best_f1,
                 "best_energy": best_energy,
-                "best_balanced": best_balanced
+                "best_balanced": best_balanced,
             }
 
         # Compute research quality improvement
@@ -893,16 +894,17 @@ class BenchmarkRunner:
                 "enhanced_f1": enhanced_f1,
                 "improvement_ratios": {
                     domain: enhanced_f1[domain] / baseline_f1[domain]
-                    if baseline_f1[domain] > 0 else 1.0
+                    if baseline_f1[domain] > 0
+                    else 1.0
                     for domain in baseline_f1.keys()
-                }
+                },
             },
             "research_quality_assessment": {
                 "baseline_score": baseline_quality,
                 "estimated_current_score": min(10.0, estimated_quality_score),
                 "improvement": estimated_quality_score - baseline_quality,
-                "target_score": 8.5
-            }
+                "target_score": 8.5,
+            },
         }
 
     def _save_results(self, report: Dict[str, Any]):
@@ -936,7 +938,7 @@ class BenchmarkRunner:
 
         serializable_report = deep_convert(report)
 
-        with open(report_file, 'w') as f:
+        with open(report_file, "w") as f:
             json.dump(serializable_report, f, indent=2)
 
         print(f"\nBenchmark results saved to: {report_file}")

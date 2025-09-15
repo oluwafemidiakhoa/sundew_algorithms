@@ -4,17 +4,18 @@ Quick performance test for enhanced Sundew system.
 """
 
 import json
-import time
 import sys
-import numpy as np
+import time
 from pathlib import Path
+
+import numpy as np
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
-from sundew.core import SundewAlgorithm
 from sundew.config import SundewConfig
+from sundew.core import SundewAlgorithm
+from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
 
 
 def generate_test_data(n_samples=1000, seed=42):

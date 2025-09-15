@@ -1,0 +1,1036 @@
+[sundew] Sundew Algorithm — Demo
+============================================================
+Initial threshold: 0.780 | Energy: 100.0
+
+01. environmental   [ok] processed  (sig=0.220, 0.002s, dE~9.5)         | energy   90.5 | thr 0.784
+02. emergency       [idle] dormant  | energy   91.1 | thr 0.787
+03. emergency       [ok] processed  (sig=0.783, 0.003s, dE~11.7)        | energy   79.3 | thr 0.797
+04. system_alert    [idle] dormant  | energy   81.3 | thr 0.806
+05. security        [idle] dormant  | energy   83.6 | thr 0.814
+06. health_monitor  [idle] dormant  | energy   84.9 | thr 0.821
+07. health_monitor  [ok] processed  (sig=0.710, 0.003s, dE~11.4)        | energy   73.5 | thr 0.834
+08. system_alert    [idle] dormant  | energy   75.0 | thr 0.846
+09. health_monitor  [idle] dormant  | energy   75.9 | thr 0.858
+10. health_monitor  [idle] dormant  | energy   77.5 | thr 0.868
+11. system_alert    [idle] dormant  | energy   79.2 | thr 0.878
+12. health_monitor  [idle] dormant  | energy   79.7 | thr 0.887
+13. emergency       [idle] dormant  | energy   81.6 | thr 0.895
+14. emergency       [idle] dormant  | energy   82.4 | thr 0.902
+15. environmental   [idle] dormant  | energy   83.6 | thr 0.908
+16. emergency       [ok] processed  (sig=0.784, 0.003s, dE~11.7)        | energy   71.8 | thr 0.920
+17. system_alert    [idle] dormant  | energy   74.0 | thr 0.920
+18. emergency       [idle] dormant  | energy   76.1 | thr 0.920
+19. security        [idle] dormant  | energy   77.7 | thr 0.920
+20. security        [idle] dormant  | energy   79.0 | thr 0.920
+21. system_alert    [idle] dormant  | energy   81.1 | thr 0.920
+22. environmental   [idle] dormant  | energy   83.4 | thr 0.920
+23. environmental   [idle] dormant  | energy   85.3 | thr 0.920
+24. health_monitor  [idle] dormant  | energy   86.2 | thr 0.920
+25. health_monitor  [idle] dormant  | energy   86.9 | thr 0.920
+26. security        [idle] dormant  | energy   87.6 | thr 0.920
+27. health_monitor  [idle] dormant  | energy   89.4 | thr 0.920
+28. health_monitor  [idle] dormant  | energy   90.6 | thr 0.920
+29. system_alert    [idle] dormant  | energy   91.6 | thr 0.920
+30. system_alert    [idle] dormant  | energy   93.4 | thr 0.920
+31. security        [idle] dormant  | energy   94.3 | thr 0.919
+32. system_alert    [idle] dormant  | energy   95.1 | thr 0.919
+33. environmental   [idle] dormant  | energy   97.6 | thr 0.917
+34. emergency       [idle] dormant  | energy   99.2 | thr 0.914
+35. environmental   [idle] dormant  | energy  100.0 | thr 0.911
+36. security        [idle] dormant  | energy  100.0 | thr 0.908
+37. security        [idle] dormant  | energy  100.0 | thr 0.905
+38. system_alert    [idle] dormant  | energy  100.0 | thr 0.903
+39. environmental   [idle] dormant  | energy  100.0 | thr 0.900
+40. security        [idle] dormant  | energy  100.0 | thr 0.897
+41. security        [idle] dormant  | energy  100.0 | thr 0.894
+42. environmental   [idle] dormant  | energy  100.0 | thr 0.891
+43. security        [idle] dormant  | energy  100.0 | thr 0.888
+44. environmental   [idle] dormant  | energy  100.0 | thr 0.885
+45. system_alert    [idle] dormant  | energy  100.0 | thr 0.882
+46. system_alert    [idle] dormant  | energy  100.0 | thr 0.879
+47. emergency       [idle] dormant  | energy  100.0 | thr 0.876
+48. emergency       [idle] dormant  | energy  100.0 | thr 0.873
+49. emergency       [idle] dormant  | energy  100.0 | thr 0.870
+50. emergency       [idle] dormant  | energy  100.0 | thr 0.867
+51. emergency       [idle] dormant  | energy  100.0 | thr 0.864
+52. health_monitor  [idle] dormant  | energy  100.0 | thr 0.861
+53. health_monitor  [idle] dormant  | energy  100.0 | thr 0.858
+54. emergency       [idle] dormant  | energy  100.0 | thr 0.855
+55. health_monitor  [idle] dormant  | energy  100.0 | thr 0.852
+56. emergency       [idle] dormant  | energy  100.0 | thr 0.849
+57. environmental   [idle] dormant  | energy  100.0 | thr 0.846
+58. security        [idle] dormant  | energy  100.0 | thr 0.843
+59. health_monitor  [idle] dormant  | energy  100.0 | thr 0.840
+60. health_monitor  [idle] dormant  | energy  100.0 | thr 0.837
+61. system_alert    [idle] dormant  | energy  100.0 | thr 0.834
+62. health_monitor  [idle] dormant  | energy  100.0 | thr 0.831
+63. environmental   [idle] dormant  | energy  100.0 | thr 0.828
+64. health_monitor  [idle] dormant  | energy  100.0 | thr 0.825
+65. environmental   [idle] dormant  | energy  100.0 | thr 0.822
+66. emergency       [idle] dormant  | energy  100.0 | thr 0.819
+67. security        [idle] dormant  | energy  100.0 | thr 0.816
+68. environmental   [idle] dormant  | energy  100.0 | thr 0.813
+69. security        [ok] processed  (sig=0.607, 0.003s, dE~11.0)        | energy   89.0 | thr 0.816
+70. system_alert    [idle] dormant  | energy   91.4 | thr 0.818
+71. security        [idle] dormant  | energy   92.8 | thr 0.819
+72. environmental   [idle] dormant  | energy   94.9 | thr 0.819
+73. emergency       [idle] dormant  | energy   95.6 | thr 0.819
+74. emergency       [idle] dormant  | energy   97.2 | thr 0.818
+75. health_monitor  [idle] dormant  | energy   99.5 | thr 0.816
+76. security        [idle] dormant  | energy  100.0 | thr 0.814
+77. emergency       [idle] dormant  | energy  100.0 | thr 0.811
+78. system_alert    [idle] dormant  | energy  100.0 | thr 0.808
+79. environmental   [idle] dormant  | energy  100.0 | thr 0.806
+80. system_alert    [idle] dormant  | energy  100.0 | thr 0.803
+81. system_alert    [idle] dormant  | energy  100.0 | thr 0.800
+82. emergency       [ok] processed  (sig=0.844, 0.003s, dE~12.0)        | energy   88.0 | thr 0.804
+83. emergency       [idle] dormant  | energy   89.0 | thr 0.807
+84. system_alert    [ok] processed  (sig=0.753, 0.003s, dE~11.6)        | energy   77.4 | thr 0.817
+85. health_monitor  [idle] dormant  | energy   79.1 | thr 0.826
+86. security        [idle] dormant  | energy   81.4 | thr 0.834
+87. security        [idle] dormant  | energy   82.1 | thr 0.841
+88. emergency       [idle] dormant  | energy   83.9 | thr 0.848
+89. environmental   [idle] dormant  | energy   84.7 | thr 0.853
+90. security        [idle] dormant  | energy   86.3 | thr 0.857
+91. security        [idle] dormant  | energy   88.4 | thr 0.861
+92. emergency       [idle] dormant  | energy   89.3 | thr 0.863
+93. emergency       [ok] processed  (sig=0.912, 0.003s, dE~12.2)        | energy   77.0 | thr 0.872
+94. system_alert    [idle] dormant  | energy   78.4 | thr 0.881
+95. security        [idle] dormant  | energy   80.3 | thr 0.888
+96. security        [idle] dormant  | energy   82.8 | thr 0.894
+97. health_monitor  [idle] dormant  | energy   84.1 | thr 0.899
+98. security        [idle] dormant  | energy   86.3 | thr 0.903
+99. system_alert    [idle] dormant  | energy   87.2 | thr 0.906
+100. environmental   [ok] processed (sig=0.410, 0.002s, dE~10.2)        | energy   77.0 | thr 0.915
+101. health_monitor  [idle] dormant | energy   78.3 | thr 0.920
+102. emergency       [idle] dormant | energy   79.3 | thr 0.920
+103. security        [idle] dormant | energy   80.7 | thr 0.920
+104. system_alert    [idle] dormant | energy   82.3 | thr 0.920
+105. emergency       [idle] dormant | energy   84.8 | thr 0.920
+106. system_alert    [idle] dormant | energy   87.2 | thr 0.920
+107. security        [idle] dormant | energy   89.4 | thr 0.920
+108. system_alert    [idle] dormant | energy   90.9 | thr 0.920
+109. health_monitor  [idle] dormant | energy   92.2 | thr 0.920
+110. environmental   [idle] dormant | energy   93.5 | thr 0.920
+111. security        [idle] dormant | energy   94.5 | thr 0.920
+112. health_monitor  [idle] dormant | energy   95.9 | thr 0.919
+113. environmental   [idle] dormant | energy   98.3 | thr 0.917
+114. health_monitor  [idle] dormant | energy   99.9 | thr 0.914
+115. security        [idle] dormant | energy  100.0 | thr 0.911
+116. health_monitor  [idle] dormant | energy  100.0 | thr 0.908
+117. environmental   [idle] dormant | energy  100.0 | thr 0.906
+118. health_monitor  [idle] dormant | energy  100.0 | thr 0.903
+119. health_monitor  [idle] dormant | energy  100.0 | thr 0.900
+120. emergency       [idle] dormant | energy  100.0 | thr 0.897
+121. system_alert    [idle] dormant | energy  100.0 | thr 0.894
+122. security        [idle] dormant | energy  100.0 | thr 0.891
+123. system_alert    [idle] dormant | energy  100.0 | thr 0.888
+124. health_monitor  [idle] dormant | energy  100.0 | thr 0.885
+125. emergency       [ok] processed (sig=0.832, 0.003s, dE~11.9)        | energy   88.1 | thr 0.889
+126. environmental   [idle] dormant | energy   89.8 | thr 0.891
+127. system_alert    [idle] dormant | energy   91.5 | thr 0.893
+128. security        [idle] dormant | energy   93.8 | thr 0.894
+129. emergency       [idle] dormant | energy   95.8 | thr 0.893
+130. system_alert    [idle] dormant | energy   97.1 | thr 0.892
+131. environmental   [idle] dormant | energy   98.2 | thr 0.891
+132. system_alert    [idle] dormant | energy  100.0 | thr 0.888
+133. environmental   [idle] dormant | energy  100.0 | thr 0.886
+134. emergency       [idle] dormant | energy  100.0 | thr 0.883
+135. security        [idle] dormant | energy  100.0 | thr 0.881
+136. health_monitor  [idle] dormant | energy  100.0 | thr 0.878
+137. system_alert    [idle] dormant | energy  100.0 | thr 0.875
+138. environmental   [idle] dormant | energy  100.0 | thr 0.873
+139. security        [idle] dormant | energy  100.0 | thr 0.870
+140. security        [idle] dormant | energy  100.0 | thr 0.867
+141. emergency       [idle] dormant | energy  100.0 | thr 0.864
+142. environmental   [idle] dormant | energy  100.0 | thr 0.861
+143. security        [idle] dormant | energy  100.0 | thr 0.858
+144. emergency       [idle] dormant | energy  100.0 | thr 0.855
+145. system_alert    [idle] dormant | energy  100.0 | thr 0.852
+146. emergency       [ok] processed (sig=0.796, 0.003s, dE~11.8)        | energy   88.2 | thr 0.856
+147. security        [idle] dormant | energy   90.2 | thr 0.858
+148. health_monitor  [idle] dormant | energy   91.9 | thr 0.860
+149. system_alert    [idle] dormant | energy   93.4 | thr 0.861
+150. system_alert    [idle] dormant | energy   95.6 | thr 0.861
+151. emergency       [idle] dormant | energy   96.9 | thr 0.860
+152. emergency       [idle] dormant | energy   97.4 | thr 0.858
+153. emergency       [idle] dormant | energy   99.2 | thr 0.856
+154. health_monitor  [idle] dormant | energy  100.0 | thr 0.854
+155. environmental   [idle] dormant | energy  100.0 | thr 0.851
+156. security        [ok] processed (sig=0.631, 0.003s, dE~11.1)        | energy   88.9 | thr 0.855
+157. emergency       [idle] dormant | energy   91.1 | thr 0.857
+158. system_alert    [idle] dormant | energy   92.7 | thr 0.859
+159. system_alert    [idle] dormant | energy   94.4 | thr 0.860
+160. system_alert    [idle] dormant | energy   95.2 | thr 0.860
+161. system_alert    [idle] dormant | energy   97.5 | thr 0.859
+162. security        [idle] dormant | energy   99.7 | thr 0.857
+163. security        [idle] dormant | energy  100.0 | thr 0.854
+164. security        [idle] dormant | energy  100.0 | thr 0.852
+165. system_alert    [idle] dormant | energy  100.0 | thr 0.849
+166. emergency       [idle] dormant | energy  100.0 | thr 0.847
+167. system_alert    [idle] dormant | energy  100.0 | thr 0.844
+168. health_monitor  [idle] dormant | energy  100.0 | thr 0.841
+169. system_alert    [idle] dormant | energy  100.0 | thr 0.839
+170. system_alert    [ok] processed (sig=0.710, 0.003s, dE~11.4)        | energy   88.6 | thr 0.842
+171. system_alert    [idle] dormant | energy   89.7 | thr 0.845
+172. system_alert    [idle] dormant | energy   91.8 | thr 0.847
+173. system_alert    [idle] dormant | energy   93.9 | thr 0.848
+174. environmental   [idle] dormant | energy   96.0 | thr 0.847
+175. security        [idle] dormant | energy   98.3 | thr 0.846
+176. health_monitor  [idle] dormant | energy   99.2 | thr 0.844
+177. emergency       [idle] dormant | energy  100.0 | thr 0.842
+178. emergency       [idle] dormant | energy  100.0 | thr 0.839
+179. security        [idle] dormant | energy  100.0 | thr 0.837
+180. environmental   [idle] dormant | energy  100.0 | thr 0.834
+181. environmental   [idle] dormant | energy  100.0 | thr 0.831
+182. emergency       [idle] dormant | energy  100.0 | thr 0.829
+183. system_alert    [idle] dormant | energy  100.0 | thr 0.826
+184. system_alert    [idle] dormant | energy  100.0 | thr 0.823
+185. system_alert    [idle] dormant | energy  100.0 | thr 0.820
+186. health_monitor  [idle] dormant | energy  100.0 | thr 0.817
+187. system_alert    [idle] dormant | energy  100.0 | thr 0.815
+188. security        [idle] dormant | energy  100.0 | thr 0.812
+189. environmental   [idle] dormant | energy  100.0 | thr 0.809
+190. environmental   [idle] dormant | energy  100.0 | thr 0.806
+191. security        [idle] dormant | energy  100.0 | thr 0.803
+192. security        [idle] dormant | energy  100.0 | thr 0.800
+193. system_alert    [idle] dormant | energy  100.0 | thr 0.797
+194. health_monitor  [idle] dormant | energy  100.0 | thr 0.794
+195. health_monitor  [idle] dormant | energy  100.0 | thr 0.791
+196. system_alert    [ok] processed (sig=0.711, 0.003s, dE~11.4)        | energy   88.6 | thr 0.794
+197. system_alert    [idle] dormant | energy   89.7 | thr 0.797
+198. system_alert    [ok] processed (sig=0.775, 0.003s, dE~11.7)        | energy   78.0 | thr 0.806
+199. environmental   [idle] dormant | energy   80.0 | thr 0.815
+200. health_monitor  [ok] processed (sig=0.509, 0.003s, dE~10.6)        | energy   69.3 | thr 0.830
+201. security        [idle] dormant | energy   70.4 | thr 0.844
+202. emergency       [idle] dormant | energy   71.7 | thr 0.858
+203. health_monitor  [idle] dormant | energy   72.5 | thr 0.871
+204. system_alert    [idle] dormant | energy   74.9 | thr 0.882
+205. health_monitor  [idle] dormant | energy   77.2 | thr 0.892
+206. security        [idle] dormant | energy   78.3 | thr 0.902
+207. health_monitor  [idle] dormant | energy   78.8 | thr 0.911
+208. health_monitor  [idle] dormant | energy   80.1 | thr 0.919
+209. health_monitor  [idle] dormant | energy   82.0 | thr 0.920
+210. system_alert    [idle] dormant | energy   83.3 | thr 0.920
+211. environmental   [idle] dormant | energy   84.8 | thr 0.920
+212. environmental   [idle] dormant | energy   86.9 | thr 0.920
+213. security        [idle] dormant | energy   87.6 | thr 0.920
+214. security        [idle] dormant | energy   89.3 | thr 0.920
+215. environmental   [idle] dormant | energy   91.5 | thr 0.920
+216. environmental   [idle] dormant | energy   93.3 | thr 0.920
+217. environmental   [idle] dormant | energy   94.2 | thr 0.920
+218. emergency       [ok] processed (sig=0.715, 0.003s, dE~11.5)        | energy   82.7 | thr 0.920
+219. emergency       [idle] dormant | energy   84.2 | thr 0.920
+220. system_alert    [idle] dormant | energy   84.8 | thr 0.920
+221. environmental   [idle] dormant | energy   86.6 | thr 0.920
+222. emergency       [idle] dormant | energy   88.5 | thr 0.920
+223. system_alert    [idle] dormant | energy   89.5 | thr 0.920
+224. emergency       [idle] dormant | energy   90.0 | thr 0.920
+225. health_monitor  [idle] dormant | energy   92.0 | thr 0.920
+226. health_monitor  [idle] dormant | energy   93.4 | thr 0.920
+227. environmental   [idle] dormant | energy   95.8 | thr 0.919
+228. health_monitor  [idle] dormant | energy   96.4 | thr 0.918
+229. health_monitor  [idle] dormant | energy   98.6 | thr 0.916
+230. system_alert    [idle] dormant | energy  100.0 | thr 0.913
+231. health_monitor  [idle] dormant | energy  100.0 | thr 0.910
+232. environmental   [idle] dormant | energy  100.0 | thr 0.908
+233. security        [idle] dormant | energy  100.0 | thr 0.905
+234. emergency       [idle] dormant | energy  100.0 | thr 0.902
+235. health_monitor  [idle] dormant | energy  100.0 | thr 0.899
+236. health_monitor  [idle] dormant | energy  100.0 | thr 0.896
+237. security        [idle] dormant | energy  100.0 | thr 0.893
+238. system_alert    [idle] dormant | energy  100.0 | thr 0.890
+239. emergency       [idle] dormant | energy  100.0 | thr 0.887
+240. environmental   [idle] dormant | energy  100.0 | thr 0.884
+241. system_alert    [idle] dormant | energy  100.0 | thr 0.882
+242. environmental   [idle] dormant | energy  100.0 | thr 0.879
+243. environmental   [idle] dormant | energy  100.0 | thr 0.876
+244. security        [idle] dormant | energy  100.0 | thr 0.873
+245. system_alert    [idle] dormant | energy  100.0 | thr 0.870
+246. emergency       [idle] dormant | energy  100.0 | thr 0.867
+247. environmental   [idle] dormant | energy  100.0 | thr 0.864
+248. system_alert    [idle] dormant | energy  100.0 | thr 0.861
+249. environmental   [idle] dormant | energy  100.0 | thr 0.858
+250. health_monitor  [idle] dormant | energy  100.0 | thr 0.855
+251. emergency       [idle] dormant | energy  100.0 | thr 0.852
+252. security        [idle] dormant | energy  100.0 | thr 0.849
+253. health_monitor  [idle] dormant | energy  100.0 | thr 0.846
+254. environmental   [idle] dormant | energy  100.0 | thr 0.843
+255. environmental   [idle] dormant | energy  100.0 | thr 0.840
+256. emergency       [ok] processed (sig=0.751, 0.003s, dE~11.6)        | energy   88.4 | thr 0.843
+257. emergency       [idle] dormant | energy   89.8 | thr 0.846
+258. system_alert    [idle] dormant | energy   90.9 | thr 0.848
+259. emergency       [idle] dormant | energy   92.2 | thr 0.849
+260. health_monitor  [idle] dormant | energy   93.7 | thr 0.849
+261. emergency       [ok] processed (sig=0.729, 0.003s, dE~11.5)        | energy   82.2 | thr 0.856
+262. environmental   [idle] dormant | energy   82.7 | thr 0.863
+263. system_alert    [idle] dormant | energy   84.3 | thr 0.869
+264. health_monitor  [idle] dormant | energy   86.1 | thr 0.873
+265. system_alert    [idle] dormant | energy   87.6 | thr 0.877
+266. health_monitor  [idle] dormant | energy   88.8 | thr 0.879
+267. health_monitor  [idle] dormant | energy   90.0 | thr 0.881
+268. emergency       [idle] dormant | energy   91.2 | thr 0.883
+269. health_monitor  [idle] dormant | energy   93.4 | thr 0.883
+270. environmental   [idle] dormant | energy   94.1 | thr 0.883
+271. emergency       [idle] dormant | energy   95.6 | thr 0.882
+272. health_monitor  [idle] dormant | energy   96.8 | thr 0.881
+273. security        [idle] dormant | energy   98.9 | thr 0.879
+274. emergency       [idle] dormant | energy  100.0 | thr 0.876
+275. health_monitor  [idle] dormant | energy  100.0 | thr 0.873
+276. security        [ok] processed (sig=0.667, 0.003s, dE~11.3)        | energy   88.7 | thr 0.877
+277. system_alert    [idle] dormant | energy   89.5 | thr 0.880
+278. emergency       [idle] dormant | energy   91.1 | thr 0.882
+279. health_monitor  [idle] dormant | energy   93.0 | thr 0.883
+280. emergency       [idle] dormant | energy   93.8 | thr 0.883
+281. emergency       [idle] dormant | energy   95.8 | thr 0.883
+282. health_monitor  [idle] dormant | energy   98.0 | thr 0.882
+283. emergency       [idle] dormant | energy   98.7 | thr 0.880
+284. emergency       [idle] dormant | energy   99.8 | thr 0.877
+285. system_alert    [idle] dormant | energy  100.0 | thr 0.875
+286. health_monitor  [idle] dormant | energy  100.0 | thr 0.872
+287. environmental   [idle] dormant | energy  100.0 | thr 0.870
+288. health_monitor  [idle] dormant | energy  100.0 | thr 0.867
+289. system_alert    [idle] dormant | energy  100.0 | thr 0.864
+290. security        [idle] dormant | energy  100.0 | thr 0.861
+291. health_monitor  [idle] dormant | energy  100.0 | thr 0.858
+292. emergency       [idle] dormant | energy  100.0 | thr 0.856
+293. environmental   [idle] dormant | energy  100.0 | thr 0.853
+294. environmental   [idle] dormant | energy  100.0 | thr 0.850
+295. environmental   [idle] dormant | energy  100.0 | thr 0.847
+296. emergency       [idle] dormant | energy  100.0 | thr 0.844
+297. health_monitor  [idle] dormant | energy  100.0 | thr 0.841
+298. environmental   [idle] dormant | energy  100.0 | thr 0.838
+299. emergency       [idle] dormant | energy  100.0 | thr 0.835
+300. system_alert    [ok] processed (sig=0.651, 0.003s, dE~11.2)        | energy   88.8 | thr 0.839
+301. system_alert    [idle] dormant | energy   90.4 | thr 0.841
+302. health_monitor  [idle] dormant | energy   91.7 | thr 0.843
+303. health_monitor  [idle] dormant | energy   92.8 | thr 0.844
+304. environmental   [idle] dormant | energy   94.9 | thr 0.844
+305. system_alert    [ok] processed (sig=0.764, 0.003s, dE~11.7)        | energy   83.3 | thr 0.850
+306. system_alert    [idle] dormant | energy   84.3 | thr 0.856
+307. environmental   [idle] dormant | energy   86.0 | thr 0.861
+308. emergency       [idle] dormant | energy   86.6 | thr 0.865
+309. system_alert    [idle] dormant | energy   87.4 | thr 0.869
+310. environmental   [idle] dormant | energy   89.5 | thr 0.871
+311. environmental   [idle] dormant | energy   91.8 | thr 0.873
+312. security        [idle] dormant | energy   92.8 | thr 0.873
+313. environmental   [idle] dormant | energy   95.2 | thr 0.873
+314. emergency       [idle] dormant | energy   97.2 | thr 0.872
+315. system_alert    [idle] dormant | energy   99.2 | thr 0.870
+316. health_monitor  [idle] dormant | energy  100.0 | thr 0.867
+317. system_alert    [idle] dormant | energy  100.0 | thr 0.864
+318. security        [idle] dormant | energy  100.0 | thr 0.862
+319. environmental   [idle] dormant | energy  100.0 | thr 0.859
+320. environmental   [idle] dormant | energy  100.0 | thr 0.856
+321. environmental   [idle] dormant | energy  100.0 | thr 0.853
+322. security        [idle] dormant | energy  100.0 | thr 0.851
+323. security        [idle] dormant | energy  100.0 | thr 0.848
+324. system_alert    [idle] dormant | energy  100.0 | thr 0.845
+325. health_monitor  [idle] dormant | energy  100.0 | thr 0.842
+326. system_alert    [idle] dormant | energy  100.0 | thr 0.839
+327. system_alert    [idle] dormant | energy  100.0 | thr 0.836
+328. emergency       [idle] dormant | energy  100.0 | thr 0.833
+329. environmental   [idle] dormant | energy  100.0 | thr 0.830
+330. security        [idle] dormant | energy  100.0 | thr 0.827
+331. health_monitor  [idle] dormant | energy  100.0 | thr 0.824
+332. emergency       [ok] processed (sig=0.800, 0.003s, dE~11.8)        | energy   88.2 | thr 0.828
+333. security        [ok] processed (sig=0.479, 0.002s, dE~10.5)        | energy   77.7 | thr 0.838
+334. emergency       [idle] dormant | energy   78.7 | thr 0.847
+335. emergency       [idle] dormant | energy   80.3 | thr 0.855
+336. environmental   [idle] dormant | energy   81.1 | thr 0.863
+337. system_alert    [idle] dormant | energy   82.6 | thr 0.870
+338. environmental   [idle] dormant | energy   84.2 | thr 0.876
+339. security        [idle] dormant | energy   85.6 | thr 0.881
+340. system_alert    [idle] dormant | energy   86.2 | thr 0.885
+341. system_alert    [idle] dormant | energy   87.7 | thr 0.888
+342. system_alert    [idle] dormant | energy   89.0 | thr 0.890
+343. health_monitor  [idle] dormant | energy   90.7 | thr 0.892
+344. emergency       [idle] dormant | energy   91.5 | thr 0.893
+345. system_alert    [idle] dormant | energy   92.6 | thr 0.893
+346. environmental   [idle] dormant | energy   93.4 | thr 0.893
+347. health_monitor  [idle] dormant | energy   95.1 | thr 0.892
+348. health_monitor  [idle] dormant | energy   96.0 | thr 0.891
+349. security        [idle] dormant | energy   97.4 | thr 0.890
+350. emergency       [idle] dormant | energy   99.6 | thr 0.887
+351. environmental   [idle] dormant | energy  100.0 | thr 0.884
+352. security        [idle] dormant | energy  100.0 | thr 0.881
+353. security        [idle] dormant | energy  100.0 | thr 0.878
+354. emergency       [idle] dormant | energy  100.0 | thr 0.875
+355. emergency       [idle] dormant | energy  100.0 | thr 0.873
+356. emergency       [idle] dormant | energy  100.0 | thr 0.870
+357. health_monitor  [ok] processed (sig=0.687, 0.003s, dE~11.3)        | energy   88.7 | thr 0.873
+358. environmental   [idle] dormant | energy   90.3 | thr 0.876
+359. emergency       [idle] dormant | energy   91.3 | thr 0.877
+360. emergency       [idle] dormant | energy   93.2 | thr 0.878
+361. emergency       [idle] dormant | energy   95.1 | thr 0.878
+362. security        [idle] dormant | energy   97.2 | thr 0.877
+363. system_alert    [idle] dormant | energy   99.0 | thr 0.875
+364. security        [idle] dormant | energy  100.0 | thr 0.873
+365. security        [idle] dormant | energy  100.0 | thr 0.870
+366. health_monitor  [idle] dormant | energy  100.0 | thr 0.868
+367. security        [ok] processed (sig=0.848, 0.003s, dE~12.0)        | energy   88.0 | thr 0.872
+368. system_alert    [idle] dormant | energy   89.1 | thr 0.875
+369. health_monitor  [idle] dormant | energy   90.8 | thr 0.878
+370. system_alert    [idle] dormant | energy   91.5 | thr 0.879
+371. health_monitor  [idle] dormant | energy   93.4 | thr 0.880
+372. system_alert    [idle] dormant | energy   94.9 | thr 0.880
+373. health_monitor  [idle] dormant | energy   95.6 | thr 0.880
+374. emergency       [idle] dormant | energy   96.9 | thr 0.879
+375. system_alert    [idle] dormant | energy   97.9 | thr 0.877
+376. security        [idle] dormant | energy  100.0 | thr 0.874
+377. security        [idle] dormant | energy  100.0 | thr 0.872
+378. environmental   [idle] dormant | energy  100.0 | thr 0.869
+379. environmental   [idle] dormant | energy  100.0 | thr 0.867
+380. environmental   [idle] dormant | energy  100.0 | thr 0.864
+381. health_monitor  [idle] dormant | energy  100.0 | thr 0.861
+382. health_monitor  [idle] dormant | energy  100.0 | thr 0.858
+383. security        [idle] dormant | energy  100.0 | thr 0.855
+384. security        [idle] dormant | energy  100.0 | thr 0.853
+385. health_monitor  [idle] dormant | energy  100.0 | thr 0.850
+386. system_alert    [idle] dormant | energy  100.0 | thr 0.847
+387. security        [idle] dormant | energy  100.0 | thr 0.844
+388. system_alert    [idle] dormant | energy  100.0 | thr 0.841
+389. emergency       [idle] dormant | energy  100.0 | thr 0.838
+390. environmental   [idle] dormant | energy  100.0 | thr 0.835
+391. health_monitor  [idle] dormant | energy  100.0 | thr 0.832
+392. security        [idle] dormant | energy  100.0 | thr 0.829
+393. emergency       [idle] dormant | energy  100.0 | thr 0.826
+394. security        [idle] dormant | energy  100.0 | thr 0.823
+395. emergency       [idle] dormant | energy  100.0 | thr 0.820
+396. environmental   [idle] dormant | energy  100.0 | thr 0.817
+397. security        [idle] dormant | energy  100.0 | thr 0.814
+398. emergency       [idle] dormant | energy  100.0 | thr 0.811
+399. security        [idle] dormant | energy  100.0 | thr 0.808
+400. health_monitor  [ok] processed (sig=0.586, 0.003s, dE~10.9)        | energy   89.1 | thr 0.811
+401. emergency       [idle] dormant | energy   91.5 | thr 0.813
+402. environmental   [idle] dormant | energy   92.5 | thr 0.815
+403. system_alert    [idle] dormant | energy   94.1 | thr 0.815
+404. system_alert    [idle] dormant | energy   94.8 | thr 0.815
+405. system_alert    [idle] dormant | energy   97.1 | thr 0.814
+406. health_monitor  [idle] dormant | energy   97.8 | thr 0.813
+407. security        [idle] dormant | energy   99.3 | thr 0.811
+408. emergency       [idle] dormant | energy  100.0 | thr 0.808
+409. security        [idle] dormant | energy  100.0 | thr 0.805
+410. system_alert    [idle] dormant | energy  100.0 | thr 0.803
+411. environmental   [idle] dormant | energy  100.0 | thr 0.800
+412. environmental   [idle] dormant | energy  100.0 | thr 0.797
+413. environmental   [idle] dormant | energy  100.0 | thr 0.795
+414. emergency       [idle] dormant | energy  100.0 | thr 0.792
+415. health_monitor  [idle] dormant | energy  100.0 | thr 0.789
+416. health_monitor  [idle] dormant | energy  100.0 | thr 0.786
+417. system_alert    [idle] dormant | energy  100.0 | thr 0.783
+418. system_alert    [idle] dormant | energy  100.0 | thr 0.780
+419. system_alert    [idle] dormant | energy  100.0 | thr 0.777
+420. security        [ok] processed (sig=0.836, 0.003s, dE~11.9)        | energy   88.1 | thr 0.781
+421. emergency       [idle] dormant | energy   89.7 | thr 0.784
+422. environmental   [idle] dormant | energy   91.1 | thr 0.786
+423. security        [idle] dormant | energy   91.9 | thr 0.787
+424. environmental   [idle] dormant | energy   93.6 | thr 0.788
+425. system_alert    [idle] dormant | energy   95.6 | thr 0.787
+426. security        [ok] processed (sig=0.869, 0.003s, dE~12.1)        | energy   83.6 | thr 0.793
+427. system_alert    [idle] dormant | energy   85.5 | thr 0.799
+428. security        [idle] dormant | energy   86.7 | thr 0.803
+429. health_monitor  [idle] dormant | energy   88.9 | thr 0.806
+430. system_alert    [idle] dormant | energy   90.4 | thr 0.809
+431. environmental   [idle] dormant | energy   91.9 | thr 0.810
+432. emergency       [idle] dormant | energy   94.1 | thr 0.810
+433. system_alert    [idle] dormant | energy   95.5 | thr 0.810
+434. health_monitor  [idle] dormant | energy   96.9 | thr 0.809
+435. system_alert    [idle] dormant | energy   98.2 | thr 0.807
+436. emergency       [idle] dormant | energy   99.0 | thr 0.805
+437. environmental   [idle] dormant | energy  100.0 | thr 0.802
+438. environmental   [idle] dormant | energy  100.0 | thr 0.800
+439. security        [idle] dormant | energy  100.0 | thr 0.797
+440. emergency       [idle] dormant | energy  100.0 | thr 0.794
+441. system_alert    [idle] dormant | energy  100.0 | thr 0.792
+442. environmental   [idle] dormant | energy  100.0 | thr 0.789
+443. security        [idle] dormant | energy  100.0 | thr 0.786
+444. emergency       [idle] dormant | energy  100.0 | thr 0.783
+445. system_alert    [idle] dormant | energy  100.0 | thr 0.780
+446. environmental   [idle] dormant | energy  100.0 | thr 0.777
+447. system_alert    [idle] dormant | energy  100.0 | thr 0.774
+448. environmental   [idle] dormant | energy  100.0 | thr 0.771
+449. environmental   [idle] dormant | energy  100.0 | thr 0.768
+450. emergency       [ok] processed (sig=0.742, 0.003s, dE~11.6)        | energy   88.4 | thr 0.772
+451. emergency       [idle] dormant | energy   89.5 | thr 0.775
+452. security        [idle] dormant | energy   90.3 | thr 0.777
+453. environmental   [idle] dormant | energy   91.9 | thr 0.778
+454. emergency       [idle] dormant | energy   92.8 | thr 0.779
+455. environmental   [idle] dormant | energy   95.0 | thr 0.779
+456. environmental   [idle] dormant | energy   96.0 | thr 0.778
+457. health_monitor  [idle] dormant | energy   96.8 | thr 0.777
+458. health_monitor  [idle] dormant | energy   97.8 | thr 0.776
+459. system_alert    [idle] dormant | energy   98.3 | thr 0.774
+460. environmental   [idle] dormant | energy  100.0 | thr 0.771
+461. system_alert    [idle] dormant | energy  100.0 | thr 0.768
+462. health_monitor  [idle] dormant | energy  100.0 | thr 0.766
+463. emergency       [idle] dormant | energy  100.0 | thr 0.763
+464. environmental   [idle] dormant | energy  100.0 | thr 0.760
+465. system_alert    [idle] dormant | energy  100.0 | thr 0.757
+466. security        [idle] dormant | energy  100.0 | thr 0.754
+467. health_monitor  [idle] dormant | energy  100.0 | thr 0.751
+468. health_monitor  [idle] dormant | energy  100.0 | thr 0.749
+469. system_alert    [idle] dormant | energy  100.0 | thr 0.746
+470. system_alert    [idle] dormant | energy  100.0 | thr 0.743
+471. health_monitor  [idle] dormant | energy  100.0 | thr 0.740
+472. health_monitor  [idle] dormant | energy  100.0 | thr 0.737
+473. system_alert    [idle] dormant | energy  100.0 | thr 0.734
+474. emergency       [idle] dormant | energy  100.0 | thr 0.731
+475. health_monitor  [idle] dormant | energy  100.0 | thr 0.728
+476. emergency       [idle] dormant | energy  100.0 | thr 0.725
+477. health_monitor  [idle] dormant | energy  100.0 | thr 0.722
+478. system_alert    [idle] dormant | energy  100.0 | thr 0.719
+479. system_alert    [idle] dormant | energy  100.0 | thr 0.716
+480. system_alert    [idle] dormant | energy  100.0 | thr 0.713
+481. environmental   [idle] dormant | energy  100.0 | thr 0.710
+482. environmental   [idle] dormant | energy  100.0 | thr 0.707
+483. emergency       [ok] processed (sig=0.589, 0.003s, dE~11.0)        | energy   89.0 | thr 0.710
+484. health_monitor  [idle] dormant | energy   91.0 | thr 0.712
+485. emergency       [ok] processed (sig=0.730, 0.003s, dE~11.5)        | energy   79.5 | thr 0.721
+486. health_monitor  [idle] dormant | energy   81.1 | thr 0.729
+487. health_monitor  [idle] dormant | energy   82.7 | thr 0.736
+488. environmental   [idle] dormant | energy   84.8 | thr 0.742
+489. system_alert    [idle] dormant | energy   87.0 | thr 0.747
+490. system_alert    [idle] dormant | energy   89.1 | thr 0.750
+491. health_monitor  [idle] dormant | energy   90.3 | thr 0.753
+492. security        [idle] dormant | energy   92.7 | thr 0.754
+493. system_alert    [idle] dormant | energy   95.1 | thr 0.754
+494. system_alert    [idle] dormant | energy   97.1 | thr 0.752
+495. system_alert    [idle] dormant | energy   99.5 | thr 0.750
+496. environmental   [idle] dormant | energy  100.0 | thr 0.748
+497. security        [idle] dormant | energy  100.0 | thr 0.745
+498. health_monitor  [idle] dormant | energy  100.0 | thr 0.743
+499. system_alert    [idle] dormant | energy  100.0 | thr 0.740
+500. emergency       [ok] processed (sig=0.692, 0.003s, dE~11.4)        | energy   88.6 | thr 0.744
+501. environmental   [idle] dormant | energy   90.8 | thr 0.746
+502. security        [idle] dormant | energy   91.5 | thr 0.748
+503. security        [idle] dormant | energy   92.0 | thr 0.749
+504. system_alert    [idle] dormant | energy   93.7 | thr 0.750
+505. security        [idle] dormant | energy   94.6 | thr 0.750
+506. system_alert    [idle] dormant | energy   96.8 | thr 0.749
+507. environmental   [idle] dormant | energy   97.9 | thr 0.748
+508. health_monitor  [idle] dormant | energy   98.6 | thr 0.746
+509. emergency       [idle] dormant | energy   99.8 | thr 0.743
+510. health_monitor  [idle] dormant | energy  100.0 | thr 0.741
+511. security        [idle] dormant | energy  100.0 | thr 0.738
+512. health_monitor  [idle] dormant | energy  100.0 | thr 0.735
+513. environmental   [idle] dormant | energy  100.0 | thr 0.733
+514. emergency       [ok] processed (sig=0.777, 0.003s, dE~11.7)        | energy   88.3 | thr 0.737
+515. emergency       [idle] dormant | energy   89.1 | thr 0.740
+516. health_monitor  [idle] dormant | energy   89.8 | thr 0.742
+517. health_monitor  [idle] dormant | energy   91.1 | thr 0.744
+518. environmental   [idle] dormant | energy   91.7 | thr 0.745
+519. health_monitor  [idle] dormant | energy   93.1 | thr 0.746
+520. health_monitor  [idle] dormant | energy   95.3 | thr 0.746
+521. emergency       [ok] processed (sig=0.669, 0.003s, dE~11.3)        | energy   84.0 | thr 0.752
+522. environmental   [idle] dormant | energy   85.6 | thr 0.757
+523. system_alert    [idle] dormant | energy   86.8 | thr 0.761
+524. environmental   [idle] dormant | energy   87.7 | thr 0.765
+525. environmental   [idle] dormant | energy   89.9 | thr 0.767
+526. system_alert    [idle] dormant | energy   91.7 | thr 0.769
+527. emergency       [ok] processed (sig=0.890, 0.003s, dE~12.2)        | energy   79.5 | thr 0.777
+528. environmental   [idle] dormant | energy   80.1 | thr 0.785
+529. security        [idle] dormant | energy   81.1 | thr 0.792
+530. security        [ok] processed (sig=0.734, 0.003s, dE~11.5)        | energy   69.5 | thr 0.805
+531. environmental   [idle] dormant | energy   70.2 | thr 0.819
+532. security        [idle] dormant | energy   71.1 | thr 0.832
+533. system_alert    [idle] dormant | energy   73.3 | thr 0.843
+534. security        [idle] dormant | energy   74.1 | thr 0.854
+535. health_monitor  [idle] dormant | energy   74.6 | thr 0.865
+536. environmental   [idle] dormant | energy   75.4 | thr 0.874
+537. health_monitor  [idle] dormant | energy   76.4 | thr 0.883
+538. security        [idle] dormant | energy   78.2 | thr 0.891
+539. emergency       [ok] processed (sig=0.773, 0.003s, dE~11.7)        | energy   66.6 | thr 0.905
+540. security        [ok] processed (sig=0.655, 0.003s, dE~11.2)        | energy   55.3 | thr 0.920
+541. environmental   [idle] dormant | energy   56.3 | thr 0.920
+542. system_alert    [idle] dormant | energy   57.2 | thr 0.920
+543. emergency       [ok] processed (sig=0.839, 0.003s, dE~12.0)        | energy   45.2 | thr 0.920
+544. environmental   [idle] dormant | energy   46.8 | thr 0.920
+545. emergency       [idle] dormant | energy   48.2 | thr 0.920
+546. security        [idle] dormant | energy   49.7 | thr 0.920
+547. emergency       [idle] dormant | energy   51.2 | thr 0.920
+548. system_alert    [idle] dormant | energy   51.8 | thr 0.920
+549. system_alert    [idle] dormant | energy   54.1 | thr 0.920
+550. health_monitor  [idle] dormant | energy   55.5 | thr 0.920
+551. health_monitor  [idle] dormant | energy   56.1 | thr 0.920
+552. environmental   [idle] dormant | energy   57.4 | thr 0.920
+553. environmental   [idle] dormant | energy   58.9 | thr 0.920
+554. system_alert    [idle] dormant | energy   59.5 | thr 0.920
+555. health_monitor  [idle] dormant | energy   61.2 | thr 0.920
+556. environmental   [idle] dormant | energy   62.3 | thr 0.920
+557. security        [idle] dormant | energy   63.9 | thr 0.920
+558. health_monitor  [idle] dormant | energy   66.4 | thr 0.920
+559. security        [idle] dormant | energy   67.8 | thr 0.920
+560. environmental   [idle] dormant | energy   68.5 | thr 0.920
+561. emergency       [idle] dormant | energy   70.7 | thr 0.920
+562. emergency       [idle] dormant | energy   72.7 | thr 0.920
+563. environmental   [idle] dormant | energy   73.7 | thr 0.920
+564. security        [idle] dormant | energy   74.6 | thr 0.920
+565. environmental   [idle] dormant | energy   76.0 | thr 0.920
+566. health_monitor  [idle] dormant | energy   76.7 | thr 0.920
+567. emergency       [idle] dormant | energy   78.5 | thr 0.920
+568. emergency       [idle] dormant | energy   79.4 | thr 0.920
+569. health_monitor  [idle] dormant | energy   80.0 | thr 0.920
+570. health_monitor  [idle] dormant | energy   80.7 | thr 0.920
+571. system_alert    [idle] dormant | energy   82.7 | thr 0.920
+572. emergency       [idle] dormant | energy   84.3 | thr 0.920
+573. security        [idle] dormant | energy   85.9 | thr 0.920
+574. health_monitor  [idle] dormant | energy   86.6 | thr 0.920
+575. environmental   [idle] dormant | energy   88.5 | thr 0.920
+576. security        [idle] dormant | energy   90.7 | thr 0.920
+577. emergency       [idle] dormant | energy   93.1 | thr 0.920
+578. emergency       [idle] dormant | energy   94.3 | thr 0.919
+579. emergency       [idle] dormant | energy   95.3 | thr 0.918
+580. health_monitor  [idle] dormant | energy   96.2 | thr 0.916
+581. system_alert    [idle] dormant | energy   98.4 | thr 0.914
+582. emergency       [idle] dormant | energy  100.0 | thr 0.911
+583. environmental   [idle] dormant | energy  100.0 | thr 0.908
+584. health_monitor  [idle] dormant | energy  100.0 | thr 0.905
+585. emergency       [idle] dormant | energy  100.0 | thr 0.902
+586. security        [idle] dormant | energy  100.0 | thr 0.899
+587. security        [idle] dormant | energy  100.0 | thr 0.896
+588. security        [idle] dormant | energy  100.0 | thr 0.893
+589. environmental   [idle] dormant | energy  100.0 | thr 0.890
+590. health_monitor  [idle] dormant | energy  100.0 | thr 0.887
+591. environmental   [idle] dormant | energy  100.0 | thr 0.884
+592. security        [idle] dormant | energy  100.0 | thr 0.881
+593. system_alert    [idle] dormant | energy  100.0 | thr 0.878
+594. system_alert    [idle] dormant | energy  100.0 | thr 0.875
+595. security        [idle] dormant | energy  100.0 | thr 0.872
+596. emergency       [idle] dormant | energy  100.0 | thr 0.869
+597. environmental   [idle] dormant | energy  100.0 | thr 0.866
+598. emergency       [idle] dormant | energy  100.0 | thr 0.863
+599. system_alert    [idle] dormant | energy  100.0 | thr 0.860
+600. emergency       [ok] processed (sig=0.657, 0.003s, dE~11.2)        | energy   88.8 | thr 0.863
+601. security        [idle] dormant | energy   89.8 | thr 0.866
+602. system_alert    [idle] dormant | energy   91.3 | thr 0.868
+603. environmental   [idle] dormant | energy   92.3 | thr 0.869
+604. environmental   [idle] dormant | energy   93.1 | thr 0.870
+605. system_alert    [idle] dormant | energy   94.1 | thr 0.870
+606. emergency       [idle] dormant | energy   95.6 | thr 0.869
+607. health_monitor  [idle] dormant | energy   96.2 | thr 0.868
+608. system_alert    [idle] dormant | energy   97.9 | thr 0.867
+609. emergency       [ok] processed (sig=0.701, 0.003s, dE~11.4)        | energy   86.5 | thr 0.872
+610. security        [idle] dormant | energy   87.4 | thr 0.876
+611. health_monitor  [idle] dormant | energy   88.4 | thr 0.879
+612. environmental   [idle] dormant | energy   88.9 | thr 0.882
+613. system_alert    [idle] dormant | energy   89.8 | thr 0.884
+614. system_alert    [idle] dormant | energy   91.7 | thr 0.885
+615. emergency       [idle] dormant | energy   93.9 | thr 0.886
+616. emergency       [idle] dormant | energy   94.5 | thr 0.885
+617. security        [idle] dormant | energy   95.1 | thr 0.885
+618. emergency       [ok] processed (sig=0.671, 0.003s, dE~11.3)        | energy   83.8 | thr 0.891
+619. security        [idle] dormant | energy   86.0 | thr 0.896
+620. environmental   [idle] dormant | energy   87.7 | thr 0.900
+621. environmental   [idle] dormant | energy   89.0 | thr 0.902
+622. environmental   [idle] dormant | energy   89.6 | thr 0.905
+623. environmental   [idle] dormant | energy   91.7 | thr 0.906
+624. security        [idle] dormant | energy   93.8 | thr 0.907
+625. environmental   [idle] dormant | energy   94.5 | thr 0.907
+626. security        [idle] dormant | energy   95.5 | thr 0.906
+627. health_monitor  [idle] dormant | energy   97.0 | thr 0.905
+628. security        [idle] dormant | energy   98.2 | thr 0.903
+629. emergency       [ok] processed (sig=0.870, 0.003s, dE~12.1)        | energy   86.1 | thr 0.908
+630. security        [idle] dormant | energy   86.9 | thr 0.912
+631. security        [idle] dormant | energy   87.6 | thr 0.916
+632. health_monitor  [idle] dormant | energy   89.9 | thr 0.918
+633. system_alert    [idle] dormant | energy   91.9 | thr 0.919
+634. emergency       [idle] dormant | energy   94.0 | thr 0.920
+635. environmental   [idle] dormant | energy   94.8 | thr 0.920
+636. health_monitor  [idle] dormant | energy   96.5 | thr 0.919
+637. health_monitor  [idle] dormant | energy   98.3 | thr 0.917
+638. health_monitor  [idle] dormant | energy  100.0 | thr 0.914
+639. health_monitor  [idle] dormant | energy  100.0 | thr 0.912
+640. environmental   [idle] dormant | energy  100.0 | thr 0.909
+641. system_alert    [idle] dormant | energy  100.0 | thr 0.907
+642. environmental   [idle] dormant | energy  100.0 | thr 0.904
+643. emergency       [idle] dormant | energy  100.0 | thr 0.901
+644. security        [idle] dormant | energy  100.0 | thr 0.898
+645. system_alert    [idle] dormant | energy  100.0 | thr 0.895
+646. health_monitor  [idle] dormant | energy  100.0 | thr 0.893
+647. system_alert    [idle] dormant | energy  100.0 | thr 0.890
+648. environmental   [idle] dormant | energy  100.0 | thr 0.887
+649. system_alert    [idle] dormant | energy  100.0 | thr 0.884
+650. environmental   [idle] dormant | energy  100.0 | thr 0.881
+651. emergency       [idle] dormant | energy  100.0 | thr 0.878
+652. emergency       [idle] dormant | energy  100.0 | thr 0.875
+653. emergency       [idle] dormant | energy  100.0 | thr 0.872
+654. security        [idle] dormant | energy  100.0 | thr 0.869
+655. health_monitor  [idle] dormant | energy  100.0 | thr 0.866
+656. environmental   [idle] dormant | energy  100.0 | thr 0.863
+657. health_monitor  [idle] dormant | energy  100.0 | thr 0.860
+658. security        [idle] dormant | energy  100.0 | thr 0.857
+659. health_monitor  [idle] dormant | energy  100.0 | thr 0.854
+660. emergency       [idle] dormant | energy  100.0 | thr 0.851
+661. security        [idle] dormant | energy  100.0 | thr 0.848
+662. system_alert    [idle] dormant | energy  100.0 | thr 0.845
+663. system_alert    [idle] dormant | energy  100.0 | thr 0.842
+664. health_monitor  [idle] dormant | energy  100.0 | thr 0.839
+665. emergency       [idle] dormant | energy  100.0 | thr 0.836
+666. environmental   [idle] dormant | energy  100.0 | thr 0.833
+667. security        [ok] processed (sig=0.664, 0.003s, dE~11.3)        | energy   88.7 | thr 0.837
+668. system_alert    [idle] dormant | energy   89.8 | thr 0.839
+669. system_alert    [idle] dormant | energy   91.6 | thr 0.841
+670. health_monitor  [idle] dormant | energy   93.9 | thr 0.841
+671. health_monitor  [idle] dormant | energy   95.5 | thr 0.841
+672. system_alert    [idle] dormant | energy   96.7 | thr 0.840
+673. environmental   [idle] dormant | energy   98.6 | thr 0.838
+674. emergency       [idle] dormant | energy  100.0 | thr 0.836
+675. health_monitor  [idle] dormant | energy  100.0 | thr 0.834
+676. health_monitor  [idle] dormant | energy  100.0 | thr 0.831
+677. emergency       [idle] dormant | energy  100.0 | thr 0.828
+678. system_alert    [idle] dormant | energy  100.0 | thr 0.826
+679. environmental   [idle] dormant | energy  100.0 | thr 0.823
+680. security        [idle] dormant | energy  100.0 | thr 0.820
+681. health_monitor  [idle] dormant | energy  100.0 | thr 0.817
+682. security        [idle] dormant | energy  100.0 | thr 0.814
+683. emergency       [idle] dormant | energy  100.0 | thr 0.812
+684. environmental   [idle] dormant | energy  100.0 | thr 0.809
+685. health_monitor  [idle] dormant | energy  100.0 | thr 0.806
+686. environmental   [idle] dormant | energy  100.0 | thr 0.803
+687. security        [idle] dormant | energy  100.0 | thr 0.800
+688. environmental   [idle] dormant | energy  100.0 | thr 0.797
+689. emergency       [ok] processed (sig=0.931, 0.003s, dE~12.3)        | energy   87.7 | thr 0.801
+690. security        [idle] dormant | energy   88.9 | thr 0.804
+691. environmental   [idle] dormant | energy   91.1 | thr 0.806
+692. security        [idle] dormant | energy   93.2 | thr 0.807
+693. system_alert    [idle] dormant | energy   94.6 | thr 0.807
+694. security        [ok] processed (sig=0.795, 0.003s, dE~11.8)        | energy   82.8 | thr 0.813
+695. emergency       [idle] dormant | energy   83.8 | thr 0.820
+696. health_monitor  [idle] dormant | energy   84.9 | thr 0.825
+697. environmental   [idle] dormant | energy   86.2 | thr 0.829
+698. emergency       [idle] dormant | energy   87.4 | thr 0.833
+699. system_alert    [idle] dormant | energy   88.8 | thr 0.836
+700. system_alert    [ok] processed (sig=0.302, 0.002s, dE~9.8)         | energy   79.0 | thr 0.844
+701. environmental   [idle] dormant | energy   80.2 | thr 0.852
+702. environmental   [idle] dormant | energy   82.7 | thr 0.859
+703. emergency       [idle] dormant | energy   83.8 | thr 0.865
+704. environmental   [idle] dormant | energy   85.3 | thr 0.869
+705. security        [idle] dormant | energy   87.5 | thr 0.873
+706. environmental   [idle] dormant | energy   88.2 | thr 0.876
+707. environmental   [idle] dormant | energy   90.0 | thr 0.878
+708. system_alert    [idle] dormant | energy   91.6 | thr 0.879
+709. security        [idle] dormant | energy   93.8 | thr 0.879
+710. security        [idle] dormant | energy   94.9 | thr 0.878
+711. environmental   [idle] dormant | energy   95.9 | thr 0.877
+712. environmental   [idle] dormant | energy   96.7 | thr 0.876
+713. security        [idle] dormant | energy   99.1 | thr 0.874
+714. security        [idle] dormant | energy  100.0 | thr 0.871
+715. system_alert    [idle] dormant | energy  100.0 | thr 0.868
+716. security        [idle] dormant | energy  100.0 | thr 0.866
+717. emergency       [idle] dormant | energy  100.0 | thr 0.863
+718. environmental   [idle] dormant | energy  100.0 | thr 0.860
+719. system_alert    [idle] dormant | energy  100.0 | thr 0.857
+720. environmental   [idle] dormant | energy  100.0 | thr 0.854
+721. system_alert    [idle] dormant | energy  100.0 | thr 0.851
+722. health_monitor  [idle] dormant | energy  100.0 | thr 0.848
+723. security        [idle] dormant | energy  100.0 | thr 0.845
+724. environmental   [idle] dormant | energy  100.0 | thr 0.842
+725. emergency       [ok] processed (sig=0.829, 0.003s, dE~11.9)        | energy   88.1 | thr 0.846
+726. emergency       [ok] processed (sig=0.756, 0.003s, dE~11.6)        | energy   76.5 | thr 0.856
+727. security        [idle] dormant | energy   78.1 | thr 0.866
+728. emergency       [idle] dormant | energy   79.6 | thr 0.875
+729. emergency       [ok] processed (sig=0.756, 0.003s, dE~11.6)        | energy   68.0 | thr 0.890
+730. system_alert    [idle] dormant | energy   69.1 | thr 0.905
+731. emergency       [ok] processed (sig=0.729, 0.003s, dE~11.5)        | energy   57.6 | thr 0.920
+732. emergency       [idle] dormant | energy   59.7 | thr 0.920
+733. system_alert    [idle] dormant | energy   60.4 | thr 0.920
+734. emergency       [idle] dormant | energy   62.1 | thr 0.920
+735. health_monitor  [ok] processed (sig=0.603, 0.003s, dE~11.0)        | energy   51.1 | thr 0.920
+736. health_monitor  [idle] dormant | energy   52.0 | thr 0.920
+737. emergency       [idle] dormant | energy   53.4 | thr 0.920
+738. system_alert    [idle] dormant | energy   54.4 | thr 0.920
+739. health_monitor  [idle] dormant | energy   56.2 | thr 0.920
+740. system_alert    [idle] dormant | energy   58.7 | thr 0.920
+741. emergency       [idle] dormant | energy   60.2 | thr 0.920
+742. security        [idle] dormant | energy   62.7 | thr 0.920
+743. emergency       [idle] dormant | energy   64.0 | thr 0.920
+744. emergency       [idle] dormant | energy   65.7 | thr 0.920
+745. system_alert    [idle] dormant | energy   66.7 | thr 0.920
+746. security        [idle] dormant | energy   68.8 | thr 0.920
+747. emergency       [idle] dormant | energy   70.8 | thr 0.920
+748. emergency       [idle] dormant | energy   72.8 | thr 0.920
+749. health_monitor  [idle] dormant | energy   74.0 | thr 0.920
+750. emergency       [ok] processed (sig=0.707, 0.003s, dE~11.4)        | energy   62.6 | thr 0.920
+751. emergency       [idle] dormant | energy   64.7 | thr 0.920
+752. health_monitor  [idle] dormant | energy   66.8 | thr 0.920
+753. security        [idle] dormant | energy   68.6 | thr 0.920
+754. health_monitor  [idle] dormant | energy   70.8 | thr 0.920
+755. emergency       [idle] dormant | energy   72.8 | thr 0.920
+756. environmental   [idle] dormant | energy   73.9 | thr 0.920
+757. security        [idle] dormant | energy   74.8 | thr 0.920
+758. health_monitor  [idle] dormant | energy   77.2 | thr 0.920
+759. emergency       [idle] dormant | energy   79.7 | thr 0.920
+760. emergency       [idle] dormant | energy   80.7 | thr 0.920
+761. environmental   [idle] dormant | energy   81.5 | thr 0.920
+762. health_monitor  [idle] dormant | energy   83.6 | thr 0.920
+763. system_alert    [idle] dormant | energy   84.8 | thr 0.920
+764. emergency       [ok] processed (sig=0.823, 0.003s, dE~11.9)        | energy   72.9 | thr 0.920
+765. health_monitor  [idle] dormant | energy   75.2 | thr 0.920
+766. emergency       [idle] dormant | energy   77.4 | thr 0.920
+767. security        [idle] dormant | energy   79.9 | thr 0.920
+768. security        [idle] dormant | energy   81.4 | thr 0.920
+769. emergency       [idle] dormant | energy   82.9 | thr 0.920
+770. environmental   [idle] dormant | energy   84.9 | thr 0.920
+771. environmental   [idle] dormant | energy   86.6 | thr 0.920
+772. health_monitor  [idle] dormant | energy   88.2 | thr 0.920
+773. security        [idle] dormant | energy   88.8 | thr 0.920
+774. environmental   [idle] dormant | energy   90.0 | thr 0.920
+775. emergency       [idle] dormant | energy   91.3 | thr 0.920
+776. environmental   [idle] dormant | energy   92.5 | thr 0.920
+777. health_monitor  [idle] dormant | energy   94.7 | thr 0.919
+778. security        [idle] dormant | energy   97.2 | thr 0.918
+779. emergency       [idle] dormant | energy   99.7 | thr 0.915
+780. security        [idle] dormant | energy  100.0 | thr 0.912
+781. system_alert    [idle] dormant | energy  100.0 | thr 0.909
+782. system_alert    [idle] dormant | energy  100.0 | thr 0.906
+783. health_monitor  [idle] dormant | energy  100.0 | thr 0.903
+784. system_alert    [idle] dormant | energy  100.0 | thr 0.901
+785. environmental   [idle] dormant | energy  100.0 | thr 0.898
+786. emergency       [idle] dormant | energy  100.0 | thr 0.895
+787. health_monitor  [idle] dormant | energy  100.0 | thr 0.892
+788. system_alert    [idle] dormant | energy  100.0 | thr 0.889
+789. security        [idle] dormant | energy  100.0 | thr 0.886
+790. security        [idle] dormant | energy  100.0 | thr 0.883
+791. health_monitor  [idle] dormant | energy  100.0 | thr 0.880
+792. environmental   [idle] dormant | energy  100.0 | thr 0.877
+793. health_monitor  [idle] dormant | energy  100.0 | thr 0.874
+794. emergency       [idle] dormant | energy  100.0 | thr 0.871
+795. environmental   [idle] dormant | energy  100.0 | thr 0.868
+796. emergency       [idle] dormant | energy  100.0 | thr 0.865
+797. environmental   [idle] dormant | energy  100.0 | thr 0.862
+798. security        [idle] dormant | energy  100.0 | thr 0.859
+799. system_alert    [idle] dormant | energy  100.0 | thr 0.856
+800. emergency       [ok] processed (sig=0.550, 0.003s, dE~10.8)        | energy   89.2 | thr 0.859
+801. security        [idle] dormant | energy   91.5 | thr 0.861
+802. health_monitor  [idle] dormant | energy   92.2 | thr 0.862
+803. health_monitor  [idle] dormant | energy   94.4 | thr 0.863
+804. environmental   [idle] dormant | energy   95.6 | thr 0.862
+805. health_monitor  [ok] processed (sig=0.660, 0.003s, dE~11.2)        | energy   84.3 | thr 0.869
+806. emergency       [idle] dormant | energy   86.6 | thr 0.874
+807. security        [idle] dormant | energy   88.5 | thr 0.878
+808. system_alert    [idle] dormant | energy   90.3 | thr 0.880
+809. emergency       [idle] dormant | energy   91.8 | thr 0.882
+810. system_alert    [idle] dormant | energy   92.7 | thr 0.883
+811. emergency       [idle] dormant | energy   94.8 | thr 0.883
+812. emergency       [ok] processed (sig=0.904, 0.003s, dE~12.2)        | energy   82.6 | thr 0.890
+813. system_alert    [idle] dormant | energy   83.8 | thr 0.896
+814. health_monitor  [idle] dormant | energy   85.4 | thr 0.902
+815. health_monitor  [idle] dormant | energy   86.1 | thr 0.906
+816. health_monitor  [idle] dormant | energy   88.6 | thr 0.909
+817. health_monitor  [idle] dormant | energy   90.1 | thr 0.911
+818. emergency       [idle] dormant | energy   92.3 | thr 0.913
+819. security        [idle] dormant | energy   94.7 | thr 0.912
+820. system_alert    [idle] dormant | energy   96.1 | thr 0.912
+821. security        [idle] dormant | energy   97.3 | thr 0.910
+822. health_monitor  [idle] dormant | energy   99.4 | thr 0.908
+823. health_monitor  [idle] dormant | energy  100.0 | thr 0.906
+824. security        [idle] dormant | energy  100.0 | thr 0.903
+825. emergency       [idle] dormant | energy  100.0 | thr 0.900
+826. environmental   [idle] dormant | energy  100.0 | thr 0.898
+827. emergency       [ok] processed (sig=0.843, 0.003s, dE~12.0)        | energy   88.0 | thr 0.901
+828. environmental   [idle] dormant | energy   89.9 | thr 0.904
+829. security        [idle] dormant | energy   92.3 | thr 0.906
+830. security        [idle] dormant | energy   94.5 | thr 0.906
+831. system_alert    [idle] dormant | energy   96.3 | thr 0.906
+832. environmental   [idle] dormant | energy   97.0 | thr 0.905
+833. security        [idle] dormant | energy   98.6 | thr 0.903
+834. emergency       [idle] dormant | energy   99.4 | thr 0.901
+835. emergency       [idle] dormant | energy  100.0 | thr 0.899
+836. system_alert    [idle] dormant | energy  100.0 | thr 0.896
+837. security        [idle] dormant | energy  100.0 | thr 0.893
+838. emergency       [idle] dormant | energy  100.0 | thr 0.891
+839. environmental   [idle] dormant | energy  100.0 | thr 0.888
+840. environmental   [idle] dormant | energy  100.0 | thr 0.885
+841. health_monitor  [idle] dormant | energy  100.0 | thr 0.883
+842. health_monitor  [idle] dormant | energy  100.0 | thr 0.880
+843. system_alert    [idle] dormant | energy  100.0 | thr 0.877
+844. health_monitor  [idle] dormant | energy  100.0 | thr 0.874
+845. system_alert    [idle] dormant | energy  100.0 | thr 0.871
+846. system_alert    [idle] dormant | energy  100.0 | thr 0.868
+847. health_monitor  [idle] dormant | energy  100.0 | thr 0.865
+848. system_alert    [idle] dormant | energy  100.0 | thr 0.862
+849. emergency       [idle] dormant | energy  100.0 | thr 0.859
+850. environmental   [idle] dormant | energy  100.0 | thr 0.856
+851. health_monitor  [idle] dormant | energy  100.0 | thr 0.854
+852. system_alert    [idle] dormant | energy  100.0 | thr 0.851
+853. health_monitor  [idle] dormant | energy  100.0 | thr 0.848
+854. emergency       [idle] dormant | energy  100.0 | thr 0.845
+855. security        [idle] dormant | energy  100.0 | thr 0.842
+856. system_alert    [idle] dormant | energy  100.0 | thr 0.839
+857. environmental   [idle] dormant | energy  100.0 | thr 0.836
+858. health_monitor  [idle] dormant | energy  100.0 | thr 0.833
+859. system_alert    [idle] dormant | energy  100.0 | thr 0.830
+860. environmental   [idle] dormant | energy  100.0 | thr 0.827
+861. health_monitor  [idle] dormant | energy  100.0 | thr 0.824
+862. system_alert    [idle] dormant | energy  100.0 | thr 0.821
+863. system_alert    [idle] dormant | energy  100.0 | thr 0.818
+864. health_monitor  [idle] dormant | energy  100.0 | thr 0.815
+865. security        [idle] dormant | energy  100.0 | thr 0.812
+866. health_monitor  [idle] dormant | energy  100.0 | thr 0.809
+867. environmental   [idle] dormant | energy  100.0 | thr 0.806
+868. emergency       [idle] dormant | energy  100.0 | thr 0.803
+869. system_alert    [idle] dormant | energy  100.0 | thr 0.800
+870. security        [idle] dormant | energy  100.0 | thr 0.797
+871. environmental   [idle] dormant | energy  100.0 | thr 0.794
+872. environmental   [idle] dormant | energy  100.0 | thr 0.791
+873. emergency       [idle] dormant | energy  100.0 | thr 0.788
+874. health_monitor  [idle] dormant | energy  100.0 | thr 0.785
+875. security        [idle] dormant | energy  100.0 | thr 0.782
+876. emergency       [idle] dormant | energy  100.0 | thr 0.779
+877. system_alert    [idle] dormant | energy  100.0 | thr 0.776
+878. environmental   [idle] dormant | energy  100.0 | thr 0.773
+879. health_monitor  [idle] dormant | energy  100.0 | thr 0.770
+880. health_monitor  [idle] dormant | energy  100.0 | thr 0.767
+881. health_monitor  [idle] dormant | energy  100.0 | thr 0.764
+882. emergency       [ok] processed (sig=0.849, 0.003s, dE~12.0)        | energy   88.0 | thr 0.767
+883. emergency       [ok] processed (sig=0.763, 0.003s, dE~11.7)        | energy   76.4 | thr 0.778
+884. security        [idle] dormant | energy   77.5 | thr 0.787
+885. emergency       [idle] dormant | energy   78.9 | thr 0.796
+886. emergency       [idle] dormant | energy   80.5 | thr 0.804
+887. health_monitor  [idle] dormant | energy   82.2 | thr 0.811
+888. health_monitor  [idle] dormant | energy   84.7 | thr 0.817
+889. system_alert    [idle] dormant | energy   85.8 | thr 0.822
+890. emergency       [idle] dormant | energy   87.9 | thr 0.825
+891. health_monitor  [idle] dormant | energy   89.8 | thr 0.827
+892. system_alert    [idle] dormant | energy   92.0 | thr 0.828
+893. health_monitor  [idle] dormant | energy   93.8 | thr 0.828
+894. environmental   [idle] dormant | energy   95.5 | thr 0.828
+895. health_monitor  [idle] dormant | energy   97.4 | thr 0.826
+896. health_monitor  [idle] dormant | energy   98.0 | thr 0.825
+897. environmental   [idle] dormant | energy  100.0 | thr 0.822
+898. environmental   [idle] dormant | energy  100.0 | thr 0.819
+899. system_alert    [idle] dormant | energy  100.0 | thr 0.816
+900. environmental   [ok] processed (sig=0.331, 0.002s, dE~9.9)         | energy   90.1 | thr 0.819
+901. system_alert    [idle] dormant | energy   90.9 | thr 0.822
+902. security        [idle] dormant | energy   92.7 | thr 0.823
+903. health_monitor  [idle] dormant | energy   93.5 | thr 0.824
+904. emergency       [idle] dormant | energy   94.0 | thr 0.825
+905. emergency       [idle] dormant | energy   94.7 | thr 0.825
+906. emergency       [ok] processed (sig=0.697, 0.003s, dE~11.4)        | energy   83.3 | thr 0.831
+907. system_alert    [idle] dormant | energy   84.2 | thr 0.837
+908. emergency       [idle] dormant | energy   85.5 | thr 0.842
+909. environmental   [idle] dormant | energy   87.8 | thr 0.846
+910. system_alert    [idle] dormant | energy   89.8 | thr 0.848
+911. security        [idle] dormant | energy   90.6 | thr 0.850
+912. system_alert    [idle] dormant | energy   91.7 | thr 0.851
+913. emergency       [idle] dormant | energy   93.3 | thr 0.852
+914. health_monitor  [idle] dormant | energy   94.1 | thr 0.852
+915. environmental   [idle] dormant | energy   95.3 | thr 0.852
+916. health_monitor  [idle] dormant | energy   97.3 | thr 0.850
+917. emergency       [idle] dormant | energy   99.1 | thr 0.848
+918. system_alert    [idle] dormant | energy  100.0 | thr 0.845
+919. health_monitor  [idle] dormant | energy  100.0 | thr 0.843
+920. environmental   [idle] dormant | energy  100.0 | thr 0.840
+921. system_alert    [idle] dormant | energy  100.0 | thr 0.837
+922. system_alert    [idle] dormant | energy  100.0 | thr 0.834
+923. system_alert    [idle] dormant | energy  100.0 | thr 0.831
+924. environmental   [idle] dormant | energy  100.0 | thr 0.829
+925. health_monitor  [idle] dormant | energy  100.0 | thr 0.826
+926. emergency       [idle] dormant | energy  100.0 | thr 0.823
+927. environmental   [idle] dormant | energy  100.0 | thr 0.820
+928. health_monitor  [idle] dormant | energy  100.0 | thr 0.817
+929. security        [idle] dormant | energy  100.0 | thr 0.814
+930. emergency       [idle] dormant | energy  100.0 | thr 0.811
+931. emergency       [idle] dormant | energy  100.0 | thr 0.808
+932. health_monitor  [idle] dormant | energy  100.0 | thr 0.805
+933. security        [idle] dormant | energy  100.0 | thr 0.802
+934. system_alert    [idle] dormant | energy  100.0 | thr 0.799
+935. health_monitor  [idle] dormant | energy  100.0 | thr 0.796
+936. system_alert    [idle] dormant | energy  100.0 | thr 0.793
+937. health_monitor  [idle] dormant | energy  100.0 | thr 0.790
+938. emergency       [idle] dormant | energy  100.0 | thr 0.787
+939. environmental   [idle] dormant | energy  100.0 | thr 0.784
+940. emergency       [ok] processed (sig=0.876, 0.003s, dE~12.1)        | energy   87.9 | thr 0.788
+941. emergency       [idle] dormant | energy   88.4 | thr 0.791
+942. security        [idle] dormant | energy   90.8 | thr 0.793
+943. emergency       [idle] dormant | energy   93.1 | thr 0.794
+944. environmental   [idle] dormant | energy   94.6 | thr 0.794
+945. system_alert    [idle] dormant | energy   97.0 | thr 0.793
+946. health_monitor  [idle] dormant | energy   98.8 | thr 0.791
+947. system_alert    [idle] dormant | energy   99.5 | thr 0.789
+948. health_monitor  [idle] dormant | energy  100.0 | thr 0.786
+949. environmental   [idle] dormant | energy  100.0 | thr 0.784
+950. health_monitor  [idle] dormant | energy  100.0 | thr 0.781
+951. security        [idle] dormant | energy  100.0 | thr 0.779
+952. security        [idle] dormant | energy  100.0 | thr 0.776
+953. emergency       [idle] dormant | energy  100.0 | thr 0.773
+954. security        [idle] dormant | energy  100.0 | thr 0.770
+955. emergency       [idle] dormant | energy  100.0 | thr 0.767
+956. health_monitor  [ok] processed (sig=0.633, 0.003s, dE~11.1)        | energy   88.9 | thr 0.771
+957. health_monitor  [idle] dormant | energy   89.6 | thr 0.774
+958. health_monitor  [idle] dormant | energy   90.7 | thr 0.776
+959. environmental   [idle] dormant | energy   92.2 | thr 0.777
+960. health_monitor  [idle] dormant | energy   94.6 | thr 0.777
+961. health_monitor  [idle] dormant | energy   96.1 | thr 0.777
+962. environmental   [idle] dormant | energy   96.8 | thr 0.776
+963. emergency       [idle] dormant | energy   98.2 | thr 0.774
+964. emergency       [ok] processed (sig=0.910, 0.003s, dE~12.2)        | energy   86.0 | thr 0.779
+965. security        [ok] processed (sig=0.715, 0.003s, dE~11.5)        | energy   74.5 | thr 0.791
+966. environmental   [idle] dormant | energy   76.6 | thr 0.802
+967. environmental   [idle] dormant | energy   78.6 | thr 0.812
+968. system_alert    [idle] dormant | energy   80.8 | thr 0.820
+969. emergency       [idle] dormant | energy   83.0 | thr 0.828
+970. emergency       [idle] dormant | energy   83.6 | thr 0.835
+971. security        [idle] dormant | energy   84.5 | thr 0.841
+972. emergency       [ok] processed (sig=0.751, 0.003s, dE~11.6)        | energy   72.9 | thr 0.854
+973. security        [idle] dormant | energy   73.9 | thr 0.867
+974. system_alert    [idle] dormant | energy   74.9 | thr 0.878
+975. security        [idle] dormant | energy   77.3 | thr 0.889
+976. emergency       [idle] dormant | energy   79.2 | thr 0.898
+977. system_alert    [ok] processed (sig=0.562, 0.003s, dE~10.8)        | energy   68.4 | thr 0.913
+978. system_alert    [idle] dormant | energy   70.3 | thr 0.920
+979. health_monitor  [idle] dormant | energy   71.0 | thr 0.920
+980. emergency       [idle] dormant | energy   72.3 | thr 0.920
+981. health_monitor  [idle] dormant | energy   74.6 | thr 0.920
+982. security        [idle] dormant | energy   75.7 | thr 0.920
+983. environmental   [idle] dormant | energy   78.0 | thr 0.920
+984. health_monitor  [idle] dormant | energy   79.8 | thr 0.920
+985. health_monitor  [idle] dormant | energy   80.5 | thr 0.920
+986. environmental   [idle] dormant | energy   82.5 | thr 0.920
+987. environmental   [idle] dormant | energy   83.9 | thr 0.920
+988. environmental   [idle] dormant | energy   85.3 | thr 0.920
+989. health_monitor  [idle] dormant | energy   87.1 | thr 0.920
+990. security        [idle] dormant | energy   88.1 | thr 0.920
+991. system_alert    [idle] dormant | energy   90.4 | thr 0.920
+992. system_alert    [idle] dormant | energy   91.8 | thr 0.920
+993. health_monitor  [idle] dormant | energy   92.4 | thr 0.920
+994. health_monitor  [idle] dormant | energy   93.1 | thr 0.920
+995. health_monitor  [idle] dormant | energy   94.6 | thr 0.919
+996. environmental   [idle] dormant | energy   95.4 | thr 0.918
+997. system_alert    [idle] dormant | energy   96.9 | thr 0.917
+998. emergency       [ok] processed (sig=0.845, 0.003s, dE~12.0)        | energy   84.9 | thr 0.920
+999. system_alert    [idle] dormant | energy   86.6 | thr 0.920
+1000. security        [ok] processed (sig=0.577, 0.003s, dE~10.9)        | energy   75.7 | thr 0.920
+
+[done] Final Report (Enhanced v0.3.0)
+============================================================
+Performance Metrics:
+  Total Events              :     1000
+  Activations               :       71
+  Activation Rate           :    7.1%
+  EMA Activation Rate       :   26.5%
+
+Energy Analysis:
+  Energy Remaining          :    75.7
+  Total Energy Spent        :  1278.0
+  Net Energy Consumed       :  -586.4
+  Energy Recovered          :  1864.3
+  Processing Energy         :   813.5
+  Dormancy Energy           :   464.5
+  Energy Savings            :    88.5%
+  Performance Rating        : Good
+
+Control System:
+  Final Threshold           :   0.920
+  Threshold Utilization     :  100.0%
+  Hysteresis Gap            :   0.020
+  EMA Alpha                 :   0.150
+  EMA Discrepancy           :   0.194
+  Avg Processing Time       :   0.003s
+  Convergence Status        : Oscillating
+
+Optimization Suggestions:
+  - Consider adjusting EMA alpha for better rate tracking
+  - Threshold near max - reduce gains to prevent saturation
+  - Consider tuning PI controller gains for better stability

@@ -32,15 +32,14 @@ Aggregate:
 Author: ChatGPT
 """
 import argparse
+import re
 import subprocess
 import sys
-import shutil
-import re
-import json
 from pathlib import Path
-import pandas as pd
-import numpy as np
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 ROW_RE = re.compile(
     r"^\s*(\d+)\.\s*([a-z_]+)\s+(✅ processed|⏸ dormant)(?:\s*\(sig=([0-9.]+),\s*([0-9.]+)s,\s*ΔE≈([0-9.]+)\))?\s*\|\s*energy\s*([0-9.]+)\s*\|\s*thr\s*([0-9.]+)",

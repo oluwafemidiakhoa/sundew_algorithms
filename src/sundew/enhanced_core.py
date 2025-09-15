@@ -29,6 +29,7 @@ from .significance_models import LinearSignificanceModel, NeuralSignificanceMode
 # Advanced features
 try:
     from .information_theory import InformationTheoreticController
+
     INFORMATION_THEORY_AVAILABLE = True
 except ImportError:
     InformationTheoreticController = None
@@ -36,6 +37,7 @@ except ImportError:
 
 try:
     from .batch_processing import GPU_AVAILABLE, BatchProcessingConfig, BatchProcessingEngine
+
     BATCH_PROCESSING_AVAILABLE = True
 except ImportError:
     BatchProcessingEngine = None
@@ -45,6 +47,7 @@ except ImportError:
 
 try:
     from .automl_optimization import AutoMLOptimizer
+
     AUTOML_AVAILABLE = True
 except ImportError:
     AutoMLOptimizer = None
@@ -52,6 +55,7 @@ except ImportError:
 
 try:
     from .theoretical_analysis import TheoreticalAnalysisEngine
+
     THEORETICAL_ANALYSIS_AVAILABLE = True
 except ImportError:
     TheoreticalAnalysisEngine = None
@@ -124,8 +128,9 @@ class EnhancedSundewConfig:
         return self.component_configs.get(component_name, {})
 
     @classmethod
-    def create_optimized_config(cls, application_domain: str = "general",
-                              performance_target: str = "balanced") -> 'EnhancedSundewConfig':
+    def create_optimized_config(
+        cls, application_domain: str = "general", performance_target: str = "balanced"
+    ) -> "EnhancedSundewConfig":
         """Create AutoML-optimized configuration presets for different domains and targets."""
 
         if application_domain == "edge_computing":
@@ -137,23 +142,20 @@ class EnhancedSundewConfig:
                 control_policy="pi",  # Stable and efficient
                 energy_model="simple",  # Lower overhead
                 target_activation_rate=0.12,  # More conservative
-
                 # Thresholds
                 min_threshold=0.25,
                 max_threshold=0.85,
                 initial_threshold=0.65,
-
                 # Performance settings
                 performance_window=500,  # Smaller window
                 log_frequency=200,
-
                 # Advanced features (optimized for edge)
                 enable_information_theoretic_threshold=True,
                 information_threshold_method="entropy",  # Simpler than MI
                 enable_batch_processing=True,
                 batch_processing_method="vectorized",  # No GPU on edge
                 batch_size=100,  # Smaller batches
-                enable_theoretical_analysis=False  # Skip for performance
+                enable_theoretical_analysis=False,  # Skip for performance
             )
 
         elif application_domain == "cloud_hpc":
@@ -165,26 +167,25 @@ class EnhancedSundewConfig:
                 control_policy="mpc",  # Advanced control
                 energy_model="realistic",
                 target_activation_rate=0.18,
-
                 # Thresholds
                 min_threshold=0.15,
                 max_threshold=0.95,
                 initial_threshold=0.75,
-
                 # Large windows for stability
                 performance_window=2000,
                 log_frequency=50,
-
                 # All advanced features enabled
                 enable_information_theoretic_threshold=True,
                 information_threshold_method="mutual_information",
                 enable_batch_processing=True,
-                batch_processing_method="gpu" if BATCH_PROCESSING_AVAILABLE and GPU_AVAILABLE else "parallel",
+                batch_processing_method="gpu"
+                if BATCH_PROCESSING_AVAILABLE and GPU_AVAILABLE
+                else "parallel",
                 batch_size=2000,
                 use_gpu=True,
                 max_workers=None,  # Use all cores
                 enable_automl=True,
-                enable_theoretical_analysis=True
+                enable_theoretical_analysis=True,
             )
 
         elif application_domain == "real_time":
@@ -196,24 +197,20 @@ class EnhancedSundewConfig:
                 control_policy="pi",
                 energy_model="simple",
                 target_activation_rate=0.20,  # Higher for responsiveness
-
                 # Tight thresholds
                 min_threshold=0.30,
                 max_threshold=0.80,
                 initial_threshold=0.55,
-
                 # Fast adaptation
                 performance_window=100,
                 log_frequency=10,
-
                 # Batch processing for throughput
                 enable_batch_processing=True,
                 batch_processing_method="vectorized",
                 batch_size=50,  # Small for low latency
-
                 # Skip expensive analysis
                 enable_information_theoretic_threshold=False,
-                enable_theoretical_analysis=False
+                enable_theoretical_analysis=False,
             )
 
         elif application_domain == "research":
@@ -225,16 +222,13 @@ class EnhancedSundewConfig:
                 control_policy="mpc",
                 energy_model="realistic",
                 target_activation_rate=0.15,
-
                 # Wide range for exploration
                 min_threshold=0.10,
                 max_threshold=0.98,
                 initial_threshold=0.70,
-
                 # Large windows for analysis
                 performance_window=5000,
                 log_frequency=25,
-
                 # All features enabled
                 enable_online_learning=True,
                 enable_auto_tuning=True,
@@ -245,10 +239,9 @@ class EnhancedSundewConfig:
                 batch_size=1000,
                 enable_automl=True,
                 enable_theoretical_analysis=True,
-
                 # Research-specific settings
                 mutual_info_history_size=2000,
-                automl_time_budget_minutes=60
+                automl_time_budget_minutes=60,
             )
         else:
             # General balanced configuration
@@ -259,23 +252,20 @@ class EnhancedSundewConfig:
                 control_policy="pi",
                 energy_model="realistic",
                 target_activation_rate=0.15,
-
                 # Standard thresholds
                 min_threshold=0.20,
                 max_threshold=0.92,
                 initial_threshold=0.78,
-
                 # Moderate settings
                 performance_window=1000,
                 log_frequency=100,
-
                 # Some advanced features
                 enable_information_theoretic_threshold=True,
                 information_threshold_method="mutual_information",
                 enable_batch_processing=True,
                 batch_processing_method="vectorized",
                 batch_size=1000,
-                enable_theoretical_analysis=True
+                enable_theoretical_analysis=True,
             )
 
         # Apply performance target adjustments to any configuration
@@ -298,19 +288,19 @@ class EnhancedSundewConfig:
     def get_available_presets(cls) -> Dict[str, Dict[str, str]]:
         """Get information about available configuration presets."""
         return {
-            'domains': {
-                'edge_computing': 'Optimized for edge devices with limited resources',
-                'cloud_hpc': 'Optimized for high-performance cloud computing',
-                'real_time': 'Optimized for real-time systems requiring low latency',
-                'research': 'Full-featured configuration for research applications',
-                'general': 'Balanced configuration for general use'
+            "domains": {
+                "edge_computing": "Optimized for edge devices with limited resources",
+                "cloud_hpc": "Optimized for high-performance cloud computing",
+                "real_time": "Optimized for real-time systems requiring low latency",
+                "research": "Full-featured configuration for research applications",
+                "general": "Balanced configuration for general use",
             },
-            'targets': {
-                'energy_efficient': 'Minimize energy consumption',
-                'high_throughput': 'Maximize processing throughput',
-                'low_latency': 'Minimize response latency',
-                'balanced': 'Balance between all objectives'
-            }
+            "targets": {
+                "energy_efficient": "Minimize energy consumption",
+                "high_throughput": "Maximize processing throughput",
+                "low_latency": "Minimize response latency",
+                "balanced": "Balance between all objectives",
+            },
         }
 
 
@@ -340,8 +330,14 @@ class EnhancedMetrics:
     prediction_accuracies: List[float] = field(default_factory=list)
     stability_scores: List[float] = field(default_factory=list)
 
-    def update_histories(self, activation_rate: float, threshold: float,
-                        energy_level: float, significance: float, window_size: int = 1000):
+    def update_histories(
+        self,
+        activation_rate: float,
+        threshold: float,
+        energy_level: float,
+        significance: float,
+        window_size: int = 1000,
+    ):
         """Update metric histories with window management."""
         self.activation_rate_history.append(activation_rate)
         self.threshold_history.append(threshold)
@@ -349,8 +345,12 @@ class EnhancedMetrics:
         self.significance_history.append(significance)
 
         # Maintain window size
-        for history in [self.activation_rate_history, self.threshold_history,
-                       self.energy_history, self.significance_history]:
+        for history in [
+            self.activation_rate_history,
+            self.threshold_history,
+            self.energy_history,
+            self.significance_history,
+        ]:
             if len(history) > window_size:
                 history.pop(0)
 
@@ -367,7 +367,7 @@ class EnhancedSundewAlgorithm:
         significance_model: Optional[SignificanceModel] = None,
         gating_strategy: Optional[GatingStrategy] = None,
         control_policy: Optional[ControlPolicy] = None,
-        energy_model: Optional[EnergyModel] = None
+        energy_model: Optional[EnergyModel] = None,
     ):
         self.config = config
 
@@ -391,7 +391,7 @@ class EnhancedSundewAlgorithm:
             activation_rate=0.0,
             energy_level=1.0,
             error_integral=0.0,
-            stability_metrics={}
+            stability_metrics={},
         )
 
         # Initialize metrics
@@ -417,10 +417,12 @@ class EnhancedSundewAlgorithm:
 
         if model_type == "neural":
             from .significance_models import NeuralSignificanceConfig
+
             config = NeuralSignificanceConfig(**model_config)
             return NeuralSignificanceModel(config)
         else:  # "linear"
             from .significance_models import LinearSignificanceConfig
+
             config = LinearSignificanceConfig(**model_config)
             return LinearSignificanceModel(config)
 
@@ -431,10 +433,12 @@ class EnhancedSundewAlgorithm:
 
         if strategy_type == "adaptive":
             from .gating_strategies import AdaptiveGatingConfig
+
             config = AdaptiveGatingConfig(**strategy_config)
             return AdaptiveGatingStrategy(config)
         else:  # "temperature"
             from .gating_strategies import TemperatureGatingConfig
+
             config = TemperatureGatingConfig(**strategy_config)
             return TemperatureGatingStrategy(config)
 
@@ -445,10 +449,12 @@ class EnhancedSundewAlgorithm:
 
         if policy_type == "mpc":
             from .control_policies import MPCControlConfig
+
             config = MPCControlConfig(**policy_config)
             return MPCControlPolicy(config)
         else:  # "pi"
             from .control_policies import PIControlConfig
+
             config = PIControlConfig(**policy_config)
             return PIControlPolicy(config)
 
@@ -459,10 +465,12 @@ class EnhancedSundewAlgorithm:
 
         if model_type == "realistic":
             from .energy_models import RealisticEnergyConfig
+
             config = RealisticEnergyConfig(**model_config)
             return RealisticEnergyModel(config)
         else:  # "simple"
             from .energy_models import SimpleEnergyConfig
+
             config = SimpleEnergyConfig(**model_config)
             return SimpleEnergyModel(config)
 
@@ -475,19 +483,18 @@ class EnhancedSundewAlgorithm:
                 # Create parameters based on method
                 if self.config.information_threshold_method == "mutual_information":
                     params = {
-                        'history_size': self.config.mutual_info_history_size,
-                        'alpha': self.config.mutual_info_adaptation_rate
+                        "history_size": self.config.mutual_info_history_size,
+                        "alpha": self.config.mutual_info_adaptation_rate,
                     }
                 else:  # entropy method
                     params = {
-                        'target_entropy': self.config.target_entropy,
-                        'entropy_weight': self.config.entropy_weight,
-                        'history_size': self.config.mutual_info_history_size
+                        "target_entropy": self.config.target_entropy,
+                        "entropy_weight": self.config.entropy_weight,
+                        "history_size": self.config.mutual_info_history_size,
                     }
 
                 self.information_controller = InformationTheoreticController(
-                    method=self.config.information_threshold_method,
-                    **params
+                    method=self.config.information_threshold_method, **params
                 )
                 print("[OK] Information-theoretic threshold controller initialized")
             except Exception as e:
@@ -501,7 +508,7 @@ class EnhancedSundewAlgorithm:
                     max_workers=1,  # Disable parallel to avoid recursion
                     use_gpu=self.config.use_gpu,
                     use_numba=self.config.use_numba,
-                    memory_limit_mb=self.config.memory_limit_mb
+                    memory_limit_mb=self.config.memory_limit_mb,
                 )
                 self.batch_engine = BatchProcessingEngine(self, batch_config)
                 print("[OK] Batch processing engine initialized")
@@ -519,7 +526,7 @@ class EnhancedSundewAlgorithm:
                 ]
                 self.automl_optimizer = AutoMLOptimizer(
                     objectives=None,  # Use defaults for now
-                    time_budget_minutes=self.config.automl_time_budget_minutes
+                    time_budget_minutes=self.config.automl_time_budget_minutes,
                 )
                 print("[OK] AutoML optimizer initialized")
             except Exception as e:
@@ -529,12 +536,12 @@ class EnhancedSundewAlgorithm:
         if self.config.enable_theoretical_analysis and THEORETICAL_ANALYSIS_AVAILABLE:
             try:
                 analysis_params = {
-                    'adapt_kp': 0.1,  # Would get from control policy
-                    'adapt_ki': 0.01,
-                    'target_activation_rate': self.config.target_activation_rate,
-                    'dormant_tick_cost': 0.5,  # Would get from energy model
-                    'base_processing_cost': 50.0,
-                    'energy_pressure': 0.05
+                    "adapt_kp": 0.1,  # Would get from control policy
+                    "adapt_ki": 0.01,
+                    "target_activation_rate": self.config.target_activation_rate,
+                    "dormant_tick_cost": 0.5,  # Would get from energy model
+                    "base_processing_cost": 50.0,
+                    "energy_pressure": 0.05,
                 }
                 self.theoretical_analyzer = TheoreticalAnalysisEngine(analysis_params)
                 print("[OK] Theoretical analysis engine initialized")
@@ -559,21 +566,20 @@ class EnhancedSundewAlgorithm:
             sequence_id=self.metrics.total_processed,
             features=features,
             history=self.processing_history[-10:],  # Last 10 samples
-            metadata={
-                "algorithm_version": "enhanced",
-                "config": self.config
-            }
+            metadata={"algorithm_version": "enhanced", "config": self.config},
         )
 
         # Compute significance
-        significance, significance_explanation = self.significance_model.compute_significance(context)
+        significance, significance_explanation = self.significance_model.compute_significance(
+            context
+        )
 
         # Make gating decision
         gating_decision = self.gating_strategy.gate(
             significance=significance,
             threshold=self.control_state.threshold,
             context=context,
-            control_state=self.control_state
+            control_state=self.control_state,
         )
 
         # Update metrics
@@ -585,22 +591,27 @@ class EnhancedSundewAlgorithm:
             idle_duration = 1.0  # Assume 1 time unit
             idle_cost = self.energy_model.compute_idle_cost(idle_duration)
 
-            new_energy = self.energy_model.update_energy_state(
-                self.control_state.energy_level * 100,  # Convert to energy model scale
-                idle_cost
-            ) / 100.0  # Convert back to [0,1] scale
+            new_energy = (
+                self.energy_model.update_energy_state(
+                    self.control_state.energy_level * 100,  # Convert to energy model scale
+                    idle_cost,
+                )
+                / 100.0
+            )  # Convert back to [0,1] scale
 
             # Update control state
             self.recent_activations.append(False)
             self._update_control_state(activated=False, new_energy=new_energy)
 
             # Store processing history
-            self.processing_history.append({
-                "features": features,
-                "significance": significance,
-                "activated": False,
-                "timestamp": start_time
-            })
+            self.processing_history.append(
+                {
+                    "features": features,
+                    "significance": significance,
+                    "activated": False,
+                    "timestamp": start_time,
+                }
+            )
 
             if len(self.processing_history) > 100:
                 self.processing_history.pop(0)
@@ -614,29 +625,32 @@ class EnhancedSundewAlgorithm:
                 threshold_used=self.control_state.threshold,
                 explanation=significance_explanation,
                 component_metrics={
-                    "significance_model": getattr(self.significance_model, 'get_metrics', lambda: {})(),
-                    "gating_strategy": getattr(self.gating_strategy, 'get_metrics', lambda: {})(),
-                    "control_policy": getattr(self.control_policy, 'get_metrics', lambda: {})(),
-                    "energy_model": getattr(self.energy_model, 'get_metrics', lambda: {})()
-                }
+                    "significance_model": getattr(
+                        self.significance_model, "get_metrics", lambda: {}
+                    )(),
+                    "gating_strategy": getattr(self.gating_strategy, "get_metrics", lambda: {})(),
+                    "control_policy": getattr(self.control_policy, "get_metrics", lambda: {})(),
+                    "energy_model": getattr(self.energy_model, "get_metrics", lambda: {})(),
+                },
             )
 
         # Activated - perform processing
         processing_type = self._determine_processing_type(significance, context)
         processing_cost = self.energy_model.compute_processing_cost(
-            significance=significance,
-            processing_type=processing_type,
-            context=context
+            significance=significance, processing_type=processing_type, context=context
         )
 
         # Simulate processing time
         processing_time = self._simulate_processing_time(significance, processing_type)
 
         # Update energy state
-        new_energy = self.energy_model.update_energy_state(
-            self.control_state.energy_level * 100,  # Convert to energy model scale
-            processing_cost
-        ) / 100.0  # Convert back to [0,1] scale
+        new_energy = (
+            self.energy_model.update_energy_state(
+                self.control_state.energy_level * 100,  # Convert to energy model scale
+                processing_cost,
+            )
+            / 100.0
+        )  # Convert back to [0,1] scale
 
         # Update metrics
         self.metrics.total_activated += 1
@@ -656,11 +670,11 @@ class EnhancedSundewAlgorithm:
             threshold_used=self.control_state.threshold,
             explanation=significance_explanation,
             component_metrics={
-                "significance_model": getattr(self.significance_model, 'get_metrics', lambda: {})(),
-                "gating_strategy": getattr(self.gating_strategy, 'get_metrics', lambda: {})(),
-                "control_policy": getattr(self.control_policy, 'get_metrics', lambda: {})(),
-                "energy_model": getattr(self.energy_model, 'get_metrics', lambda: {})()
-            }
+                "significance_model": getattr(self.significance_model, "get_metrics", lambda: {})(),
+                "gating_strategy": getattr(self.gating_strategy, "get_metrics", lambda: {})(),
+                "control_policy": getattr(self.control_policy, "get_metrics", lambda: {})(),
+                "energy_model": getattr(self.energy_model, "get_metrics", lambda: {})(),
+            },
         )
 
         # Update learning models
@@ -668,14 +682,16 @@ class EnhancedSundewAlgorithm:
             self._update_learning_models(context, result, gating_decision)
 
         # Store processing history
-        self.processing_history.append({
-            "features": features,
-            "significance": significance,
-            "activated": True,
-            "timestamp": start_time,
-            "processing_time": processing_time,
-            "energy_cost": processing_cost
-        })
+        self.processing_history.append(
+            {
+                "features": features,
+                "significance": significance,
+                "activated": True,
+                "timestamp": start_time,
+                "processing_time": processing_time,
+                "energy_cost": processing_cost,
+            }
+        )
 
         if len(self.processing_history) > 100:
             self.processing_history.pop(0)
@@ -699,22 +715,22 @@ class EnhancedSundewAlgorithm:
             sequence_id=0,  # Not tracked in batch mode
             features=features,
             history=[],  # Empty for batch processing
-            metadata={"algorithm_version": "enhanced_batch"}
+            metadata={"algorithm_version": "enhanced_batch"},
         )
 
         # Compute significance
-        significance, significance_explanation = self.significance_model.compute_significance(context)
+        significance, significance_explanation = self.significance_model.compute_significance(
+            context
+        )
 
         # Make gating decision using current threshold
-        current_threshold = getattr(self.control_state, 'threshold', self.config.initial_threshold)
+        current_threshold = getattr(self.control_state, "threshold", self.config.initial_threshold)
         activated = significance >= current_threshold
 
         # Compute energy cost
         if activated:
             processing_cost = self.energy_model.compute_processing_cost(
-                significance=significance,
-                processing_type="batch_processing",
-                context=context
+                significance=significance, processing_type="batch_processing", context=context
             )
         else:
             processing_cost = self.energy_model.compute_idle_cost(1.0)
@@ -728,11 +744,10 @@ class EnhancedSundewAlgorithm:
             processing_time=processing_time,
             threshold_used=current_threshold,
             explanation=significance_explanation,
-            component_metrics={}
+            component_metrics={},
         )
 
-    def process_batch(self, samples: List[Dict[str, Any]],
-                     processor_type: Optional[str] = None):
+    def process_batch(self, samples: List[Dict[str, Any]], processor_type: Optional[str] = None):
         """Process a batch of samples using high-performance batch processing."""
         if not self.batch_engine:
             # Fallback: process samples individually
@@ -750,6 +765,7 @@ class EnhancedSundewAlgorithm:
 
             # Return BatchResult-like structure
             from types import SimpleNamespace
+
             return SimpleNamespace(
                 processed_samples=len(samples),
                 activations=np.array(activations),
@@ -759,7 +775,7 @@ class EnhancedSundewAlgorithm:
                 activation_rate=np.mean(activations),
                 total_energy=np.sum(energy_consumed),
                 avg_processing_time=np.mean(processing_times),
-                metadata={'method': 'individual_fallback'}
+                metadata={"method": "individual_fallback"},
             )
 
         # Use high-performance batch processing
@@ -778,13 +794,15 @@ class EnhancedSundewAlgorithm:
                         batch = []
                 if batch:
                     yield self.process_batch(batch)
+
             return fallback_generator()
 
         # Use streaming batch processor
         return self.batch_engine.process_large_dataset(data_source, processor_type)
 
-    def optimize_with_automl(self, test_data: List[Dict],
-                           time_budget_minutes: int = 30) -> Optional[Dict[str, Any]]:
+    def optimize_with_automl(
+        self, test_data: List[Dict], time_budget_minutes: int = 30
+    ) -> Optional[Dict[str, Any]]:
         """Optimize algorithm configuration using AutoML."""
         if not self.automl_optimizer:
             print("[WARNING] AutoML optimizer not available")
@@ -803,30 +821,32 @@ class EnhancedSundewAlgorithm:
                 results = []
                 for sample in test_data[:100]:  # Use subset for speed
                     result = self.process(sample)
-                    results.append({
-                        'activated': result.activated,
-                        'significance': result.significance,
-                        'energy': result.energy_consumed,
-                        'time': result.processing_time
-                    })
+                    results.append(
+                        {
+                            "activated": result.activated,
+                            "significance": result.significance,
+                            "energy": result.energy_consumed,
+                            "time": result.processing_time,
+                        }
+                    )
 
                 # Compute metrics
-                activation_rate = np.mean([r['activated'] for r in results])
-                avg_energy = np.mean([r['energy'] for r in results])
+                activation_rate = np.mean([r["activated"] for r in results])
+                avg_energy = np.mean([r["energy"] for r in results])
                 energy_savings = 1.0 - (avg_energy / 50.0)  # Normalize against full processing
 
                 return {
-                    'energy_savings': energy_savings,
-                    'f1_score': min(1.0, activation_rate * 2),  # Simplified
-                    'processing_time': np.mean([r['time'] for r in results])
+                    "energy_savings": energy_savings,
+                    "f1_score": min(1.0, activation_rate * 2),  # Simplified
+                    "processing_time": np.mean([r["time"] for r in results]),
                 }
 
             # Run optimization
             result = self.automl_optimizer.optimize_sundew_config(
                 evaluation_func=evaluate_config,
                 enhanced_system=True,
-                method='auto',
-                n_trials=min(100, time_budget_minutes * 2)
+                method="auto",
+                n_trials=min(100, time_budget_minutes * 2),
             )
 
             return result.best_params
@@ -838,12 +858,12 @@ class EnhancedSundewAlgorithm:
     def benchmark_batch_processors(self, test_samples: List[Dict]) -> Dict[str, Dict[str, float]]:
         """Benchmark available batch processors."""
         if not self.batch_engine:
-            return {'error': 'Batch engine not available'}
+            return {"error": "Batch engine not available"}
 
         try:
             return self.batch_engine.benchmark_processors(test_samples)
         except Exception as e:
-            return {'error': f'Benchmark failed: {e}'}
+            return {"error": f"Benchmark failed: {e}"}
 
     def _determine_processing_type(self, significance: float, context: ProcessingContext) -> str:
         """Determine processing type based on significance and context."""
@@ -861,8 +881,8 @@ class EnhancedSundewAlgorithm:
         base_times = {
             "neural_inference": 0.005,  # 5ms
             "attention_gating": 0.003,  # 3ms
-            "mpc_control": 0.008,       # 8ms
-            "linear_significance": 0.001  # 1ms
+            "mpc_control": 0.008,  # 8ms
+            "linear_significance": 0.001,  # 1ms
         }
 
         base_time = base_times.get(processing_type, 0.002)
@@ -893,7 +913,7 @@ class EnhancedSundewAlgorithm:
             current_state=self.control_state,
             target_activation_rate=self.config.target_activation_rate,
             recent_activations=self.recent_activations,
-            energy_state=energy_state
+            energy_state=energy_state,
         )
 
         # Advanced: Information-theoretic threshold adjustment
@@ -929,15 +949,14 @@ class EnhancedSundewAlgorithm:
             activation_rate=activation_rate,
             threshold=new_threshold,
             energy_level=new_energy,
-            significance=self.metrics.significance_history[-1] if self.metrics.significance_history else 0.0,
-            window_size=self.config.performance_window
+            significance=self.metrics.significance_history[-1]
+            if self.metrics.significance_history
+            else 0.0,
+            window_size=self.config.performance_window,
         )
 
     def _update_learning_models(
-        self,
-        context: ProcessingContext,
-        result: ProcessingResult,
-        gating_decision: Any
+        self, context: ProcessingContext, result: ProcessingResult, gating_decision: Any
     ):
         """Update learning models based on processing outcome."""
 
@@ -946,11 +965,11 @@ class EnhancedSundewAlgorithm:
             "energy_efficiency": 1.0 - (result.energy_consumed / 10.0),  # Normalize
             "processing_time": result.processing_time,
             "activation_confidence": gating_decision.confidence,
-            "significance": result.significance
+            "significance": result.significance,
         }
 
         # Simple accuracy estimation (would use ground truth in practice)
-        if hasattr(self, 'ground_truth_labels'):
+        if hasattr(self, "ground_truth_labels"):
             # Would compute actual accuracy here
             outcome["accuracy"] = 0.8  # Placeholder
         else:
@@ -968,7 +987,9 @@ class EnhancedSundewAlgorithm:
             )
 
             # Store performance metrics
-            self.metrics.significance_model_metrics.update(performance_metrics.get("significance", {}))
+            self.metrics.significance_model_metrics.update(
+                performance_metrics.get("significance", {})
+            )
             self.metrics.gating_strategy_metrics.update(performance_metrics.get("gating", {}))
             self.metrics.control_policy_metrics.update(performance_metrics.get("control", {}))
             self.metrics.energy_model_metrics.update(performance_metrics.get("energy", {}))
@@ -979,8 +1000,8 @@ class EnhancedSundewAlgorithm:
         # Basic metrics
         total_samples = max(1, self.metrics.total_processed)
         activation_rate = self.metrics.total_activated / total_samples
-        avg_processing_time = (
-            self.metrics.total_processing_time / max(1, self.metrics.total_activated)
+        avg_processing_time = self.metrics.total_processing_time / max(
+            1, self.metrics.total_activated
         )
 
         # Energy metrics
@@ -995,26 +1016,28 @@ class EnhancedSundewAlgorithm:
             "significance_model": {
                 "type": self.config.significance_model,
                 "parameters": self.significance_model.get_parameters(),
-                "metrics": self.metrics.significance_model_metrics
+                "metrics": self.metrics.significance_model_metrics,
             },
             "gating_strategy": {
                 "type": self.config.gating_strategy,
-                "exploration_rate": self.gating_strategy.get_exploration_probability(self.control_state),
-                "metrics": self.metrics.gating_strategy_metrics
+                "exploration_rate": self.gating_strategy.get_exploration_probability(
+                    self.control_state
+                ),
+                "metrics": self.metrics.gating_strategy_metrics,
             },
             "control_policy": {
                 "type": self.config.control_policy,
                 "stability_prediction": stability_metrics,
                 "theoretical_bounds": self.control_policy.get_theoretical_bounds(),
-                "metrics": self.metrics.control_policy_metrics
+                "metrics": self.metrics.control_policy_metrics,
             },
             "energy_model": {
                 "type": self.config.energy_model,
                 "current_pressure": self.energy_model.get_energy_pressure(
                     energy_remaining * 100, 100.0
                 ),
-                "metrics": self.metrics.energy_model_metrics
-            }
+                "metrics": self.metrics.energy_model_metrics,
+            },
         }
 
         # Performance trends
@@ -1022,7 +1045,7 @@ class EnhancedSundewAlgorithm:
             activation_trend = np.polyfit(
                 range(len(self.metrics.activation_rate_history[-50:])),
                 self.metrics.activation_rate_history[-50:],
-                1
+                1,
             )[0]
         else:
             activation_trend = 0.0
@@ -1034,31 +1057,27 @@ class EnhancedSundewAlgorithm:
             "activation_rate": activation_rate,
             "target_activation_rate": self.config.target_activation_rate,
             "activation_error": abs(activation_rate - self.config.target_activation_rate),
-
             # Timing
             "avg_processing_time": avg_processing_time,
             "total_processing_time": self.metrics.total_processing_time,
-
             # Energy
             "energy_remaining": energy_remaining,
             "total_energy_consumed": total_energy_used,
             "energy_efficiency": 1.0 - (total_energy_used / max(1, total_samples * 10)),
-
             # Control
             "current_threshold": self.control_state.threshold,
             "threshold_range": (self.config.min_threshold, self.config.max_threshold),
             "stability_metrics": self.control_state.stability_metrics,
-
             # Trends
             "activation_rate_trend": activation_trend,
-            "threshold_stability": np.std(self.metrics.threshold_history[-20:]) if len(self.metrics.threshold_history) >= 20 else 0.0,
-
+            "threshold_stability": np.std(self.metrics.threshold_history[-20:])
+            if len(self.metrics.threshold_history) >= 20
+            else 0.0,
             # Component details
             "components": component_metrics,
-
             # Advanced metrics
             "performance_score": self._compute_performance_score(),
-            "research_quality_score": self._compute_research_quality_score()
+            "research_quality_score": self._compute_research_quality_score(),
         }
 
         # Add advanced feature reports
@@ -1089,28 +1108,36 @@ class EnhancedSundewAlgorithm:
                 performance_metrics_history = []
                 if len(self.metrics.activation_rate_history) > 0:
                     for i in range(min(50, len(self.metrics.activation_rate_history))):
-                        performance_metrics_history.append({
-                            'energy_savings': self.metrics.energy_history[i] if i < len(self.metrics.energy_history) else 0,
-                            'activation_rate': self.metrics.activation_rate_history[i],
-                            'f1_score': min(1.0, self.metrics.activation_rate_history[i] * 2)  # Simplified F1
-                        })
+                        performance_metrics_history.append(
+                            {
+                                "energy_savings": self.metrics.energy_history[i]
+                                if i < len(self.metrics.energy_history)
+                                else 0,
+                                "activation_rate": self.metrics.activation_rate_history[i],
+                                "f1_score": min(
+                                    1.0, self.metrics.activation_rate_history[i] * 2
+                                ),  # Simplified F1
+                            }
+                        )
 
                 empirical_data = {
-                    'threshold_history': list(self.metrics.threshold_history),
-                    'performance_metrics': performance_metrics_history,
-                    'final_metrics': {
-                        'energy_savings': report['energy_efficiency'],
-                        'activation_rate': activation_rate,
-                        'processing_time': avg_processing_time
+                    "threshold_history": list(self.metrics.threshold_history),
+                    "performance_metrics": performance_metrics_history,
+                    "final_metrics": {
+                        "energy_savings": report["energy_efficiency"],
+                        "activation_rate": activation_rate,
+                        "processing_time": avg_processing_time,
                     },
-                    'system_configuration': {
-                        'control_policy': self.config.control_policy,
-                        'significance_model': self.config.significance_model,
-                        'gating_strategy': self.config.gating_strategy,
-                        'energy_model': self.config.energy_model
-                    }
+                    "system_configuration": {
+                        "control_policy": self.config.control_policy,
+                        "significance_model": self.config.significance_model,
+                        "gating_strategy": self.config.gating_strategy,
+                        "energy_model": self.config.energy_model,
+                    },
                 }
-                theoretical_report = self.theoretical_analyzer.comprehensive_analysis(empirical_data)
+                theoretical_report = self.theoretical_analyzer.comprehensive_analysis(
+                    empirical_data
+                )
                 report["theoretical_analysis"] = theoretical_report
             except Exception as e:
                 report["theoretical_analysis"] = {"error": str(e)}
@@ -1121,7 +1148,9 @@ class EnhancedSundewAlgorithm:
         """Compute overall performance score (0-10)."""
 
         # Activation rate accuracy (0-3 points)
-        activation_error = abs(self.control_state.activation_rate - self.config.target_activation_rate)
+        activation_error = abs(
+            self.control_state.activation_rate - self.config.target_activation_rate
+        )
         activation_score = max(0, 3 - activation_error * 15)
 
         # Energy efficiency (0-3 points)
@@ -1171,10 +1200,16 @@ class EnhancedSundewAlgorithm:
 
         # Information-theoretic performance bonus
         info_bonus = 0.0
-        if self.information_controller and hasattr(self.information_controller, 'performance_history'):
+        if self.information_controller and hasattr(
+            self.information_controller, "performance_history"
+        ):
             if len(self.information_controller.performance_history) > 0:
-                recent_mi = np.mean([p['metrics']['mutual_information']
-                                   for p in self.information_controller.performance_history[-5:]])
+                recent_mi = np.mean(
+                    [
+                        p["metrics"]["mutual_information"]
+                        for p in self.information_controller.performance_history[-5:]
+                    ]
+                )
                 info_bonus = min(0.2, recent_mi * 0.5)  # Up to 0.2 bonus for high MI
 
         total_score = base_score + stability_bonus + performance_bonus + info_bonus
@@ -1193,7 +1228,7 @@ class PerformanceEvaluator:
             "significance": self._evaluate_significance_model(metrics),
             "gating": self._evaluate_gating_strategy(metrics, control_state),
             "control": self._evaluate_control_policy(metrics, control_state),
-            "energy": self._evaluate_energy_model(metrics, control_state)
+            "energy": self._evaluate_energy_model(metrics, control_state),
         }
 
     def _evaluate_significance_model(self, metrics: EnhancedMetrics) -> Dict[str, float]:
@@ -1207,29 +1242,38 @@ class PerformanceEvaluator:
         return {
             "variance": significance_variance,
             "mean": mean_significance,
-            "distribution_quality": min(1.0, significance_variance * 4)  # Good spread is important
+            "distribution_quality": min(1.0, significance_variance * 4),  # Good spread is important
         }
 
-    def _evaluate_gating_strategy(self, metrics: EnhancedMetrics, control_state: ControlState) -> Dict[str, float]:
+    def _evaluate_gating_strategy(
+        self, metrics: EnhancedMetrics, control_state: ControlState
+    ) -> Dict[str, float]:
         """Evaluate gating strategy performance."""
         return {
             "decision_consistency": 1.0 - control_state.stability_metrics.get("oscillation", 0.5),
-            "exploration_balance": 0.8  # Placeholder - would measure exploration vs exploitation
+            "exploration_balance": 0.8,  # Placeholder - would measure exploration vs exploitation
         }
 
-    def _evaluate_control_policy(self, metrics: EnhancedMetrics, control_state: ControlState) -> Dict[str, float]:
+    def _evaluate_control_policy(
+        self, metrics: EnhancedMetrics, control_state: ControlState
+    ) -> Dict[str, float]:
         """Evaluate control policy performance."""
         return {
-            "convergence_speed": 1.0 / (1.0 + control_state.stability_metrics.get("settling_time", 10)),
+            "convergence_speed": 1.0
+            / (1.0 + control_state.stability_metrics.get("settling_time", 10)),
             "overshoot": max(0.0, 1.0 - control_state.stability_metrics.get("overshoot", 0.2)),
-            "steady_state_accuracy": max(0.0, 1.0 - control_state.stability_metrics.get("steady_state_error", 0.1))
+            "steady_state_accuracy": max(
+                0.0, 1.0 - control_state.stability_metrics.get("steady_state_error", 0.1)
+            ),
         }
 
-    def _evaluate_energy_model(self, metrics: EnhancedMetrics, control_state: ControlState) -> Dict[str, float]:
+    def _evaluate_energy_model(
+        self, metrics: EnhancedMetrics, control_state: ControlState
+    ) -> Dict[str, float]:
         """Evaluate energy model performance."""
         return {
             "efficiency": control_state.energy_level,
-            "prediction_accuracy": 0.8  # Placeholder - would compare predictions to actual
+            "prediction_accuracy": 0.8,  # Placeholder - would compare predictions to actual
         }
 
 

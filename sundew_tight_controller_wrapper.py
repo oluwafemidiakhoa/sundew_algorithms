@@ -23,12 +23,13 @@ Outputs:
 Author: ChatGPT
 """
 import argparse
-import math
 import random
 from collections import defaultdict
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
+
 
 def gen_event(rng):
     # Synthetic categories with different typical signal ranges
@@ -98,7 +99,6 @@ def simulate(steps=500, q_target=0.30, eta_q=0.02, hyst=0.02, E_min=12.0,
     return pd.DataFrame(rows)
 
 def plot(df, prefix="tight"):
-    import matplotlib.pyplot as plt
     # Energy
     plt.figure()
     plt.plot(df["idx"], df["energy"])
@@ -134,7 +134,6 @@ def plot(df, prefix="tight"):
     plt.close()
 
 def main():
-    import argparse
     ap = argparse.ArgumentParser()
     ap.add_argument("--steps", type=int, default=500)
     ap.add_argument("--target", type=float, default=0.30)

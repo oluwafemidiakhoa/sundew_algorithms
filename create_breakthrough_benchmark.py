@@ -18,25 +18,27 @@ Each domain demonstrates Sundew's ability to achieve 95-99% energy savings
 while maintaining or improving detection accuracy.
 """
 
+import json
+import sys
+import time
+import warnings
+from datetime import datetime
+from pathlib import Path
+from typing import Any, Dict, List
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt
 import seaborn as sns
-import json
-import time
-import sys
-from pathlib import Path
-from datetime import datetime, timedelta
-from typing import Dict, List, Tuple, Any
-import warnings
+
 warnings.filterwarnings('ignore')
 
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
-from sundew.core import SundewAlgorithm
 from sundew.config import SundewConfig
+from sundew.core import SundewAlgorithm
+from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
 
 # Set style for publication-quality plots
 try:
@@ -820,7 +822,7 @@ class BreakthroughBenchmark:
             avg_energy_enhanced = np.mean([r['energy_savings'] for r in enhanced_neural_results])
             avg_quality = np.mean([r['research_quality'] for r in enhanced_neural_results if r['research_quality']])
 
-            print(f"\n*** ENHANCED NEURAL+PI SYSTEM ***")
+            print("\n*** ENHANCED NEURAL+PI SYSTEM ***")
             print(f"   * Average F1 Score: {avg_f1_enhanced:.3f}")
             print(f"   * Average Energy Savings: {avg_energy_enhanced:.1f}%")
             print(f"   * Average Research Quality: {avg_quality:.1f}/10")
@@ -829,16 +831,16 @@ class BreakthroughBenchmark:
             avg_f1_original = np.mean([r['f1_score'] for r in original_results])
             avg_energy_original = np.mean([r['energy_savings'] for r in original_results])
 
-            print(f"\n*** ORIGINAL SYSTEM ***")
+            print("\n*** ORIGINAL SYSTEM ***")
             print(f"   * Average F1 Score: {avg_f1_original:.3f}")
             print(f"   * Average Energy Savings: {avg_energy_original:.1f}%")
 
-        print(f"\n*** KEY ACHIEVEMENTS ***")
+        print("\n*** KEY ACHIEVEMENTS ***")
         print(f"   * Tested across {len(self.results)} diverse domains")
-        print(f"   * Universal applicability demonstrated")
-        print(f"   * Research-grade quality (8+ scores)")
-        print(f"   * 95-99% energy savings achieved")
-        print(f"   * Maintained high accuracy across all domains")
+        print("   * Universal applicability demonstrated")
+        print("   * Research-grade quality (8+ scores)")
+        print("   * 95-99% energy savings achieved")
+        print("   * Maintained high accuracy across all domains")
 
         print("\n" + "=" * 60)
 

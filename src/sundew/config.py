@@ -26,7 +26,7 @@ class SundewConfig:
     adapt_kp: float = 0.012  # Reduced for smoother response
     adapt_ki: float = 0.004  # Lower integral gain to prevent windup
     error_deadband: float = 0.003  # Tighter deadband for precision
-    integral_clamp: float = 0.30   # Reduced to prevent large corrections
+    integral_clamp: float = 0.30  # Reduced to prevent large corrections
 
     # Threshold bounds
     min_threshold: float = 0.20
@@ -35,6 +35,7 @@ class SundewConfig:
     # Energy pressure & gating
     energy_pressure: float = 0.04
     gate_temperature: float = 0.08
+    hysteresis_gap: float = 0.02  # Gap between activation/deactivation thresholds
 
     # Energy model
     max_energy: float = 100.0
@@ -53,8 +54,8 @@ class SundewConfig:
     rng_seed: int = 42
 
     # Optional features
-    refractory: int = 0         # ticks to sleep after activation
-    probe_every: int = 0        # force a probe every N events (0 = off)
+    refractory: int = 0  # ticks to sleep after activation
+    probe_every: int = 0  # force a probe every N events (0 = off)
 
     # --------------------------- Validation & helpers ---------------------------
 
@@ -73,9 +74,7 @@ class SundewConfig:
 
         # Starting threshold must lie within the permitted band.
         if not (self.min_threshold <= self.activation_threshold <= self.max_threshold):
-            raise ValueError(
-                "activation_threshold must lie within [min_threshold, max_threshold]."
-            )
+            raise ValueError("activation_threshold must lie within [min_threshold, max_threshold].")
 
         # Non-negative scalars
         for name in (
@@ -85,6 +84,7 @@ class SundewConfig:
             "error_deadband",
             "integral_clamp",
             "energy_pressure",
+            "hysteresis_gap",
             "max_energy",
             "dormant_tick_cost",
             "eval_cost",
@@ -101,16 +101,12 @@ class SundewConfig:
         # Enforce convex combination for weights
         weight_sum = self.w_magnitude + self.w_anomaly + self.w_context + self.w_urgency
         if abs(weight_sum - 1.0) > 1e-6:
-            raise ValueError(
-                "w_magnitude + w_anomaly + w_context + w_urgency must sum to 1.0."
-            )
+            raise ValueError("w_magnitude + w_anomaly + w_context + w_urgency must sum to 1.0.")
 
         # Regen ordering and non-negativity
         regen_lo, regen_hi = self.dormancy_regen
         if regen_lo < 0.0 or regen_hi < 0.0 or regen_lo > regen_hi:
-            raise ValueError(
-                "dormancy_regen must be a non-negative (min, max) with min ≤ max."
-            )
+            raise ValueError("dormancy_regen must be a non-negative (min, max) with min ≤ max.")
 
         # Optional feature knobs
         if self.refractory < 0:
@@ -135,6 +131,7 @@ class SundewConfig:
             "max_threshold": self.max_threshold,
             "energy_pressure": self.energy_pressure,
             "gate_temperature": self.gate_temperature,
+            "hysteresis_gap": self.hysteresis_gap,
             "max_energy": self.max_energy,
             "dormant_tick_cost": self.dormant_tick_cost,
             "dormancy_regen": self.dormancy_regen,
@@ -180,6 +177,7 @@ _CONFIG_KEYS: Tuple[str, ...] = (
     "max_threshold",
     "energy_pressure",
     "gate_temperature",
+    "hysteresis_gap",
     "max_energy",
     "dormant_tick_cost",
     "dormancy_regen",

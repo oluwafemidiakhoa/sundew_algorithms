@@ -9,10 +9,14 @@ Usage:
   python sundew_tight_controller_budget.py --steps 500 --target 0.30 \
      --eta 0.04 --hyst 0.03 --reserve 20 --regen 2.2 --seed 42
 """
-import argparse, math, random
+import argparse
+import random
 from collections import defaultdict
-import numpy as np, pandas as pd
+
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+
 
 def gen_event(rng):
     cat = rng.choices(
@@ -79,7 +83,6 @@ def simulate(steps=500, q_target=0.30, eta_q=0.04, hyst=0.03, E_min=20.0,
 
 def plot(df, prefix="tight_budget"):
     # Energy
-    import matplotlib.pyplot as plt
     plt.figure(); plt.plot(df["idx"], df["energy"])
     plt.title("Energy vs Event"); plt.xlabel("Event index"); plt.ylabel("Energy")
     plt.savefig(f"{prefix}_energy.png", bbox_inches="tight"); plt.close()

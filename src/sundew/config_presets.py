@@ -238,12 +238,56 @@ def _target_0p30() -> SundewConfig:
     return _clone(_tuned_v2(), target_activation_rate=0.30)
 
 
+def _auto_tuned() -> SundewConfig:
+    """
+    Auto-tuned preset based on control system analysis:
+    - Unstuck threshold (max_threshold=0.88)
+    - Faster EMA tracking (ema_alpha=0.25) - balanced for stability
+    - Reduced hysteresis (hysteresis_gap=0.02)
+    - More aggressive controller gains for better tracking
+    - Better selectivity (temperature=0.12)
+    """
+    return SundewConfig(
+        # Core auto-tuned parameters - more aggressive for better activation
+        activation_threshold=0.50,  # Lower starting threshold
+        target_activation_rate=0.15,  # Higher target rate
+        ema_alpha=0.25,  # Fast but stable EMA tracking
+        # More responsive controller for better tracking
+        adapt_kp=0.020,  # Higher proportional gain
+        adapt_ki=0.008,  # Moderate integral gain
+        error_deadband=0.005,
+        integral_clamp=0.25,  # Prevent windup near bounds
+        # Unstick threshold but allow more range
+        min_threshold=0.15,
+        max_threshold=0.88,  # Prevent saturation
+        # Better selectivity
+        energy_pressure=0.03,  # Reduced pressure for more activation
+        gate_temperature=0.12,  # More responsive gating
+        hysteresis_gap=0.02,  # Reduced over-damping
+        # Standard energy model
+        max_energy=100.0,
+        dormant_tick_cost=0.5,
+        dormancy_regen=(1.0, 3.0),
+        eval_cost=0.6,
+        base_processing_cost=10.0,
+        # Balanced significance weights
+        w_magnitude=0.30,
+        w_anomaly=0.40,
+        w_context=0.20,
+        w_urgency=0.10,
+        rng_seed=42,
+        probe_every=0,
+        refractory=0,
+    )
+
+
 # ---------------- Registry & helpers ----------------
 
 _PRESETS: Final[Dict[str, Callable[[], SundewConfig]]] = {
     "baseline": _baseline,
     "tuned_v1": _tuned_v1,
     "tuned_v2": _tuned_v2,  # current general recommendation
+    "auto_tuned": _auto_tuned,  # auto-tuner optimized preset
     "ecg_v1": _ecg_v1,  # ECG-focused generic preset
     "ecg_mitbih_best": _ecg_mitbih_best,
     "aggressive": _aggressive,

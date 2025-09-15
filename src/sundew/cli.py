@@ -81,7 +81,24 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
             print("ERROR: Temperature must be between 0.0 and 1.0")
             return 1
 
-        cfg = SundewConfig(gate_temperature=ns.temperature)
+        # Use preset with CLI parameter overrides
+        preset_name = getattr(ns, "preset", "auto_tuned")
+        try:
+            cfg = get_preset(preset_name)
+        except KeyError:
+            print(f"ERROR: Unknown preset '{preset_name}'. Available: {list_presets()}")
+            return 1
+
+        # Apply CLI parameter overrides
+        cfg.gate_temperature = ns.temperature
+
+        if hasattr(ns, "max_threshold") and ns.max_threshold is not None:
+            cfg.max_threshold = ns.max_threshold
+        if hasattr(ns, "ema_alpha") and ns.ema_alpha is not None:
+            cfg.ema_alpha = ns.ema_alpha
+        if hasattr(ns, "hysteresis") and ns.hysteresis is not None:
+            cfg.hysteresis_gap = ns.hysteresis
+
         cfg.validate()  # Ensure configuration is valid
         algo = SundewAlgorithm(cfg)
     except ValueError as e:
@@ -155,11 +172,15 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
     print(f"  EMA Activation Rate       : {report.get('ema_activation_rate', 0):>7.1%}")
     print()
 
-    # Energy analysis
-    energy_savings = report.get('estimated_energy_savings_pct', 0)
+    # Enhanced energy analysis with fixed accounting
+    energy_savings = report.get("estimated_energy_savings_pct", 0)
     print("Energy Analysis:")
     print(f"  Energy Remaining          : {report.get('energy_remaining', 0):>7.1f}")
     print(f"  Total Energy Spent        : {report.get('total_energy_spent', 0):>7.1f}")
+    print(f"  Net Energy Consumed       : {report.get('net_energy_consumed', 0):>7.1f}")
+    print(f"  Energy Recovered          : {report.get('energy_recovered', 0):>7.1f}")
+    print(f"  Processing Energy         : {report.get('energy_spent_processing', 0):>7.1f}")
+    print(f"  Dormancy Energy           : {report.get('energy_spent_dormancy', 0):>7.1f}")
     print(f"  Energy Savings            : {energy_savings:>7.1f}%")
 
     # Performance rating based on energy savings
@@ -174,18 +195,33 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
     print(f"  Performance Rating        : {rating}")
     print()
 
-    # Control system status
+    # Enhanced control system status with debugging info
     print("Control System:")
     print(f"  Final Threshold           : {algo.threshold:>7.3f}")
+    print(f"  Threshold Utilization     : {report.get('threshold_utilization', 0):>7.1%}")
+    print(f"  Hysteresis Gap            : {report.get('hysteresis_gap', 0):>7.3f}")
+    print(f"  EMA Alpha                 : {report.get('ema_alpha', 0):>7.3f}")
+    print(f"  EMA Discrepancy           : {report.get('ema_discrepancy', 0):>7.3f}")
     print(f"  Avg Processing Time       : {report.get('avg_processing_time', 0):>7.3f}s")
 
-    # Convergence analysis
-    rate_diff = abs(report.get('activation_rate', 0) - report.get('ema_activation_rate', 0))
+    # Enhanced convergence analysis
+    rate_diff = abs(report.get("activation_rate", 0) - report.get("ema_activation_rate", 0))
     convergence_status = "Converged" if rate_diff < 0.05 else "Oscillating"
     print(f"  Convergence Status        : {convergence_status}")
+    print()
 
+    # Enhanced suggestions based on multiple metrics
+    print("Optimization Suggestions:")
+    if report.get("ema_discrepancy", 0) > 0.05:
+        print("  - Consider adjusting EMA alpha for better rate tracking")
+    if report.get("threshold_utilization", 0) > 0.9:
+        print("  - Threshold near max - reduce gains to prevent saturation")
+    if report.get("energy_at_cap_pct", 0) > 50:
+        print("  - Energy frequently at cap - capacity may be underutilized")
+    if abs(report.get("controller_integral_error", 0)) > 0.2:
+        print("  - High integral error - consider anti-windup measures")
     if rate_diff > 0.1:
-        print("  Suggestion: Consider tuning PI controller gains for better stability")
+        print("  - Consider tuning PI controller gains for better stability")
 
     if ns.save:
         try:
@@ -196,8 +232,8 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
                 "metadata": {
                     "version": "0.3.0",
                     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "total_events": len(processed) + (ns.events - len(processed))
-                }
+                    "total_events": len(processed) + (ns.events - len(processed)),
+                },
             }
             path = Path(ns.save)
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -254,17 +290,44 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover
         help="Gating temperature (0=hard)",
     )
     ap.add_argument(
+        "--preset",
+        type=str,
+        default="auto_tuned",
+        help="Configuration preset (default: auto_tuned)",
+    )
+    ap.add_argument(
         "--save",
         type=str,
         default="",
         help="Optional path to save demo results JSON",
     )
 
-    # demo subcommand (explicit)
+    # Auto-tuner CLI flags
+    ap.add_argument(
+        "--max-threshold",
+        type=float,
+        help="Maximum threshold (auto-tuner: 0.88)",
+    )
+    ap.add_argument(
+        "--ema-alpha",
+        type=float,
+        help="EMA learning rate (auto-tuner: 0.35)",
+    )
+    ap.add_argument(
+        "--hysteresis",
+        type=float,
+        help="Hysteresis gap (auto-tuner: 0.02)",
+    )
+
+    # demo subcommand (explicit) - copy tuning flags
     ap_demo = sub.add_parser("demo", help="Run the interactive demo")
     ap_demo.add_argument("--events", type=int, default=40)
     ap_demo.add_argument("--temperature", type=float, default=0.1)
+    ap_demo.add_argument("--preset", type=str, default="auto_tuned")
     ap_demo.add_argument("--save", type=str, default="")
+    ap_demo.add_argument("--max-threshold", type=float, help="Maximum threshold")
+    ap_demo.add_argument("--ema-alpha", type=float, help="EMA learning rate")
+    ap_demo.add_argument("--hysteresis", type=float, help="Hysteresis gap")
     ap_demo.set_defaults(func=cmd_demo)
 
     ns = ap.parse_args(argv)

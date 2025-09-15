@@ -27,12 +27,14 @@ class MonitoringConfig:
 
     # Alerting
     enable_alerts: bool = True
-    alert_thresholds: Dict[str, Tuple[float, float]] = field(default_factory=lambda: {
-        "activation_rate": (0.05, 0.30),  # (min, max)
-        "energy_level": (0.20, 1.00),
-        "oscillation_index": (0.00, 0.15),
-        "f1_score": (0.50, 1.00)
-    })
+    alert_thresholds: Dict[str, Tuple[float, float]] = field(
+        default_factory=lambda: {
+            "activation_rate": (0.05, 0.30),  # (min, max)
+            "energy_level": (0.20, 1.00),
+            "oscillation_index": (0.00, 0.15),
+            "f1_score": (0.50, 1.00),
+        }
+    )
 
     # Visualization
     enable_live_plots: bool = False  # Requires matplotlib
@@ -129,7 +131,9 @@ class AlertManager:
                     "value": current_value,
                     "threshold": (min_val, max_val),
                     "type": alert_type,
-                    "severity": self._compute_alert_severity(metric_name, current_value, min_val, max_val)
+                    "severity": self._compute_alert_severity(
+                        metric_name, current_value, min_val, max_val
+                    ),
                 }
                 alerts.append(alert)
                 self.alert_history.append(alert)
@@ -149,11 +153,7 @@ class AlertManager:
         return alerts
 
     def _compute_alert_severity(
-        self,
-        metric_name: str,
-        value: float,
-        min_val: float,
-        max_val: float
+        self, metric_name: str, value: float, min_val: float, max_val: float
     ) -> str:
         """Compute alert severity based on how far outside bounds the value is."""
 
@@ -209,7 +209,7 @@ class AlertManager:
                         "value": value,
                         "type": "statistical_anomaly",
                         "z_score": z_score,
-                        "severity": "HIGH" if z_score > 4.0 else "MEDIUM"
+                        "severity": "HIGH" if z_score > 4.0 else "MEDIUM",
                     }
                     alerts.append(alert)
 
@@ -270,7 +270,7 @@ class PerformanceProfiler:
         sig_model_type = type(algorithm.significance_model).__name__
         if "Neural" in sig_model_type:
             profiles["neural_model_memory"] = 15.0  # MB estimate
-            profiles["neural_model_compute"] = 5.0   # MFLOPS estimate
+            profiles["neural_model_compute"] = 5.0  # MFLOPS estimate
         else:
             profiles["linear_model_memory"] = 1.0
             profiles["linear_model_compute"] = 0.1
@@ -364,7 +364,7 @@ class RealTimeMonitor:
         self,
         algorithm: EnhancedSundewAlgorithm,
         ground_truth_label: Optional[int] = None,
-        prediction: Optional[int] = None
+        prediction: Optional[int] = None,
     ):
         """Update monitoring with latest algorithm state."""
 
@@ -390,10 +390,11 @@ class RealTimeMonitor:
             self.predictions.append(prediction)
 
         # Update performance metrics if we have both labels and predictions
-        if (self.ground_truth_labels is not None and
-            len(self.ground_truth_labels) == len(self.predictions) and
-            len(self.predictions) > 0):
-
+        if (
+            self.ground_truth_labels is not None
+            and len(self.ground_truth_labels) == len(self.predictions)
+            and len(self.predictions) > 0
+        ):
             performance_metrics = self._compute_performance_metrics()
             snapshot.f1_score = performance_metrics["f1_score"]
             snapshot.precision = performance_metrics["precision"]
@@ -411,7 +412,9 @@ class RealTimeMonitor:
 
         self.last_update_time = current_time
 
-    def _collect_metrics(self, algorithm: EnhancedSundewAlgorithm, timestamp: float) -> MetricSnapshot:
+    def _collect_metrics(
+        self, algorithm: EnhancedSundewAlgorithm, timestamp: float
+    ) -> MetricSnapshot:
         """Collect comprehensive metrics from the algorithm."""
 
         # Get algorithm report
@@ -428,31 +431,26 @@ class RealTimeMonitor:
         # Create snapshot
         snapshot = MetricSnapshot(
             timestamp=timestamp,
-
             # Core metrics
             activation_rate=report["activation_rate"],
             energy_level=report["energy_remaining"],
             threshold=report["current_threshold"],
             significance=recent_significance,
-
             # Performance metrics (will be updated if ground truth available)
             f1_score=0.0,
             precision=0.0,
             recall=0.0,
             energy_efficiency=report["energy_efficiency"],
-
             # Stability metrics
             oscillation_index=report["stability_metrics"].get("oscillation", 0.0),
             convergence_rate=1.0 / max(1, report["stability_metrics"].get("settling_time", 1)),
             control_effort=report["stability_metrics"].get("control_effort", 0.0),
-
             # System metrics
             processing_time=report["avg_processing_time"],
             memory_usage=profile_data.get("memory_usage", 0.0),
             cpu_usage=profile_data.get("cpu_usage", 0.0),
-
             # Component metrics
-            component_metrics=report["components"]
+            component_metrics=report["components"],
         )
 
         return snapshot
@@ -460,9 +458,11 @@ class RealTimeMonitor:
     def _compute_performance_metrics(self) -> Dict[str, float]:
         """Compute classification performance metrics."""
 
-        if (self.ground_truth_labels is None or
-            len(self.ground_truth_labels) != len(self.predictions) or
-            len(self.predictions) == 0):
+        if (
+            self.ground_truth_labels is None
+            or len(self.ground_truth_labels) != len(self.predictions)
+            or len(self.predictions) == 0
+        ):
             return {"f1_score": 0.0, "precision": 0.0, "recall": 0.0}
 
         # Use recent window for performance calculation
@@ -479,13 +479,11 @@ class RealTimeMonitor:
         # Compute metrics
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
-        f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        f1_score = (
+            2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0.0
+        )
 
-        return {
-            "f1_score": f1_score,
-            "precision": precision,
-            "recall": recall
-        }
+        return {"f1_score": f1_score, "precision": precision, "recall": recall}
 
     def _log_metrics(self, snapshot: MetricSnapshot, alerts: List[Dict[str, Any]]):
         """Log metrics and alerts to file."""
@@ -500,7 +498,7 @@ class RealTimeMonitor:
                 "activation_rate": snapshot.activation_rate,
                 "energy_level": snapshot.energy_level,
                 "f1_score": snapshot.f1_score,
-                "oscillation": snapshot.oscillation_index
+                "oscillation": snapshot.oscillation_index,
             }
 
             # In practice, would use proper logging framework
@@ -517,7 +515,7 @@ class RealTimeMonitor:
             return
 
         # Extract recent data
-        recent_data = list(self.metric_buffer)[-self.config.max_plot_points:]
+        recent_data = list(self.metric_buffer)[-self.config.max_plot_points :]
 
         if len(recent_data) < 2:
             return
@@ -533,8 +531,8 @@ class RealTimeMonitor:
         activation_rates = [s.activation_rate for s in recent_data]
         thresholds = [s.threshold for s in recent_data]
 
-        self.axes[0, 0].plot(timestamps, activation_rates, 'b-', label='Activation Rate')
-        self.axes[0, 0].plot(timestamps, thresholds, 'r-', label='Threshold')
+        self.axes[0, 0].plot(timestamps, activation_rates, "b-", label="Activation Rate")
+        self.axes[0, 0].plot(timestamps, thresholds, "r-", label="Threshold")
         self.axes[0, 0].set_title("Activation Rate & Threshold")
         self.axes[0, 0].set_ylabel("Rate / Threshold")
         self.axes[0, 0].legend()
@@ -542,8 +540,8 @@ class RealTimeMonitor:
         # Plot 2: Energy Level
         energy_levels = [s.energy_level for s in recent_data]
 
-        self.axes[0, 1].plot(timestamps, energy_levels, 'g-', label='Energy Level')
-        self.axes[0, 1].axhline(y=0.3, color='r', linestyle='--', alpha=0.5, label='Low Energy')
+        self.axes[0, 1].plot(timestamps, energy_levels, "g-", label="Energy Level")
+        self.axes[0, 1].axhline(y=0.3, color="r", linestyle="--", alpha=0.5, label="Low Energy")
         self.axes[0, 1].set_title("Energy Level")
         self.axes[0, 1].set_ylabel("Energy")
         self.axes[0, 1].legend()
@@ -554,9 +552,9 @@ class RealTimeMonitor:
         recalls = [s.recall for s in recent_data]
 
         if any(f > 0 for f in f1_scores):  # Only plot if we have performance data
-            self.axes[1, 0].plot(timestamps, f1_scores, 'b-', label='F1 Score')
-            self.axes[1, 0].plot(timestamps, precisions, 'g-', label='Precision')
-            self.axes[1, 0].plot(timestamps, recalls, 'orange', label='Recall')
+            self.axes[1, 0].plot(timestamps, f1_scores, "b-", label="F1 Score")
+            self.axes[1, 0].plot(timestamps, precisions, "g-", label="Precision")
+            self.axes[1, 0].plot(timestamps, recalls, "orange", label="Recall")
 
         self.axes[1, 0].set_title("Performance Metrics")
         self.axes[1, 0].set_ylabel("Score")
@@ -566,9 +564,11 @@ class RealTimeMonitor:
         oscillations = [s.oscillation_index for s in recent_data]
         convergence_rates = [s.convergence_rate for s in recent_data]
 
-        self.axes[1, 1].plot(timestamps, oscillations, 'r-', label='Oscillation')
-        self.axes[1, 1].plot(timestamps, convergence_rates, 'purple', label='Convergence Rate')
-        self.axes[1, 1].axhline(y=0.1, color='r', linestyle='--', alpha=0.5, label='High Oscillation')
+        self.axes[1, 1].plot(timestamps, oscillations, "r-", label="Oscillation")
+        self.axes[1, 1].plot(timestamps, convergence_rates, "purple", label="Convergence Rate")
+        self.axes[1, 1].axhline(
+            y=0.1, color="r", linestyle="--", alpha=0.5, label="High Oscillation"
+        )
         self.axes[1, 1].set_title("Stability Metrics")
         self.axes[1, 1].set_ylabel("Index")
         self.axes[1, 1].legend()
@@ -594,7 +594,9 @@ class RealTimeMonitor:
         avg_oscillation = np.mean([s.oscillation_index for s in recent_snapshots])
 
         # Count recent alerts
-        recent_alerts = [a for a in self.alert_buffer if time.time() - a["timestamp"] < 300]  # Last 5 minutes
+        recent_alerts = [
+            a for a in self.alert_buffer if time.time() - a["timestamp"] < 300
+        ]  # Last 5 minutes
         critical_alerts = [a for a in recent_alerts if a["severity"] == "CRITICAL"]
 
         # System health assessment
@@ -603,25 +605,25 @@ class RealTimeMonitor:
         return {
             "status": "active" if self.monitoring_active else "inactive",
             "samples_collected": len(self.metric_buffer),
-            "monitoring_duration": self.metric_buffer[-1].timestamp - self.metric_buffer[0].timestamp if len(self.metric_buffer) > 1 else 0,
-
+            "monitoring_duration": self.metric_buffer[-1].timestamp
+            - self.metric_buffer[0].timestamp
+            if len(self.metric_buffer) > 1
+            else 0,
             "current_metrics": {
                 "activation_rate": avg_activation_rate,
                 "energy_level": avg_energy_level,
                 "f1_score": avg_f1_score,
-                "oscillation_index": avg_oscillation
+                "oscillation_index": avg_oscillation,
             },
-
             "alerts": {
                 "total_recent": len(recent_alerts),
                 "critical": len(critical_alerts),
-                "recent_alerts": recent_alerts[-5:]  # Last 5 alerts
+                "recent_alerts": recent_alerts[-5:],  # Last 5 alerts
             },
-
             "system_health": {
                 "overall_score": health_score,
-                "status": self._health_status_from_score(health_score)
-            }
+                "status": self._health_status_from_score(health_score),
+            },
         }
 
     def _compute_health_score(self, snapshots: List[MetricSnapshot]) -> float:
@@ -674,21 +676,22 @@ class RealTimeMonitor:
                     "energy_level": s.energy_level,
                     "threshold": s.threshold,
                     "f1_score": s.f1_score,
-                    "oscillation_index": s.oscillation_index
+                    "oscillation_index": s.oscillation_index,
                 }
                 for s in self.metric_buffer
             ],
             "alerts": list(self.alert_buffer),
-            "summary": self.get_monitoring_summary()
+            "summary": self.get_monitoring_summary(),
         }
 
-        with open(filename, 'w') as f:
+        with open(filename, "w") as f:
             json.dump(data, f, indent=2)
 
         print(f"Monitoring data exported to {filename}")
 
 
 # Convenience functions for easy monitoring setup
+
 
 def setup_basic_monitoring(algorithm: EnhancedSundewAlgorithm) -> RealTimeMonitor:
     """Set up basic monitoring with default configuration."""
@@ -700,7 +703,7 @@ def setup_basic_monitoring(algorithm: EnhancedSundewAlgorithm) -> RealTimeMonito
 
 def setup_monitoring_with_alerts(
     algorithm: EnhancedSundewAlgorithm,
-    alert_callback: Optional[Callable[[str, Dict[str, Any]], None]] = None
+    alert_callback: Optional[Callable[[str, Dict[str, Any]], None]] = None,
 ) -> RealTimeMonitor:
     """Set up monitoring with custom alert handling."""
     config = MonitoringConfig(enable_alerts=True)
@@ -721,11 +724,7 @@ def setup_monitoring_with_alerts(
 
 def setup_live_monitoring(algorithm: EnhancedSundewAlgorithm) -> RealTimeMonitor:
     """Set up monitoring with live visualization (requires matplotlib)."""
-    config = MonitoringConfig(
-        enable_live_plots=True,
-        enable_alerts=True,
-        plot_update_interval=0.5
-    )
+    config = MonitoringConfig(enable_live_plots=True, enable_alerts=True, plot_update_interval=0.5)
     monitor = RealTimeMonitor(config)
     monitor.start_monitoring(algorithm)
     return monitor

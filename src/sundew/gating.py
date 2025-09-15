@@ -46,3 +46,45 @@ def gate_probability(sig: float, threshold: float, temperature: float) -> float:
     t = max(1e-6, temperature)
     z = (sig - threshold) / t
     return 1.0 / (1.0 + math.exp(-z))
+
+
+def gate_probability_with_hysteresis(
+    sig: float,
+    threshold: float,
+    temperature: float,
+    last_activation: bool,
+    hysteresis_gap: float = 0.02,
+) -> float:
+    """
+    Gating with hysteresis to prevent oscillations.
+
+    Args:
+        sig: Significance score [0,1]
+        threshold: Current threshold [0,1]
+        temperature: Gate temperature (0=hard, >0=soft)
+        last_activation: Whether last event was activated
+        hysteresis_gap: Gap between open/close thresholds
+
+    Returns:
+        Probability of activation [0,1]
+    """
+    if temperature <= 0.0:  # hard gate with hysteresis
+        if last_activation:
+            # Once activated, need to drop below (threshold - gap) to deactivate
+            return 1.0 if sig >= (threshold - hysteresis_gap) else 0.0
+        else:
+            # When inactive, need to exceed threshold to activate
+            return 1.0 if sig >= threshold else 0.0
+
+    # Soft gate with hysteresis
+    effective_threshold = threshold
+    if last_activation:
+        effective_threshold -= hysteresis_gap / 2.0  # Easier to stay active
+    else:
+        effective_threshold += hysteresis_gap / 2.0  # Harder to activate
+
+    t = max(1e-6, temperature)
+    z = (sig - effective_threshold) / t
+    # Prevent overflow in exp function
+    z = max(-700, min(700, z))
+    return 1.0 / (1.0 + math.exp(-z))

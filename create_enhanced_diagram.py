@@ -5,9 +5,7 @@ Shows the modular plugin architecture and component relationships.
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.patches import FancyBboxPatch, ConnectionPatch
-import numpy as np
+from matplotlib.patches import FancyBboxPatch
 
 # Use non-interactive backend
 plt.switch_backend('Agg')

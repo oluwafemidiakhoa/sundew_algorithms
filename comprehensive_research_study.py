@@ -24,16 +24,15 @@ and performance comparisons across different configurations.
 import os
 import sys
 import time
+import warnings
+from typing import Any, Dict, Tuple
+
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-from typing import Dict, List, Any, Tuple
-import matplotlib.pyplot as plt
-import seaborn as sns
-from sklearn.datasets import load_breast_cancer, load_iris, load_wine
-from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_breast_cancer
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import classification_report, confusion_matrix
-import warnings
+
 warnings.filterwarnings('ignore')
 
 # Add src to path
@@ -402,7 +401,7 @@ class ComprehensiveResearchStudy:
             y_true = results_df['ground_truth']
             y_pred = results_df['activated'].astype(int)
 
-            from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+            from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
 
             metrics['accuracy'] = accuracy_score(y_true, y_pred)
             metrics['precision'] = precision_score(y_true, y_pred, zero_division=0)
@@ -558,7 +557,7 @@ def main():
     study = ComprehensiveResearchStudy()
     study.run_comprehensive_study()
 
-    print(f"\n🎉 Comprehensive Research Study Complete!")
+    print("\n🎉 Comprehensive Research Study Complete!")
     print(f"📊 Results available in: {study.results_dir}")
     print(f"📈 Visualizations will be in: {study.viz_dir}")
 

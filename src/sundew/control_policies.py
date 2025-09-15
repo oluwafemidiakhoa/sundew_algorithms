@@ -48,7 +48,7 @@ class PIControlPolicy(ControlPolicy):
         current_state: ControlState,
         target_activation_rate: float,
         recent_activations: List[bool],
-        energy_state: Dict[str, float]
+        energy_state: Dict[str, float],
     ) -> Tuple[float, ControlState]:
         """Update threshold using enhanced PI control."""
 
@@ -62,9 +62,7 @@ class PIControlPolicy(ControlPolicy):
         # Update integral with anti-windup
         self.integral_error += error
         self.integral_error = np.clip(
-            self.integral_error,
-            -self.config.integral_clamp,
-            self.config.integral_clamp
+            self.integral_error, -self.config.integral_clamp, self.config.integral_clamp
         )
 
         # Adaptive gain adjustment
@@ -97,7 +95,7 @@ class PIControlPolicy(ControlPolicy):
             "overshoot": oscillation_metrics["overshoot"],
             "steady_state_error": abs(error) if len(self.error_history) > 50 else 0.0,
             "control_effort": abs(control_output),
-            "integral_windup": abs(self.integral_error) / self.config.integral_clamp
+            "integral_windup": abs(self.integral_error) / self.config.integral_clamp,
         }
 
         # Create new control state
@@ -106,7 +104,7 @@ class PIControlPolicy(ControlPolicy):
             activation_rate=current_state.activation_rate,
             energy_level=energy_fraction,
             error_integral=self.integral_error,
-            stability_metrics=stability_metrics
+            stability_metrics=stability_metrics,
         )
 
         self.previous_error = error
@@ -136,9 +134,7 @@ class PIControlPolicy(ControlPolicy):
             self.current_ki = max(self.current_ki * 0.98, self.config.ki * 0.5)
 
     def predict_stability(
-        self,
-        current_state: ControlState,
-        horizon: int = 100
+        self, current_state: ControlState, horizon: int = 100
     ) -> Dict[str, float]:
         """Predict stability metrics using linear model approximation."""
         if len(self.error_history) < 10:
@@ -171,7 +167,7 @@ class PIControlPolicy(ControlPolicy):
             "convergence_time": min(convergence_time, horizon),
             "predicted_overshoot": predicted_overshoot,
             "oscillation_risk": oscillation_trend,
-            "stability_margin": max(0.0, 1.0 - oscillation_trend - predicted_overshoot)
+            "stability_margin": max(0.0, 1.0 - oscillation_trend - predicted_overshoot),
         }
 
     def get_theoretical_bounds(self) -> Dict[str, Tuple[float, float]]:
@@ -181,7 +177,7 @@ class PIControlPolicy(ControlPolicy):
             "settling_time": (0.0, 4.0 / (self.current_kp + self.current_ki)),
             "overshoot": (0.0, 0.2),  # Typical for well-tuned PI
             "steady_state_error": (0.0, self.config.error_deadband),
-            "stability_margin": (0.1, 1.0)  # Phase/gain margin equivalent
+            "stability_margin": (0.1, 1.0),  # Phase/gain margin equivalent
         }
 
 
@@ -229,7 +225,7 @@ class MPCControlPolicy(ControlPolicy):
         current_state: ControlState,
         target_activation_rate: float,
         recent_activations: List[bool],
-        energy_state: Dict[str, float]
+        energy_state: Dict[str, float],
     ) -> Tuple[float, ControlState]:
         """Update threshold using Model Predictive Control."""
 
@@ -247,10 +243,7 @@ class MPCControlPolicy(ControlPolicy):
 
         # Apply first control action
         threshold_delta = optimal_control[0] if optimal_control else 0.0
-        new_threshold = np.clip(
-            current_state.threshold + threshold_delta,
-            0.0, 1.0
-        )
+        new_threshold = np.clip(current_state.threshold + threshold_delta, 0.0, 1.0)
 
         # Update control sequence (shift and append)
         if len(self.control_sequence) >= self.config.control_horizon:
@@ -263,12 +256,14 @@ class MPCControlPolicy(ControlPolicy):
         )
 
         # Store data for model learning
-        state_vector = np.array([
-            current_state.threshold,
-            current_state.activation_rate,
-            current_state.energy_level,
-            target_activation_rate
-        ])
+        state_vector = np.array(
+            [
+                current_state.threshold,
+                current_state.activation_rate,
+                current_state.energy_level,
+                target_activation_rate,
+            ]
+        )
         self.model_identification_data.append((state_vector, threshold_delta))
 
         # Create new control state
@@ -277,17 +272,14 @@ class MPCControlPolicy(ControlPolicy):
             activation_rate=current_state.activation_rate,  # Will be updated externally
             energy_level=energy_state.get("energy_level", 1.0),
             error_integral=current_state.error_integral,  # Not used in MPC
-            stability_metrics=stability_metrics
+            stability_metrics=stability_metrics,
         )
 
         self.update_count += 1
         return new_threshold, new_state
 
     def _solve_mpc_optimization(
-        self,
-        current_state: ControlState,
-        target_rate: float,
-        energy_state: Dict[str, float]
+        self, current_state: ControlState, target_rate: float, energy_state: Dict[str, float]
     ) -> Tuple[List[float], List[Dict[str, float]]]:
         """Solve MPC optimization problem."""
 
@@ -308,11 +300,8 @@ class MPCControlPolicy(ControlPolicy):
         # Gradient descent optimization (simplified)
         learning_rate = 0.1
         for iteration in range(10):  # Limited iterations for real-time
-
             # Forward simulation
-            predicted_trajectory = self._simulate_system(
-                current_state, control_sequence, horizon
-            )
+            predicted_trajectory = self._simulate_system(current_state, control_sequence, horizon)
 
             # Compute cost and gradients
             cost, gradients = self._compute_cost_and_gradients(
@@ -327,10 +316,7 @@ class MPCControlPolicy(ControlPolicy):
         return control_sequence, predicted_trajectory
 
     def _simulate_system(
-        self,
-        initial_state: ControlState,
-        control_sequence: List[float],
-        horizon: int
+        self, initial_state: ControlState, control_sequence: List[float], horizon: int
     ) -> List[Dict[str, float]]:
         """Simulate system forward using learned model."""
 
@@ -338,7 +324,7 @@ class MPCControlPolicy(ControlPolicy):
         state = {
             "threshold": initial_state.threshold,
             "activation_rate": initial_state.activation_rate,
-            "energy_level": initial_state.energy_level
+            "energy_level": initial_state.energy_level,
         }
 
         for k in range(horizon):
@@ -359,7 +345,7 @@ class MPCControlPolicy(ControlPolicy):
         trajectory: List[Dict[str, float]],
         control_sequence: List[float],
         target_rate: float,
-        energy_state: Dict[str, float]
+        energy_state: Dict[str, float],
     ) -> Tuple[float, List[float]]:
         """Compute cost function and gradients for MPC optimization."""
 
@@ -377,7 +363,7 @@ class MPCControlPolicy(ControlPolicy):
 
         # Energy cost
         for state in trajectory:
-            energy_cost = max(0.0, 0.3 - state["energy_level"])**2  # Penalty for low energy
+            energy_cost = max(0.0, 0.3 - state["energy_level"]) ** 2  # Penalty for low energy
             total_cost += self.config.weight_energy * energy_cost
 
         # Compute simple finite-difference gradients
@@ -391,10 +377,10 @@ class MPCControlPolicy(ControlPolicy):
                     activation_rate=trajectory[0]["activation_rate"] if trajectory else 0.15,
                     energy_level=trajectory[0]["energy_level"] if trajectory else 1.0,
                     error_integral=0.0,
-                    stability_metrics={}
+                    stability_metrics={},
                 ),
                 control_sequence,
-                len(trajectory)
+                len(trajectory),
             )
 
             cost_plus, _ = self._compute_cost_and_gradients(
@@ -413,7 +399,7 @@ class MPCControlPolicy(ControlPolicy):
         self,
         trajectory: List[Dict[str, float]],
         control_sequence: List[float],
-        current_state: ControlState
+        current_state: ControlState,
     ) -> Dict[str, float]:
         """Compute stability metrics from MPC solution."""
 
@@ -421,9 +407,7 @@ class MPCControlPolicy(ControlPolicy):
             return {"lyapunov_exponent": 0.0, "controllability": 1.0, "robustness": 1.0}
 
         # Lyapunov stability approximation
-        state_deviations = [
-            abs(state["activation_rate"] - 0.15) for state in trajectory
-        ]
+        state_deviations = [abs(state["activation_rate"] - 0.15) for state in trajectory]
         lyapunov_exponent = np.mean(state_deviations) if state_deviations else 0.0
 
         # Controllability measure (control effort needed)
@@ -438,7 +422,7 @@ class MPCControlPolicy(ControlPolicy):
             "controllability": controllability,
             "robustness": robustness,
             "predicted_settling_time": float(len(trajectory)),
-            "control_cost": np.sum(np.abs(control_sequence))
+            "control_cost": np.sum(np.abs(control_sequence)),
         }
 
     def _update_system_model(self):
@@ -447,9 +431,7 @@ class MPCControlPolicy(ControlPolicy):
             self.system_model.update_parameters(self.model_identification_data[-50:])
 
     def predict_stability(
-        self,
-        current_state: ControlState,
-        horizon: int = 100
+        self, current_state: ControlState, horizon: int = 100
     ) -> Dict[str, float]:
         """Predict stability using MPC model."""
 
@@ -479,8 +461,10 @@ class MPCControlPolicy(ControlPolicy):
         return {
             "convergence_time": float(convergence_time),
             "predicted_overshoot": max(0.0, max_overshoot),
-            "steady_state_variance": np.var(activation_rates[-10:]) if len(activation_rates) > 10 else 0.0,
-            "stability_margin": 1.0 / (1.0 + np.var(activation_rates))
+            "steady_state_variance": np.var(activation_rates[-10:])
+            if len(activation_rates) > 10
+            else 0.0,
+            "stability_margin": 1.0 / (1.0 + np.var(activation_rates)),
         }
 
     def get_theoretical_bounds(self) -> Dict[str, Tuple[float, float]]:
@@ -490,7 +474,7 @@ class MPCControlPolicy(ControlPolicy):
             "overshoot": (0.0, 0.1),  # MPC typically has low overshoot
             "steady_state_error": (0.0, 0.005),  # Better than PI due to prediction
             "stability_margin": (0.5, 1.0),  # High due to optimization
-            "robustness": (0.7, 1.0)  # Good robustness with model adaptation
+            "robustness": (0.7, 1.0),  # Good robustness with model adaptation
         }
 
 
@@ -504,11 +488,9 @@ class SystemModel:
 
     def predict_next_state(self, state_dict: Dict[str, float], control: float) -> Dict[str, float]:
         """Predict next state."""
-        state_vector = np.array([
-            state_dict["threshold"],
-            state_dict["activation_rate"],
-            state_dict["energy_level"]
-        ])
+        state_vector = np.array(
+            [state_dict["threshold"], state_dict["activation_rate"], state_dict["energy_level"]]
+        )
 
         next_state = self.A @ state_vector + self.B.flatten() * control
         next_state = np.clip(next_state, [0.0, 0.0, 0.0], [1.0, 1.0, 1.0])
@@ -516,7 +498,7 @@ class SystemModel:
         return {
             "threshold": float(next_state[0]),
             "activation_rate": float(next_state[1]),
-            "energy_level": float(next_state[2])
+            "energy_level": float(next_state[2]),
         }
 
     def update_parameters(self, data: List[Tuple[np.ndarray, float]]):
@@ -528,7 +510,7 @@ class SystemModel:
         # Extract data matrices
         X = np.array([d[0][:3] for d in data[:-1]])  # State
         U = np.array([d[1] for d in data[:-1]]).reshape(-1, 1)  # Control
-        Y = np.array([d[0][:3] for d in data[1:]])   # Next state
+        Y = np.array([d[0][:3] for d in data[1:]])  # Next state
 
         # Least squares: [A B] = Y / [X U]
         XU = np.hstack([X, U])
@@ -554,11 +536,7 @@ class StateEstimator:
         # Simple implementation - would use full Kalman filter in practice
 
         # Measurement vector
-        z = np.array([
-            measurement.threshold,
-            measurement.activation_rate,
-            measurement.energy_level
-        ])
+        z = np.array([measurement.threshold, measurement.activation_rate, measurement.energy_level])
 
         # Simple exponential smoothing (simplified Kalman filter)
         alpha = 0.1
@@ -569,7 +547,7 @@ class StateEstimator:
             activation_rate=float(self.state_mean[1]),
             energy_level=float(self.state_mean[2]),
             error_integral=measurement.error_integral,
-            stability_metrics=measurement.stability_metrics
+            stability_metrics=measurement.stability_metrics,
         )
 
 
@@ -596,10 +574,12 @@ class OscillationDetector:
                 break
 
         # Overshoot
-        overshoot = max(0.0, max(errors) - 0.02) if errors[-1] > 0 else max(0.0, -min(errors) - 0.02)
+        overshoot = (
+            max(0.0, max(errors) - 0.02) if errors[-1] > 0 else max(0.0, -min(errors) - 0.02)
+        )
 
         return {
             "oscillation_index": oscillation_index,
             "settling_time": float(settling_time),
-            "overshoot": overshoot
+            "overshoot": overshoot,
         }

@@ -1,0 +1,86 @@
+[sundew] Sundew Algorithm — Demo
+============================================================
+Initial threshold: 0.780 | Energy: 100.0
+
+01. environmental   [ok] processed  (sig=0.220, 0.002s, dE~9.5)         | energy   90.5 | thr 0.784
+02. emergency       [idle] dormant  | energy   91.1 | thr 0.787
+03. emergency       [ok] processed  (sig=0.783, 0.003s, dE~11.7)        | energy   79.3 | thr 0.797
+04. system_alert    [idle] dormant  | energy   81.3 | thr 0.806
+05. security        [idle] dormant  | energy   83.6 | thr 0.814
+06. health_monitor  [idle] dormant  | energy   84.9 | thr 0.821
+07. health_monitor  [ok] processed  (sig=0.710, 0.003s, dE~11.4)        | energy   73.5 | thr 0.834
+08. system_alert    [idle] dormant  | energy   75.0 | thr 0.846
+09. health_monitor  [ok] processed  (sig=0.462, 0.002s, dE~10.4)        | energy   64.6 | thr 0.864
+10. health_monitor  [ok] processed  (sig=0.686, 0.003s, dE~11.3)        | energy   53.2 | thr 0.888
+11. system_alert    [idle] dormant  | energy   54.8 | thr 0.910
+12. health_monitor  [idle] dormant  | energy   56.5 | thr 0.920
+13. emergency       [idle] dormant  | energy   57.0 | thr 0.920
+14. emergency       [idle] dormant  | energy   58.9 | thr 0.920
+15. environmental   [idle] dormant  | energy   59.7 | thr 0.920
+16. emergency       [idle] dormant  | energy   60.9 | thr 0.920
+17. system_alert    [idle] dormant  | energy   61.6 | thr 0.920
+18. emergency       [idle] dormant  | energy   63.3 | thr 0.920
+19. security        [idle] dormant  | energy   65.2 | thr 0.920
+20. security        [idle] dormant  | energy   67.7 | thr 0.920
+21. system_alert    [idle] dormant  | energy   69.3 | thr 0.920
+22. environmental   [idle] dormant  | energy   71.0 | thr 0.920
+23. environmental   [idle] dormant  | energy   72.7 | thr 0.920
+24. health_monitor  [idle] dormant  | energy   73.3 | thr 0.920
+25. health_monitor  [idle] dormant  | energy   74.4 | thr 0.920
+26. security        [ok] processed  (sig=0.534, 0.003s, dE~10.7)        | energy   63.6 | thr 0.920
+27. health_monitor  [idle] dormant  | energy   64.3 | thr 0.920
+28. health_monitor  [idle] dormant  | energy   66.1 | thr 0.920
+29. system_alert    [idle] dormant  | energy   67.3 | thr 0.920
+30. system_alert    [idle] dormant  | energy   68.4 | thr 0.920
+31. security        [idle] dormant  | energy   70.2 | thr 0.920
+32. system_alert    [idle] dormant  | energy   71.0 | thr 0.920
+33. environmental   [idle] dormant  | energy   71.8 | thr 0.920
+34. emergency       [idle] dormant  | energy   74.3 | thr 0.920
+35. environmental   [idle] dormant  | energy   75.9 | thr 0.920
+36. security        [idle] dormant  | energy   78.1 | thr 0.920
+37. security        [idle] dormant  | energy   79.1 | thr 0.920
+38. system_alert    [ok] processed  (sig=0.400, 0.002s, dE~10.2)        | energy   68.9 | thr 0.920
+39. environmental   [idle] dormant  | energy   69.9 | thr 0.920
+40. security        [idle] dormant  | energy   72.3 | thr 0.920
+41. security        [idle] dormant  | energy   73.4 | thr 0.920
+42. environmental   [idle] dormant  | energy   74.7 | thr 0.920
+43. security        [idle] dormant  | energy   76.1 | thr 0.920
+44. environmental   [idle] dormant  | energy   77.1 | thr 0.920
+45. system_alert    [idle] dormant  | energy   78.1 | thr 0.920
+46. system_alert    [idle] dormant  | energy   80.4 | thr 0.920
+47. emergency       [idle] dormant  | energy   81.4 | thr 0.920
+48. emergency       [idle] dormant  | energy   82.9 | thr 0.920
+49. emergency       [ok] processed  (sig=0.692, 0.003s, dE~11.4)        | energy   71.5 | thr 0.920
+50. emergency       [ok] processed  (sig=0.621, 0.003s, dE~11.1)        | energy   60.4 | thr 0.920
+
+[done] Final Report (Enhanced v0.3.0)
+============================================================
+Performance Metrics:
+  Total Events              :       50
+  Activations               :        9
+  Activation Rate           :   18.0%
+  EMA Activation Rate       :   30.3%
+
+Energy Analysis:
+  Energy Remaining          :    60.4
+  Total Energy Spent        :   118.3
+  Net Energy Consumed       :    39.6
+  Energy Recovered          :    78.8
+  Processing Energy         :    97.8
+  Dormancy Energy           :    20.5
+  Energy Savings            :    78.1%
+  Performance Rating        : Fair
+
+Control System:
+  Final Threshold           :   0.920
+  Threshold Utilization     :  100.0%
+  Hysteresis Gap            :   0.020
+  EMA Alpha                 :   0.150
+  EMA Discrepancy           :   0.123
+  Avg Processing Time       :   0.003s
+  Convergence Status        : Oscillating
+
+Optimization Suggestions:
+  - Consider adjusting EMA alpha for better rate tracking
+  - Threshold near max - reduce gains to prevent saturation
+  - Consider tuning PI controller gains for better stability

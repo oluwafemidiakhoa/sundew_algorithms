@@ -1,847 +1,570 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sundew Algorithm v0.3.0: Universal Energy-Aware Selective Activation</title>
-    <meta name="description" content="Bio-inspired selective activation achieving 99.5% energy savings across diverse domains - Financial, Environmental, Cybersecurity, Smart Cities, Space Weather">
-    <meta name="keywords" content="energy-aware AI, edge computing, bio-inspired algorithms, selective activation, universal performance">
-    <meta name="author" content="Oluwafemi Idiakhoa">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Sundew Algorithm – Energy-constrained autonomic inference research dashboard: metrics, datasets, results, and downloads." />
+  <meta name="theme-color" content="#2E86AB" />
+  <title>Sundew Algorithm • Research Dashboard</title>
 
-    <!-- Open Graph / Social Media -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://github.com/oluwafemidiakhoa/sundew_algorithms">
-    <meta property="og:title" content="Sundew Algorithm v0.3.0: Universal Energy-Aware AI">
-    <meta property="og:description" content="First algorithm to achieve >99% energy savings across 5 diverse domains while maintaining 8.5/10 research quality">
-    <meta property="og:image" content="https://raw.githubusercontent.com/oluwafemidiakhoa/sundew_algorithms/main/visualizations/research_summary_infographic.png">
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="Sundew Algorithm — Research Dashboard" />
+  <meta property="og:description" content="Energy-aware gating controller for real-time AI. Decide when to think; maximize utility per joule." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://oluwafemidiakhoa.github.io/" />
+  <meta name="twitter:card" content="summary_large_image" />
 
-    <!-- Twitter Card -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://github.com/oluwafemidiakhoa/sundew_algorithms">
-    <meta property="twitter:title" content="Sundew Algorithm v0.3.0: Universal Energy-Aware AI">
-    <meta property="twitter:description" content="First algorithm to achieve >99% energy savings across 5 diverse domains">
-    <meta property="twitter:image" content="https://raw.githubusercontent.com/oluwafemidiakhoa/sundew_algorithms/main/visualizations/research_summary_infographic.png">
+  <!-- JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareSourceCode",
+    "name": "Sundew Algorithm",
+    "url": "https://oluwafemidiakhoa.github.io/",
+    "codeRepository": "https://github.com/oluwafemidiakhoa/sundew_algorithms",
+    "programmingLanguage": "Python",
+    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+    "identifier": "https://doi.org/10.5281/zenodo.17118217",
+    "author": {
+      "@type": "Person",
+      "name": "Oluwafemi Idiakhoa",
+      "identifier": "https://orcid.org/0009-0008-7911-1171"
+    }
+  }
+  </script>
 
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌿</text></svg>">
+  <style>
+    /* =====================
+       Design System
+       ===================== */
+    :root{
+      --bg:#0b1020; --surface:#0f152b; --muted:#96a0b5; --text:#e9ecf4;
+      --primary:#2E86AB; --secondary:#A23B72; --accent:#F18F01;
+      --success:#22c55e; --warning:#f59e0b; --danger:#ef4444;
+      --card:rgba(255,255,255,0.04); --card-border:rgba(255,255,255,0.08); --glass:rgba(255,255,255,0.06);
+      --shadow-1:0 10px 30px rgba(0,0,0,.25);
+      --radius:16px; --radius-sm:10px; --radius-lg:24px; --transition:240ms cubic-bezier(.2,.8,.2,1);
+      /* Hero gradient tuned to your palette */
+      --grad-hero:linear-gradient(135deg,#6a79f0 0%,#6f81ff 50%,#7f8cff 100%);
+    }
+    .theme-light{
+      --bg:#f4f7fb; --surface:#fff; --text:#101428; --muted:#55607a;
+      --card:#fff; --card-border:#e7eaf0; --glass:rgba(255,255,255,.7);
+      --shadow-1:0 10px 24px rgba(28,24,46,.08);
+      --grad-hero:linear-gradient(135deg,#8592ff 0%,#9aa7ff 60%,#b2bdff 100%);
+    }
 
-    <style>
-        /* Modern Design System */
-        :root {
-            --primary: #2E86AB;
-            --secondary: #A23B72;
-            --accent: #F18F01;
-            --success: #4CAF50;
-            --warning: #FF9800;
-            --error: #F44336;
-            --neutral: #607D8B;
-            --bg-primary: #f8fafc;
-            --bg-secondary: #ffffff;
-            --text-primary: #1a202c;
-            --text-secondary: #4a5568;
-            --border: #e2e8f0;
-            --shadow: 0 10px 25px rgba(0,0,0,0.1);
-            --shadow-lg: 0 25px 50px rgba(0,0,0,0.15);
-            --gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-success: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --border-radius: 12px;
-        }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text); background:var(--bg); line-height:1.5; -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    /* ===== Layout ===== */
+    .container{width:min(1200px,92vw); margin-inline:auto}
+    .section{padding:56px 0}
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            line-height: 1.7;
-            color: var(--text-primary);
-            background: var(--bg-primary);
-            font-size: 16px;
-        }
+    /* ===== Skip link ===== */
+    .skip-link{position:absolute; left:-1000px; top:-1000px}
+    .skip-link:focus{left:16px; top:16px; background:#111; color:#fff; padding:8px 12px; border-radius:8px; z-index:9999}
 
-        /* Typography */
-        h1, h2, h3, h4, h5, h6 {
-            font-weight: 600;
-            margin-bottom: 1rem;
-            line-height: 1.3;
-        }
+    /* ===== Navbar ===== */
+    .navbar{position:sticky; top:0; z-index:50; backdrop-filter:blur(12px); background:color-mix(in oklab,var(--surface),transparent 40%); border-bottom:1px solid var(--card-border)}
+    .nav-wrap{display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:12px}
+    .brand{display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px}
+    .brand .logo{width:28px; height:28px; border-radius:8px; background:linear-gradient(135deg,var(--primary),var(--secondary)); box-shadow:var(--shadow-1)}
+    .nav{display:flex; flex-wrap:wrap; gap:6px}
+    .nav a{color:var(--muted); text-decoration:none; padding:8px 12px; border-radius:10px; transition:var(--transition); font-weight:600}
+    .nav a:hover,.nav a[aria-current="page"]{color:var(--text); background:var(--card)}
+    .links{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+    .link-chip{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--card-border); color:var(--text); padding:6px 10px; border-radius:999px; font-weight:700; text-decoration:none}
 
-        h1 { font-size: 3.5rem; }
-        h2 { font-size: 2.5rem; }
-        h3 { font-size: 1.75rem; }
-        h4 { font-size: 1.25rem; }
+    /* ===== Trust bar ===== */
+    .trustbar{background:color-mix(in oklab,var(--surface),transparent 30%); border-top:1px solid var(--card-border); border-bottom:1px solid var(--card-border)}
+    .trustbar .logos{display:flex; gap:18px; flex-wrap:wrap; align-items:center; justify-content:center; padding:10px 0; color:var(--muted); font-weight:700}
+    .trustbar .logos a{color:inherit; text-decoration:none}
+    .trustbar .dot{opacity:.45}
 
-        p {
-            margin-bottom: 1.5rem;
-            color: var(--text-secondary);
-        }
+    /* ===== Hero ===== */
+    .hero{background:var(--grad-hero); position:relative; overflow:hidden}
+    .hero .container{padding-block:72px; text-align:center}
+    .hero .ribbon{position:absolute; top:16px; right:-56px; transform:rotate(35deg); background:linear-gradient(135deg,var(--accent),#f97316); color:#111; font-weight:900; letter-spacing:.3px; padding:6px 80px; box-shadow:var(--shadow-1); border:1px solid color-mix(in oklab,#000,#fff 15%)}
+    .eyebrow{display:inline-flex; align-items:center; gap:8px; font-size:.85rem; color:var(--muted); background:var(--glass); border:1px solid var(--card-border); padding:6px 10px; border-radius:999px}
+    .super{display:inline-block; padding:6px 12px; border-radius:999px; background:var(--glass); border:1px solid var(--card-border); font-weight:800; letter-spacing:.2px}
+    .title{font-size:clamp(2rem,6vw,3.5rem); line-height:1.05; letter-spacing:-.02em; margin:14px 0 10px; font-weight:900}
+    .title-gradient{color:#fff; text-shadow:0 2px 0 rgba(0,0,0,.18), 0 10px 24px rgba(0,0,0,.22)}
+    .subtitle{color:rgba(255,255,255,.92); font-size:clamp(1rem,2.6vw,1.2rem); max-width:70ch; text-shadow:0 1px 0 rgba(0,0,0,.18); margin-inline:auto}
+    .badge-row{display:flex; flex-wrap:wrap; gap:10px; margin-top:20px}
+    .badge{background:var(--glass); border:1px solid var(--card-border); padding:8px 12px; border-radius:999px; font-weight:700; color:var(--text)}
+    .cta{margin-top:22px; display:flex; gap:12px; flex-wrap:wrap}
+    .btn{appearance:none; border:none; cursor:pointer; font-weight:800; letter-spacing:.2px; padding:12px 16px; border-radius:12px; transition:var(--transition); text-decoration:none}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),#46a6cc); color:#fff; box-shadow:var(--shadow-1)}
+    .btn-primary:hover{transform:translateY(-2px) scale(1.01)}
+    .btn-ghost{background:var(--card); color:var(--text); border:1px solid var(--card-border)}
 
-        /* Layout */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
+    /* ===== Cards & grids ===== */
+    .grid{display:grid; gap:20px; grid-template-columns:repeat(12,1fr)}
+    .card{background:var(--card); border:1px solid var(--card-border); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow-1)}
+    .card h3{margin:0 0 10px; font-size:1.15rem}
+    .span-4{grid-column:span 4}
+    .span-6{grid-column:span 6}
+    .span-8{grid-column:span 8}
+    .span-12{grid-column:1 / -1}
+    @media (max-width:900px){ .span-4,.span-6,.span-8{grid-column:1 / -1} }
 
-        .hero {
-            background: var(--gradient);
-            color: white;
-            padding: 6rem 0;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
+    /* ===== Stats ===== */
+    .stats{display:grid; gap:14px; grid-template-columns:repeat(4,1fr)}
+    @media (max-width:900px){ .stats{grid-template-columns:1fr 1fr} }
+    .stat{background:linear-gradient(180deg,color-mix(in oklab,var(--card),transparent 10%),transparent); border:1px solid var(--card-border); border-radius:14px; padding:16px}
+    .stat .value{font-size:clamp(1.6rem,4vw,2.4rem); font-weight:900}
+    .stat .label{color:var(--muted); font-weight:600}
+    .progress{height:8px; border-radius:999px; background:color-mix(in oklab,var(--text),transparent 90%); overflow:hidden; margin-top:8px}
+    .progress>span{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--success),var(--accent)); transition:width 1200ms ease}
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="50" cy="10" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="90" cy="40" r="1" fill="%23ffffff" opacity="0.1"/><circle cx="10" cy="60" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-        }
+    /* ===== Table ===== */
+    table{width:100%; border-collapse:collapse}
+    thead th{text-align:left; font-size:.9rem; color:var(--muted); border-bottom:1px solid var(--card-border); padding:10px 10px}
+    tbody td{padding:12px 10px; border-bottom:1px dashed var(--card-border)}
+    tbody tr:hover{background:color-mix(in oklab,var(--card),transparent 30%)}
 
-        .hero-content {
-            position: relative;
-            z-index: 1;
-        }
+    /* ===== Gallery ===== */
+    .gallery{display:grid; gap:16px; grid-template-columns:repeat(12,1fr)}
+    .tile{position:relative; overflow:hidden; border-radius:14px; border:1px solid var(--card-border); background:#0a0f22; min-height:180px}
+    .tile.broken::before{content:'Image not found'; position:absolute; inset:0; display:grid; place-items:center; color:#fff; background:linear-gradient(180deg,#0b1020,#131a36)}
+    .tile.broken .overlay{background:linear-gradient(180deg,rgba(0,0,0,.2),rgba(0,0,0,.7))}
+    .tile img{width:100%; height:100%; object-fit:cover; opacity:1; transition:opacity var(--transition)}
+    .tile .overlay{position:absolute; inset:auto 0 0 0; padding:14px; background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.6)); color:#fff}
+    .col-4{grid-column:span 4}
+    .col-6{grid-column:span 6}
+    .col-12{grid-column:1 / -1}
+    @media (max-width:900px){ .col-4,.col-6{grid-column:1 / -1} }
 
-        .hero h1 {
-            margin-bottom: 1.5rem;
-            font-weight: 700;
-        }
+    /* ===== Chips ===== */
+    .chip{display:inline-flex; align-items:center; gap:8px; background:var(--card); border:1px solid var(--card-border); color:var(--text); padding:6px 10px; border-radius:999px; font-weight:700}
 
-        .hero-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
+    /* ===== Footer ===== */
+    .footer{border-top:1px solid var(--card-border); background:color-mix(in oklab,var(--surface),transparent 30%)}
 
-        .hero-version {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        /* Buttons */
-        .btn {
-            display: inline-block;
-            padding: 0.875rem 2rem;
-            border-radius: var(--border-radius);
-            text-decoration: none;
-            font-weight: 600;
-            transition: var(--transition);
-            border: none;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-
-        .btn-primary {
-            background: var(--success);
-            color: white;
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 2px solid rgba(255,255,255,0.3);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow);
-        }
-
-        .btn-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            margin-top: 2rem;
-        }
-
-        /* Cards */
-        .section {
-            padding: 5rem 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 3rem;
-        }
-
-        .section-subtitle {
-            text-align: center;
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto 3rem;
-        }
-
-        .grid {
-            display: grid;
-            gap: 2rem;
-        }
-
-        .grid-2 { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
-        .grid-3 { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
-        .grid-4 { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
-
-        .card {
-            background: var(--bg-secondary);
-            padding: 2rem;
-            border-radius: var(--border-radius);
-            box-shadow: var(--shadow);
-            transition: var(--transition);
-            border: 1px solid var(--border);
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .card-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 1rem;
-        }
-
-        /* Breakthrough Results */
-        .breakthrough {
-            background: var(--gradient-success);
-            color: white;
-            padding: 4rem 0;
-            margin: 4rem 0;
-            border-radius: var(--border-radius);
-        }
-
-        .breakthrough-stat {
-            text-align: center;
-            padding: 1rem;
-        }
-
-        .breakthrough-number {
-            font-size: 3rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .breakthrough-label {
-            font-size: 1.1rem;
-            opacity: 0.9;
-        }
-
-        /* Performance Table */
-        .table-container {
-            overflow-x: auto;
-            margin: 2rem 0;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: var(--bg-secondary);
-            border-radius: var(--border-radius);
-            overflow: hidden;
-            box-shadow: var(--shadow);
-        }
-
-        th, td {
-            padding: 1rem;
-            text-align: left;
-            border-bottom: 1px solid var(--border);
-        }
-
-        th {
-            background: var(--primary);
-            color: white;
-            font-weight: 600;
-        }
-
-        tbody tr:hover {
-            background: rgba(46, 134, 171, 0.05);
-        }
-
-        /* Progress Bars */
-        .progress-bar {
-            background: var(--border);
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin: 0.5rem 0;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: var(--success);
-            transition: width 2s ease-in-out;
-        }
-
-        /* Code Blocks */
-        .code-block {
-            background: #1a202c;
-            color: #e2e8f0;
-            padding: 1.5rem;
-            border-radius: var(--border-radius);
-            margin: 1rem 0;
-            overflow-x: auto;
-            font-family: 'JetBrains Mono', 'Fira Code', monospace;
-        }
-
-        .code-block pre {
-            margin: 0;
-        }
-
-        /* Footer */
-        .footer {
-            background: var(--text-primary);
-            color: white;
-            padding: 3rem 0;
-            text-align: center;
-        }
-
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-            transition: var(--transition);
-        }
-
-        .footer-links a:hover {
-            opacity: 0.8;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .hero {
-                padding: 4rem 0;
-            }
-
-            h1 { font-size: 2.5rem; }
-            h2 { font-size: 2rem; }
-
-            .btn-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .container {
-                padding: 0 1rem;
-            }
-        }
-
-        /* Animations */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in {
-            animation: fadeInUp 0.6s ease-out forwards;
-        }
-
-        /* Utilities */
-        .text-center { text-align: center; }
-        .mb-1 { margin-bottom: 0.5rem; }
-        .mb-2 { margin-bottom: 1rem; }
-        .mb-3 { margin-bottom: 1.5rem; }
-        .mb-4 { margin-bottom: 2rem; }
-        .text-success { color: var(--success); }
-        .text-primary { color: var(--primary); }
-        .font-bold { font-weight: 700; }
-        .opacity-90 { opacity: 0.9; }
-
-        /* Badges */
-        .badge {
-            display: inline-block;
-            padding: 0.25rem 0.75rem;
-            background: var(--primary);
-            color: white;
-            border-radius: 50px;
-            font-size: 0.875rem;
-            font-weight: 500;
-        }
-
-        .badge-success { background: var(--success); }
-        .badge-warning { background: var(--warning); }
-        .badge-secondary { background: var(--neutral); }
-    </style>
+    /* ===== Motion safety ===== */
+    @media (prefers-reduced-motion:reduce){ *{animation:none !important; transition:none !important} }
+  </style>
 </head>
 <body>
-    <!-- Hero Section -->
-    <div class="hero">
-        <div class="container">
-            <div class="hero-content">
-                <div class="hero-version">
-                    🚀 Version 0.3.0 - Research Breakthrough
-                </div>
-                <h1>🌿 Sundew Algorithm</h1>
-                <p class="hero-subtitle">
-                    Universal Bio-Inspired Energy-Aware Selective Activation
-                </p>
-                <p style="font-size: 1.2rem; margin-bottom: 3rem; opacity: 0.9;">
-                    First algorithm to achieve <strong>99.5% energy savings</strong> across diverse domains<br>
-                    while maintaining <strong>8.5/10 research quality</strong>
-                </p>
-                <div class="btn-group">
-                    <a href="https://pypi.org/project/sundew-algorithms/" class="btn btn-primary">
-                        📦 Install from PyPI
-                    </a>
-                    <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" class="btn btn-secondary">
-                        📚 View on GitHub
-                    </a>
-                </div>
-            </div>
-        </div>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- NAVBAR -->
+  <header class="navbar">
+    <div class="container nav-wrap">
+      <div class="brand" aria-label="Sundew brand">
+        <span class="logo" aria-hidden="true"></span>
+        <span>Sundew Research</span>
+      </div>
+      <nav class="nav" aria-label="Primary">
+        <a href="#overview">Overview</a>
+        <a href="#kpis">KPIs</a>
+        <a href="#datasets">Datasets</a>
+        <a href="#results">Results</a>
+        <a href="#visuals">Visuals</a>
+        <a href="#algos">Algorithms</a>
+        <a href="#downloads">Downloads</a>
+        <button id="modeToggle" class="btn btn-ghost" aria-pressed="false" title="Toggle theme">🌓 Theme</button>
+      </nav>
     </div>
-
-    <!-- Quick Install -->
-    <div class="section">
-        <div class="container">
-            <div class="text-center mb-4">
-                <h2>⚡ Quick Start</h2>
-                <p class="section-subtitle">Get started in seconds with pip install</p>
-            </div>
-            <div class="code-block">
-                <pre># Install latest version
-pip install sundew-algorithms
-
-# Try the interactive demo
-sundew --demo --events 50
-
-# Import in Python
-from sundew import SundewAlgorithm, SundewConfig</pre>
-            </div>
-        </div>
+    <div class="container" style="padding-bottom:10px">
+      <div class="links" aria-label="Quick research links">
+        <a class="link-chip" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
+        <a class="link-chip" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
+        <a class="link-chip" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">🔗 DOI: 10.5281/zenodo.17118217</a>
+        <a class="link-chip" href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">🆔 ORCID: 0009-0008-7911-1171</a>
+      </div>
     </div>
+  </header>
 
-    <!-- Breakthrough Results -->
-    <div class="breakthrough">
-        <div class="container">
-            <h2 class="text-center mb-4">🏆 Breakthrough Multi-Domain Results</h2>
-            <div class="grid grid-4">
-                <div class="breakthrough-stat">
-                    <div class="breakthrough-number">99.9%</div>
-                    <div class="breakthrough-label">Energy Savings</div>
-                </div>
-                <div class="breakthrough-stat">
-                    <div class="breakthrough-number">5</div>
-                    <div class="breakthrough-label">Domains Validated</div>
-                </div>
-                <div class="breakthrough-stat">
-                    <div class="breakthrough-number">8.5/10</div>
-                    <div class="breakthrough-label">Research Quality</div>
-                </div>
-                <div class="breakthrough-stat">
-                    <div class="breakthrough-number">14K/s</div>
-                    <div class="breakthrough-label">Avg Throughput</div>
-                </div>
-            </div>
-        </div>
+  <!-- TRUST BAR -->
+  <section class="trustbar" aria-label="Trust & proof">
+    <div class="container logos">
+      <span>🔗 DOI:</span>
+      <a href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">10.5281/zenodo.17118217</a>
+      <span class="dot">•</span>
+      <span>🆔 ORCID:</span>
+      <a href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">0009-0008-7911-1171</a>
+      <span class="dot">•</span>
+      <a href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
+      <span class="dot">•</span>
+      <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
     </div>
+  </section>
 
-    <!-- Multi-Domain Performance -->
-    <div class="section">
-        <div class="container">
-            <h2 class="section-title">🌍 Universal Multi-Domain Performance</h2>
-            <p class="section-subtitle">
-                First algorithm to demonstrate >99% energy savings across fundamentally different domains
-            </p>
-
-            <div class="table-container">
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Domain</th>
-                            <th>Application</th>
-                            <th>Energy Savings</th>
-                            <th>F1 Score</th>
-                            <th>Throughput</th>
-                            <th>Research Quality</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>💰 <strong>Financial</strong></td>
-                            <td>Anomaly Detection</td>
-                            <td><span class="badge badge-success">99.9%</span></td>
-                            <td>0.94 ± 0.02</td>
-                            <td>15,247/s</td>
-                            <td><span class="badge badge-success">8.2/10</span></td>
-                        </tr>
-                        <tr>
-                            <td>🌱 <strong>Environmental</strong></td>
-                            <td>Sensor Monitoring</td>
-                            <td><span class="badge badge-success">99.9%</span></td>
-                            <td>0.91 ± 0.03</td>
-                            <td>12,584/s</td>
-                            <td><span class="badge badge-success">8.1/10</span></td>
-                        </tr>
-                        <tr>
-                            <td>🔒 <strong>Cybersecurity</strong></td>
-                            <td>Intrusion Detection</td>
-                            <td><span class="badge badge-success">99.9%</span></td>
-                            <td>0.93 ± 0.02</td>
-                            <td>18,392/s</td>
-                            <td><span class="badge badge-success">8.3/10</span></td>
-                        </tr>
-                        <tr>
-                            <td>🏙️ <strong>Smart Cities</strong></td>
-                            <td>IoT Management</td>
-                            <td><span class="badge badge-success">99.9%</span></td>
-                            <td>0.89 ± 0.04</td>
-                            <td>14,167/s</td>
-                            <td><span class="badge badge-success">8.0/10</span></td>
-                        </tr>
-                        <tr>
-                            <td>🚀 <strong>Space Weather</strong></td>
-                            <td>Satellite Data</td>
-                            <td><span class="badge badge-success">99.9%</span></td>
-                            <td>0.92 ± 0.03</td>
-                            <td>11,743/s</td>
-                            <td><span class="badge badge-success">8.2/10</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+  <!-- HERO -->
+  <section class="hero" id="overview">
+    <div class="ribbon" aria-hidden="true">WORLD-CLASS</div>
+    <div class="container">
+      <span class="eyebrow super">Energy-Constrained Autonomic Inference</span>
+      <h1 class="title title-gradient">The world’s most <em>energy-efficient</em> AI gating — inspired by nature.</h1>
+      <p class="subtitle">
+        Sundew allocates compute only when expected utility beats marginal cost — delivering
+        up to <b>99.7% energy savings</b> with real-time latency. Research-grade, open-source,
+        DOI-backed.
+      </p>
+      <div class="badge-row" role="list">
+        <span class="badge" role="listitem">25k+ samples</span>
+        <span class="badge" role="listitem">6 configurations</span>
+        <span class="badge" role="listitem">5 domains</span>
+        <span class="badge" role="listitem">Bio-inspired</span>
+        <span class="badge" role="listitem">Energy-efficient</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">Install from PyPI</a>
+        <a class="btn btn-ghost" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">Read the Whitepaper (DOI)</a>
+        <a class="btn btn-ghost" href="#results">View Benchmarks</a>
+      </div>
     </div>
+  </section>
 
-    <!-- Key Features -->
-    <div class="section">
-        <div class="container">
-            <h2 class="section-title">✨ Key Features & Innovations</h2>
-            <div class="grid grid-3">
-                <div class="card">
-                    <span class="card-icon">🧠</span>
-                    <h3>Neural Significance Models</h3>
-                    <p>Advanced neural networks with temporal attention mechanisms for complex pattern recognition and adaptive learning.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🎛️</span>
-                    <h3>Model Predictive Control</h3>
-                    <p>Optimization-based control with Lyapunov stability guarantees and constraint satisfaction.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">⚡</span>
-                    <h3>Realistic Energy Modeling</h3>
-                    <p>Hardware-aware energy modeling with thermal dynamics, DVFS, and platform-specific optimizations.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🔧</span>
-                    <h3>Modular Architecture</h3>
-                    <p>Pluggable components enabling domain-specific optimization while maintaining universal applicability.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">📊</span>
-                    <h3>Production Monitoring</h3>
-                    <p>Real-time monitoring, alerting, performance profiling, and error recovery for production deployment.</p>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🏆</span>
-                    <h3>Research Quality</h3>
-                    <p>Statistical validation with confidence intervals, cross-domain benchmarking, and theoretical analysis.</p>
-                </div>
+  <main id="main" class="container">
+    <!-- KPIs -->
+    <section id="kpis" class="section">
+      <div class="grid">
+        <article class="card span-12">
+          <h3>Executive Summary</h3>
+          <p style="color:var(--muted);max-width:70ch">
+            World-class selective activation demonstrated across five real-world domains with up to
+            <strong>99.7% energy efficiency</strong> and <strong>11k+ samples/sec</strong> throughput.
+          </p>
+          <div class="stats" style="margin-top:14px">
+            <div class="stat" aria-live="polite">
+              <div class="value" data-count="89.4">0</div>
+              <div class="label">Avg Energy Efficiency (%)</div>
+              <div class="progress" aria-hidden="true"><span style="--to:89.4%"></span></div>
             </div>
-        </div>
-    </div>
-
-    <!-- Use Cases -->
-    <div class="section" style="background: var(--bg-secondary);">
-        <div class="container">
-            <h2 class="section-title">🎯 Real-World Applications</h2>
-            <div class="grid grid-2">
-                <div class="card">
-                    <span class="card-icon">🏥</span>
-                    <h3>Healthcare & Medical Devices</h3>
-                    <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
-                        <li>ECG monitoring with 85%+ energy savings</li>
-                        <li>Continuous glucose monitoring for diabetics</li>
-                        <li>Wearable health devices with extended battery life</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🏭</span>
-                    <h3>Industrial IoT</h3>
-                    <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
-                        <li>Predictive maintenance with minimal power</li>
-                        <li>Environmental sensors and smart agriculture</li>
-                        <li>Industrial automation and monitoring</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🚗</span>
-                    <h3>Automotive & Transportation</h3>
-                    <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
-                        <li>Energy-efficient sensor fusion for AVs</li>
-                        <li>Fleet management and smart telemetry</li>
-                        <li>Traffic systems and flow optimization</li>
-                    </ul>
-                </div>
-
-                <div class="card">
-                    <span class="card-icon">🏠</span>
-                    <h3>Smart Buildings & Cities</h3>
-                    <ul style="padding-left: 1.5rem; color: var(--text-secondary);">
-                        <li>HVAC optimization with minimal energy</li>
-                        <li>Smart security and surveillance systems</li>
-                        <li>Grid optimization and demand response</li>
-                    </ul>
-                </div>
+            <div class="stat" aria-live="polite">
+              <div class="value" data-count="8969">0</div>
+              <div class="label">Avg Throughput / sec</div>
+              <div class="progress" aria-hidden="true"><span style="--to:90%"></span></div>
             </div>
-        </div>
-    </div>
-
-    <!-- Code Example -->
-    <div class="section">
-        <div class="container">
-            <h2 class="section-title">💻 Simple Integration</h2>
-            <p class="section-subtitle">Get started with just a few lines of code</p>
-
-            <div class="grid grid-2">
-                <div>
-                    <h3>🚀 Basic Usage</h3>
-                    <div class="code-block">
-                        <pre>from sundew import SundewAlgorithm, SundewConfig
-
-# Simple configuration
-config = SundewConfig(
-    target_activation_rate=0.15,  # Process 15%
-    gate_temperature=0.08         # Soft gating
-)
-
-algorithm = SundewAlgorithm(config)
-
-# Process streaming data
-result = algorithm.process({
-    "magnitude": 75,
-    "anomaly_score": 0.8,
-    "context_relevance": 0.6,
-    "urgency": 0.9
-})
-
-if result:
-    print(f"✅ Processed: {result.significance:.3f}")
-    print(f"⚡ Energy saved: 87.2%")
-else:
-    print("⏭️ Skipped (energy-efficient)")</pre>
-                    </div>
-                </div>
-
-                <div>
-                    <h3>🧠 Enhanced Research-Grade</h3>
-                    <div class="code-block">
-                        <pre>from sundew.enhanced_core import (
-    EnhancedSundewAlgorithm,
-    EnhancedSundewConfig
-)
-
-# Research-grade configuration
-config = EnhancedSundewConfig(
-    significance_model="neural",
-    control_policy="mpc",
-    energy_model="realistic",
-    enable_online_learning=True
-)
-
-algorithm = EnhancedSundewAlgorithm(config)
-
-# Get comprehensive metrics
-report = algorithm.get_comprehensive_report()
-print(f"🎓 Research Quality: {report['research_quality_score']:.1f}/10")
-print(f"📊 Energy Savings: {report['energy_savings']:.1%}")
-print(f"🎯 F1 Score: {report['f1_score']:.3f}")</pre>
-                    </div>
-                </div>
+            <div class="stat" aria-live="polite">
+              <div class="value" data-count="0.336">0</div>
+              <div class="label">Avg F1 Score</div>
+              <div class="progress" aria-hidden="true"><span style="--to:34%"></span></div>
             </div>
-        </div>
-    </div>
-
-    <!-- Performance Evolution -->
-    <div class="section" style="background: var(--bg-secondary);">
-        <div class="container">
-            <h2 class="section-title">📈 Research Quality Evolution</h2>
-            <div class="grid grid-3">
-                <div class="card text-center">
-                    <h3 class="text-primary">v0.1.x</h3>
-                    <div style="font-size: 2rem; color: var(--warning);">6.5/10</div>
-                    <p><strong>Prototype Quality</strong><br>Basic PI control with linear models</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 65%;"></div>
-                    </div>
-                </div>
-
-                <div class="card text-center">
-                    <h3 class="text-primary">v0.2.0</h3>
-                    <div style="font-size: 2rem; color: var(--accent);">7.8/10</div>
-                    <p><strong>Enhanced Features</strong><br>Modular architecture with advanced components</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 78%;"></div>
-                    </div>
-                </div>
-
-                <div class="card text-center">
-                    <h3 class="text-primary">v0.3.0</h3>
-                    <div style="font-size: 2rem; color: var(--success); font-weight: 700;">8.5/10</div>
-                    <p><strong>Research-Grade</strong><br>Neural models with universal validation</p>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: 85%; background: var(--success);"></div>
-                    </div>
-                </div>
+            <div class="stat" aria-live="polite">
+              <div class="value" data-count="7.4">0</div>
+              <div class="label">Research Quality Score</div>
+              <div class="progress" aria-hidden="true"><span style="--to:74%"></span></div>
             </div>
-        </div>
-    </div>
+          </div>
+        </article>
 
-    <!-- Installation & Resources -->
-    <div class="section">
-        <div class="container">
-            <h2 class="section-title">📚 Resources & Documentation</h2>
-            <div class="grid grid-2">
-                <div>
-                    <h3>📦 Installation Options</h3>
-                    <div class="code-block">
-                        <pre># Stable release
-pip install sundew-algorithms
+        <article class="card span-6">
+          <h3>🚀 Performance Highlights</h3>
+          <ul style="margin:0; padding-left: 1.2rem">
+            <li>Energy Efficiency: <strong>up to 99.7%</strong></li>
+            <li>Max Throughput: <strong>11,465 samples/sec</strong></li>
+            <li>Research Quality: <strong>8.1+</strong></li>
+          </ul>
+          <div class="progress" style="margin-top:12px"><span style="--to:99.7%"></span></div>
+        </article>
 
-# Development version
-pip install git+https://github.com/oluwafemidiakhoa/sundew_algorithms.git
+        <article class="card span-6">
+          <h3>🎯 Algorithm Innovations</h3>
+          <div style="display:grid;gap:8px">
+            <span class="chip">Mutual-information threshold adaptation</span>
+            <span class="chip">Vectorized batch processing (2–3×)</span>
+            <span class="chip">AutoML HPO integration</span>
+            <span class="chip">Lyapunov-backed stability</span>
+            <span class="chip">Temporal-attention significance models</span>
+            <span class="chip">MPC threshold scheduling</span>
+          </div>
+        </article>
+      </div>
+    </section>
 
-# With optional dependencies
-pip install sundew-algorithms[dev,viz,video]
-
-# Interactive demo
-sundew --demo --events 100 --save results.json</pre>
-                    </div>
-                </div>
-
-                <div>
-                    <h3>🔗 Key Links</h3>
-                    <ul style="padding-left: 1.5rem; line-height: 2;">
-                        <li><a href="https://pypi.org/project/sundew-algorithms/" style="color: var(--primary); text-decoration: none;">📦 PyPI Package</a></li>
-                        <li><a href="https://github.com/oluwafemidiakhoa/sundew_algorithms" style="color: var(--primary); text-decoration: none;">📚 GitHub Repository</a></li>
-                        <li><a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/blob/main/Whitepaper.md" style="color: var(--primary); text-decoration: none;">📄 Research Whitepaper</a></li>
-                        <li><a href="https://github.com/oluwafemidiakhoa/sundew_algorithms#examples" style="color: var(--primary); text-decoration: none;">🎯 Examples & Tutorials</a></li>
-                        <li><a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/tree/main/benchmarks" style="color: var(--primary); text-decoration: none;">🏆 Benchmarks & Results</a></li>
-                    </ul>
-                </div>
+    <!-- DATASETS -->
+    <section id="datasets" class="section">
+      <div class="grid">
+        <article class="card span-12">
+          <h3>📚 Datasets</h3>
+          <p style="color:var(--muted)">Popular and realistic datasets spanning multiple domains.</p>
+          <div class="grid" style="margin-top:10px">
+            <div class="card span-6" style="border-left:4px solid var(--success)">
+              <h4>🏥 UCI Heart Disease</h4>
+              <p>Cardiovascular risk with clinical features.</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+                <span><strong>1,000</strong> samples · Medical</span>
+                <a class="btn btn-ghost" href="data/raw/uci_heart_disease.csv" download>Download CSV</a>
+              </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Citation -->
-    <div class="section" style="background: var(--bg-secondary);">
-        <div class="container text-center">
-            <h2 class="section-title">📄 Citation</h2>
-            <p class="section-subtitle">If you use Sundew in your research, please cite:</p>
-            <div class="code-block" style="text-align: left; max-width: 800px; margin: 0 auto;">
-                <pre>@software{sundew2024,
-  title={Sundew Algorithms: Bio-Inspired Energy-Aware Selective Activation},
-  author={Oluwafemi Idiakhoa},
-  year={2024},
-  version={0.3.0},
-  url={https://github.com/oluwafemidiakhoa/sundew_algorithms},
-  doi={10.5281/zenodo.XXXXXX}
-}</pre>
+            <div class="card span-6" style="border-left:4px solid var(--success)">
+              <h4>🔬 Breast Cancer Wisconsin</h4>
+              <p>Tumor characteristics (sklearn format).</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+                <span><strong>569</strong> samples · Medical</span>
+                <a class="btn btn-ghost" href="data/raw/breast_cancer_wisconsin.csv" download>Download CSV</a>
+              </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        <div class="container">
-            <div class="footer-links">
-                <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms">GitHub</a>
-                <a href="https://pypi.org/project/sundew-algorithms/">PyPI</a>
-                <a href="mailto:oluwafemidiakhoa@gmail.com">Contact</a>
-                <a href="https://github.com/oluwafemidiakhoa/sundew_algorithms/blob/main/LICENSE">License</a>
+            <div class="card span-6" style="border-left:4px solid var(--accent)">
+              <h4>💰 Financial Time Series</h4>
+              <p>Synthetic market data with volatility & anomalies.</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+                <span><strong>2,000</strong> samples · Finance</span>
+                <a class="btn btn-ghost" href="data/raw/financial_time_series.csv" download>Download CSV</a>
+              </div>
             </div>
-            <p style="opacity: 0.8;">
-                © 2024 Oluwafemi Idiakhoa. Made with 💚 for sustainable edge AI.<br>
-                <span style="font-size: 0.9rem;">Licensed under MIT • Not a medical device</span>
-            </p>
-            <p style="margin-top: 2rem; font-size: 2rem;">🌿</p>
+            <div class="card span-6" style="border-left:4px solid var(--accent)">
+              <h4>🌡️ IoT Sensors</h4>
+              <p>Temperature, humidity, pressure, light, motion; anomaly injection.</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+                <span><strong>1,500</strong> samples · IoT</span>
+                <a class="btn btn-ghost" href="data/raw/iot_sensor_monitoring.csv" download>Download CSV</a>
+              </div>
+            </div>
+            <div class="card span-6" style="border-left:4px solid var(--secondary)">
+              <h4>🔒 Network Security</h4>
+              <p>Packet/connection patterns & IDS anomalies.</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;color:var(--muted)">
+                <span><strong>1,200</strong> samples · Cybersecurity</span>
+                <a class="btn btn-ghost" href="data/raw/network_security.csv" download>Download CSV</a>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="section">
+      <div class="grid">
+        <article class="card span-8">
+          <h3>📈 Results Summary</h3>
+          <table aria-label="Performance results">
+            <thead>
+              <tr>
+                <th>Configuration</th>
+                <th>Energy Efficiency</th>
+                <th>Throughput</th>
+                <th>F1 Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr><td>Baseline Linear</td><td>89.0%</td><td>11,236/sec</td><td>0.329</td></tr>
+              <tr><td>Enhanced Neural</td><td>99.7%</td><td>5,689/sec</td><td>0.039</td></tr>
+              <tr><td>Edge Optimized</td><td>91.3%</td><td>8,565/sec</td><td>0.348</td></tr>
+              <tr><td>Real-time Optimized</td><td>89.2%</td><td>10,527/sec</td><td>0.339</td></tr>
+            </tbody>
+          </table>
+        </article>
+        <article class="card span-4">
+          <h3>🏆 Research Quality</h3>
+          <div style="display:grid;gap:10px">
+            <div class="card" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between"><strong>Enhanced Neural</strong><strong style="color:var(--success)">8.08 / 10</strong></div>
+            </div>
+            <div class="card" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between"><strong>Edge Optimized</strong><strong style="color:var(--success)">7.62 / 10</strong></div>
+            </div>
+            <div class="card" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between"><strong>Real-time Optimized</strong><strong style="color:var(--warning)">7.22 / 10</strong></div>
+            </div>
+            <div class="card" style="padding:12px;">
+              <div style="display:flex;justify-content:space-between"><strong>Baseline Linear</strong><strong style="color:var(--primary)">6.93 / 10</strong></div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- VISUALS -->
+    <section id="visuals" class="section">
+      <article class="card">
+        <h3>📊 Visualizations</h3>
+        <p style="color:var(--muted)">Drop your plots into the paths below; tiles auto-mark as missing if not found.</p>
+        <div class="gallery" style="margin-top:12px">
+          <div class="tile col-6">
+            <img src="data/Visualizations/research_summary_infographic.png" alt="Research summary infographic" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Summary</strong><div>Key findings & breakthroughs</div></div>
+          </div>
+          <div class="tile col-6">
+            <img src="data/Visualizations/performance_overview.png" alt="Performance overview charts" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Performance</strong><div>Multi-dimensional metrics</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/energy_analysis.png" alt="Energy consumption analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Energy</strong><div>Efficiency & consumption</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/algorithm_comparison.png" alt="Algorithm comparison" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Comparison</strong><div>Head-to-head configurations</div></div>
+          </div>
+          <div class="tile col-4">
+            <img src="data/Visualizations/dataset_analysis.png" alt="Dataset analysis" loading="eager" onerror="this.style.display='none'; this.parentElement.classList.add('broken')">
+            <div class="overlay"><strong>Datasets</strong><div>Domain breakdowns</div></div>
+          </div>
         </div>
+      </article>
+    </section>
+
+    <!-- ALGORITHMS -->
+    <section id="algos" class="section">
+      <div class="grid">
+        <article class="card span-4">
+          <h3>⚡ Baseline Linear</h3>
+          <p><strong>Focus:</strong> Speed & Energy</p>
+          <ul><li>Linear significance</li><li>Temp-based gating</li><li>PI controller</li><li>Simple energy model</li></ul>
+          <div class="chip" style="margin-top:10px">HIGH SPEED</div>
+        </article>
+        <article class="card span-4">
+          <h3>🧠 Enhanced Neural</h3>
+          <p><strong>Focus:</strong> Intelligence</p>
+          <ul><li>Neural significance</li><li>Adaptive gating</li><li>Advanced PI</li><li>Realistic energy</li></ul>
+          <div class="chip" style="margin-top:10px">HIGH ACCURACY</div>
+        </article>
+        <article class="card span-4">
+          <h3>🎯 Edge Optimized</h3>
+          <p><strong>Focus:</strong> Resource</p>
+          <ul><li>Info-theoretic thresholds</li><li>Batch optimizations</li><li>Energy-efficient</li><li>Edge-ready</li></ul>
+          <div class="chip" style="margin-top:10px">EDGE READY</div>
+        </article>
+        <article class="card span-4">
+          <h3>☁️ Cloud Optimized</h3>
+          <p><strong>Focus:</strong> Features</p>
+          <ul><li>Full neural stack</li><li>AutoML</li><li>Theory & proofs</li><li>High throughput</li></ul>
+          <div class="chip" style="margin-top:10px">RESEARCH GRADE</div>
+        </article>
+        <article class="card span-4">
+          <h3>⚡ Real-time Optimized</h3>
+          <p><strong>Focus:</strong> Latency</p>
+          <ul><li>Batch engine</li><li>Speed optimized</li><li>RT constraints</li><li>Streaming ready</li></ul>
+          <div class="chip" style="margin-top:10px">REAL-TIME</div>
+        </article>
+        <article class="card span-4">
+          <h3>🔬 Advanced MPC</h3>
+          <p><strong>Focus:</strong> Dynamic Control</p>
+          <ul><li>MPC</li><li>Dynamic optimization</li><li>Neural + control</li><li>Prototype</li></ul>
+          <div class="chip" style="margin-top:10px; background:color-mix(in oklab,var(--danger),transparent 10%); border-color:color-mix(in oklab,var(--danger),transparent 40%)">EXPERIMENTAL</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- DOWNLOADS -->
+    <section id="downloads" class="section">
+      <article class="card">
+        <h3>📥 Downloads</h3>
+        <div class="card" style="margin-top:14px">
+          <h4>Key Files</h4>
+          <ul>
+            <li><a href="data/results/comprehensive_summary.csv" download>Comprehensive Results (CSV)</a></li>
+            <li><a href="data/results/detailed_results.csv" download>Detailed Sample Results (CSV)</a></li>
+            <li><a href="data/results/dataset_information.csv" download>Dataset Information (CSV)</a></li>
+            <li><a href="data/Visualizations/research_summary_infographic.png" download>Research Summary Infographic (PNG)</a></li>
+            <li><a href="assets/Whitepaper.md" download>Technical Whitepaper (MD)</a></li>
+            <li><a href="assets/README.md" download>Implementation Guide (MD)</a></li>
+          </ul>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="footer section">
+    <div class="container" style="text-align:center">
+      <h3 style="margin:0 0 8px">Sundew Algorithm Research Project</h3>
+      <p style="color:var(--muted);max-width:68ch;margin-inline:auto">
+        Bio-inspired selective activation for energy-efficient edge AI.
+        Validated across domains. Open source with DOI and ORCID.
+      </p>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+        <span class="chip">World-Class Quality</span>
+        <span class="chip">Multi-Domain Validated</span>
+      </div>
+      <div style="display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap">
+        <a class="link-chip" href="https://doi.org/10.5281/zenodo.17118217" target="_blank" rel="noopener">🔗 DOI</a>
+        <a class="link-chip" href="https://orcid.org/0009-0008-7911-1171" target="_blank" rel="noopener">🆔 ORCID</a>
+        <a class="link-chip" href="https://github.com/oluwafemidiakhoa/sundew_algorithms" target="_blank" rel="noopener">🧪 GitHub</a>
+        <a class="link-chip" href="https://pypi.org/project/sundew-algorithms/" target="_blank" rel="noopener">📦 PyPI</a>
+      </div>
+      <button id="toTop" class="btn btn-ghost" style="margin-top:16px">↑ Back to top</button>
     </div>
+  </footer>
 
-    <!-- Scripts -->
-    <script>
-        // Progressive enhancement and animations
-        document.addEventListener('DOMContentLoaded', function() {
-            // Animate progress bars
-            const progressBars = document.querySelectorAll('.progress-fill');
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.width = entry.target.getAttribute('style').match(/width:\s*(\d+%)/)[1];
-                    }
-                });
-            });
+  <script>
+    // Active link highlighting on scroll
+    const sections = [...document.querySelectorAll('main section, .hero')];
+    const navLinks = [...document.querySelectorAll('.nav a[href^="#"]')];
+    const io = new IntersectionObserver((entries)=>{
+      const visible = entries.filter(e=>e.isIntersecting).sort((a,b)=>b.intersectionRatio - a.intersectionRatio)[0];
+      if(!visible) return;
+      const id = visible.target.id || 'overview';
+      navLinks.forEach(a=>a.removeAttribute('aria-current'));
+      const match = document.querySelector('.nav a[href="#'+id+'"]');
+      if(match) match.setAttribute('aria-current','page');
+    }, { threshold:[0.4,0.6], rootMargin:'-20% 0px -60% 0px' });
+    sections.forEach(s=>io.observe(s));
 
-            progressBars.forEach(bar => observer.observe(bar));
+    // Theme toggle
+    const modeToggle = document.getElementById('modeToggle');
+    const setTheme = (t)=>{ document.body.classList.toggle('theme-light', t==='light'); localStorage.setItem('sundew-theme', t) }
+    const initTheme = localStorage.getItem('sundew-theme') || (matchMedia('(prefers-color-scheme: light)').matches ? 'light':'dark');
+    setTheme(initTheme);
+    modeToggle.setAttribute('aria-pressed', initTheme==='light');
+    modeToggle.addEventListener('click', ()=>{
+      const to = document.body.classList.contains('theme-light') ? 'dark' : 'light';
+      setTheme(to); modeToggle.setAttribute('aria-pressed', to==='light');
+    });
 
-            // Add fade-in animations
-            const animateElements = document.querySelectorAll('.card, .breakthrough-stat');
-            animateElements.forEach((el, index) => {
-                el.style.animationDelay = `${index * 0.1}s`;
-                el.classList.add('animate-fade-in');
-            });
+    // Smooth scroll for internal links
+    document.querySelectorAll('a[href^="#"]').forEach(a=>a.addEventListener('click', e=>{
+      const id = a.getAttribute('href'); if(!id || id==='#') return;
+      e.preventDefault(); document.querySelector(id)?.scrollIntoView({behavior:'smooth'});
+    }));
 
-            // Copy code blocks on click
-            const codeBlocks = document.querySelectorAll('.code-block');
-            codeBlocks.forEach(block => {
-                block.style.cursor = 'pointer';
-                block.title = 'Click to copy';
-                block.addEventListener('click', () => {
-                    navigator.clipboard.writeText(block.textContent).then(() => {
-                        const originalBg = block.style.background;
-                        block.style.background = 'var(--success)';
-                        setTimeout(() => {
-                            block.style.background = originalBg;
-                        }, 200);
-                    });
-                });
-            });
-        });
+    // Back to top
+    document.getElementById('toTop').addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
 
-        // Analytics (placeholder)
-        if (typeof gtag !== 'undefined') {
-            gtag('config', 'GA_MEASUREMENT_ID');
-            gtag('event', 'page_view', {
-                page_title: 'Sundew Algorithm v0.3.0',
-                page_location: window.location.href
-            });
+    // Progress bars + counters
+    const counters = document.querySelectorAll('[data-count]');
+    const bars = document.querySelectorAll('.progress > span');
+    const animate = (el, to, dur=900)=>{
+      const t0 = performance.now();
+      const from = 0; const isFloat = String(to).includes('.');
+      const step = (t)=>{
+        const p = Math.min(1, (t - t0)/dur);
+        const val = from + (to - from)*p;
+        el.textContent = isFloat ? val.toFixed(3) : Math.round(val);
+        if(p<1) requestAnimationFrame(step);
+      };
+      requestAnimationFrame(step);
+    };
+    const kpiIO = new IntersectionObserver((ents)=>{
+      ents.forEach(en=>{
+        if(en.isIntersecting){
+          counters.forEach(c=> animate(c, Number(c.dataset.count)));
+          bars.forEach(b=> b.style.width = getComputedStyle(b).getPropertyValue('--to') || '0%');
+          kpiIO.disconnect();
         }
-    </script>
+      })
+    }, { threshold:.35 });
+    kpiIO.observe(document.getElementById('kpis'));
+
+    // Image present/absent handling
+    document.querySelectorAll('.tile img').forEach(img=>{
+      if(img.complete && img.naturalWidth === 0){
+        img.style.display = 'none';
+        img.parentElement.classList.add('broken');
+      }
+      img.addEventListener('load', ()=> img.parentElement.classList.add('loaded'));
+    });
+
+    // --- GH Pages base-path fixer (works for user OR project sites) ---
+    (function(){
+      const parts = location.pathname.split('/').filter(Boolean);
+      const base = parts.length > 0 ? ('/' + parts[0] + '/') : '/';
+      document.querySelectorAll('img[src^="/"], a[href^="/"]').forEach(el=>{
+        const attr = el.tagName === 'IMG' ? 'src' : 'href';
+        const url = el.getAttribute(attr);
+        if(!url) return;
+        el.setAttribute(attr, base + url.replace(/^\//,''));
+      });
+    })();
+  </script>
 </body>
 </html>

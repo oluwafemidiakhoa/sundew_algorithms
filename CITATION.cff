@@ -1,26 +1,25 @@
-# CITATION.cff
 cff-version: 1.2.0
-message: "If you use the Sundew Algorithm in your work, please cite it as below."
-title: "Sundew Algorithm: Bio-Inspired Event-Driven Intelligence"
+title: "Sundew: Energy-Constrained Autonomic Inference for Real-Time AI"
+message: "If you use Sundew, please cite this software."
+type: software
+version: "0.4.1"
+doi: 10.5281/zenodo.17118217
 authors:
-  - family-names: "Idiakhoa"
-    given-names: "Oluwafemi"
-    email: "ethagagroalliedltd@gmail.com"
-    affiliation: "Idiakhoas"
+  - family-names: Idiakhoa
+    given-names: Oluwafemi
+    orcid: "https://orcid.org/0009-0008-7911-1171"
+repository-code: "https://github.com/oluwafemidiakhoa/sundew_algorithms"
+url: "https://oluwafemidiakhoa.github.io"
 abstract: >
-  The Sundew Algorithm is a bio-inspired, event-driven AI framework designed
-  for resource-constrained systems. Inspired by the sundew plant’s selective
-  activation strategy, it introduces adaptive thresholds, energy-aware gating,
-  and lightweight significance evaluation to achieve efficient, selective
-  processing. This repository provides code, benchmarks, and analysis tools.
-version: "0.1.1"
-date-released: 2025-09-01
-license: "MIT"
-repository-code: "https://github.com/oluwafemidiakhoa/sundew_algo"
-doi: "10.5281/zenodo.XXXXXXX"  # (optional) replace after archiving on Zenodo
+  Sundew is an energy-aware gating controller for real-time AI that allocates
+  compute only when expected utility exceeds marginal cost. It provides
+  selective activation, adaptive thresholds, and PI/MPC control with
+  high energy-efficiency for edge deployments.
 keywords:
-  - bio-inspired AI
-  - event-driven intelligence
-  - energy-efficient AI
-  - adaptive thresholds
+  - energy-aware AI
+  - adaptive computation
   - selective activation
+  - gating
+  - edge AI
+  - real-time inference
+license: Apache-2.0
