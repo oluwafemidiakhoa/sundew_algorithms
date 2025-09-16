@@ -54,7 +54,7 @@ def demo_enhanced_medical_monitoring():
     print(f"  Activation threshold: {medical_config.activation_threshold}")
     print(f"  Target rate: {medical_config.target_activation_rate:.1%}")
     print(f"  Energy budget: {medical_config.max_energy}")
-    print(f"  Medical-grade stability: Enhanced")
+    print("  Medical-grade stability: Enhanced")
     print()
 
     # Simulate various medical scenarios

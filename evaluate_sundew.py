@@ -13,9 +13,12 @@ Usage:
   type run.txt | python evaluate_sundew.py -
 """
 
-import re, sys, json, statistics as stats
+import json
+import re
+import statistics as stats
+import sys
 from pathlib import Path
-from typing import Dict, Any, List
+from typing import Any, Dict, List
 
 # Flexible event line:
 #  01. environmental   ✅ processed     (sig=0.220, 0.002s, ΔE≈9.5)         | energy   90.5 | thr 0.784

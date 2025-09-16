@@ -81,7 +81,7 @@ def test_dual_ema():
 
     report_normal = algo.report()
 
-    print(f"\nNormal Capacity Test:")
+    print("\nNormal Capacity Test:")
     print(f"  Energy: {report_normal['energy_remaining']:.1f}")
     print(f"  Energy Fraction: {report_normal['energy_remaining']/100:.1%}")
     print(f"  Using Slow EMA for Control: {report_normal['ema_using_slow_for_control']}")

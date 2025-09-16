@@ -19,13 +19,13 @@ from pathlib import Path
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
+from sundew.config import SundewConfig
+from sundew.core import SundewAlgorithm
 from sundew.humanitarian_health import (
     MaternalHealthMonitor,
     MaternalVitals,
-    demonstrate_maternal_health_monitoring
+    demonstrate_maternal_health_monitoring,
 )
-from sundew.config import SundewConfig
-from sundew.core import SundewAlgorithm
 
 
 def test_maternal_health_comprehensive():

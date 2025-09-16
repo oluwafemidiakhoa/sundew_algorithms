@@ -4,7 +4,7 @@ Test script for Sundew Auto-Tuner validation.
 Compares original vs auto-tuned configurations.
 """
 
-from src.sundew import SundewAlgorithm, SundewConfig, get_preset
+from src.sundew import SundewAlgorithm, get_preset
 
 
 def test_auto_tuner_preset():
@@ -101,21 +101,21 @@ def test_auto_tuner_preset():
     tuned = results["Auto-Tuned"]
 
     print("TARGET METRICS:")
-    print(f"  Activation Rate: 10-20% target")
+    print("  Activation Rate: 10-20% target")
     print(f"    Baseline: {baseline['activation_rate']:.1%}")
     print(f"    Auto-Tuned: {tuned['activation_rate']:.1%}")
 
-    print(f"  Threshold Utilization: 70-85% target")
+    print("  Threshold Utilization: 70-85% target")
     print(f"    Baseline: {baseline['threshold_util']:.0f}%")
     print(f"    Auto-Tuned: {tuned['threshold_util']:.0f}%")
 
-    print(f"  EMA vs Actual Rate Match:")
+    print("  EMA vs Actual Rate Match:")
     baseline_ema_err = abs(baseline['ema_rate'] - baseline['activation_rate'])
     tuned_ema_err = abs(tuned['ema_rate'] - tuned['activation_rate'])
     print(f"    Baseline Error: {baseline_ema_err:.3f}")
     print(f"    Auto-Tuned Error: {tuned_ema_err:.3f}")
 
-    print(f"  Energy Efficiency:")
+    print("  Energy Efficiency:")
     print(f"    Baseline: {baseline['energy_savings']:.1f}%")
     print(f"    Auto-Tuned: {tuned['energy_savings']:.1f}%")
 

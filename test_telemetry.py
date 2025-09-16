@@ -3,8 +3,8 @@
 Test enhanced telemetry and debugging features.
 """
 
+
 from src.sundew import SundewAlgorithm, SundewConfig
-import json
 
 
 def test_enhanced_telemetry():
@@ -71,7 +71,7 @@ def test_enhanced_telemetry():
     print(f"  Low Nudges Applied: {report['low_nudges_applied']}")
 
     # Test history access
-    print(f"\n=== HISTORY LENGTHS ===")
+    print("\n=== HISTORY LENGTHS ===")
     print(f"  Threshold History: {len(algo.metrics.threshold_history)}")
     print(f"  Activation History: {len(algo.metrics.activation_history)}")
     print(f"  Energy History: {len(algo.metrics.energy_history)}")
@@ -80,7 +80,7 @@ def test_enhanced_telemetry():
     print(f"  Gating Decision History: {len(algo.metrics.gating_decision_history)}")
 
     # Show recent gating decisions
-    print(f"\n=== RECENT GATING DECISIONS (Last 3) ===")
+    print("\n=== RECENT GATING DECISIONS (Last 3) ===")
     for i, decision in enumerate(algo.metrics.gating_decision_history[-3:]):
         print(f"  Decision {i+1}:")
         print(f"    Significance: {decision['significance']:.3f}")
