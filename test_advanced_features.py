@@ -282,7 +282,7 @@ def test_comprehensive_integration(algorithm, test_data):
         print("  Processing test data...")
         processed_count = 0
         for sample in test_data[:500]:
-            result = algorithm.process(sample)
+            algorithm.process(sample)
             processed_count += 1
 
             if processed_count % 100 == 0:
@@ -363,10 +363,14 @@ def main():
         # Initialize algorithm
         algorithm = EnhancedSundewAlgorithm(config)
         print("[OK] Advanced algorithm initialized successfully")
-        print(f"  Information Controller: {'Enabled' if algorithm.information_controller else 'Disabled'}")
+        print(
+            f"  Information Controller: {'Enabled' if algorithm.information_controller else 'Disabled'}"
+        )
         print(f"  Batch Engine: {'Enabled' if algorithm.batch_engine else 'Disabled'}")
         print(f"  AutoML Optimizer: {'Enabled' if algorithm.automl_optimizer else 'Disabled'}")
-        print(f"  Theoretical Analyzer: {'Enabled' if algorithm.theoretical_analyzer else 'Disabled'}")
+        print(
+            f"  Theoretical Analyzer: {'Enabled' if algorithm.theoretical_analyzer else 'Disabled'}"
+        )
 
     except Exception as e:
         print(f"[ERROR] Failed to initialize advanced algorithm: {e}")
@@ -377,7 +381,9 @@ def main():
     # Run feature tests
     test_results = {}
 
-    test_results['information_theoretic'] = test_information_theoretic_features(algorithm, test_data)
+    test_results['information_theoretic'] = test_information_theoretic_features(
+        algorithm, test_data
+    )
     print()
 
     test_results['batch_processing'] = test_batch_processing_features(algorithm, test_data)
@@ -426,10 +432,16 @@ def main():
 
     if passed_tests == total_tests:
         print("\n[SUCCESS] All advanced features are working correctly!")
-        research_quality = test_results.get('integration', {}).get('report', {}).get('research_quality_score', 0)
+        research_quality = (
+            test_results.get('integration', {})
+            .get('report', {})
+            .get('research_quality_score', 0)
+        )
         print(f"Research Quality Score: {research_quality:.1f}/10")
     else:
-        print(f"\n[WARNING] Some features need attention ({total_tests - passed_tests} issues found)")
+        print(
+            f"\n[WARNING] Some features need attention ({total_tests - passed_tests} issues found)"
+        )
 
 
 if __name__ == "__main__":

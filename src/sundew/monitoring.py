@@ -474,7 +474,7 @@ class RealTimeMonitor:
         tp = sum(1 for pred, label in zip(recent_preds, recent_labels) if pred == 1 and label == 1)
         fp = sum(1 for pred, label in zip(recent_preds, recent_labels) if pred == 1 and label == 0)
         fn = sum(1 for pred, label in zip(recent_preds, recent_labels) if pred == 0 and label == 1)
-        tn = sum(1 for pred, label in zip(recent_preds, recent_labels) if pred == 0 and label == 0)
+        sum(1 for pred, label in zip(recent_preds, recent_labels) if pred == 0 and label == 0)
 
         # Compute metrics
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
@@ -577,7 +577,7 @@ class RealTimeMonitor:
         for ax in self.axes[1, :]:
             ax.set_xlabel("Time (seconds)")
 
-        plt.tight_layout()
+        self.fig.tight_layout()
 
     def get_monitoring_summary(self) -> Dict[str, Any]:
         """Get comprehensive monitoring summary."""

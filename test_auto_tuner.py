@@ -91,7 +91,9 @@ def test_auto_tuner_preset():
 
         print(f"  Activations: {activations}/50 ({activations/50:.1%})")
         print(f"  EMA Rate: {report['ema_activation_rate']:.3f}")
-        print(f"  Threshold: {report['threshold']:.3f} ({report['threshold_utilization']:.0f}% util)")
+        print(
+            f"  Threshold: {report['threshold']:.3f} ({report['threshold_utilization']:.0f}% util)"
+        )
         print(f"  Energy: {report['energy_remaining']:.1f}")
 
     print("\nCOMPARISON SUMMARY")
@@ -158,11 +160,15 @@ def demo_ready_to_run_commands():
     print()
 
     print("Conservative tuning:")
-    print("  python -m sundew --demo --events 30 --temperature 0.08 --ema-alpha 0.25 --hysteresis 0.03")
+    print(
+        "  python -m sundew --demo --events 30 --temperature 0.08 --ema-alpha 0.25 --hysteresis 0.03"
+    )
     print()
 
     print("Aggressive tuning:")
-    print("  python -m sundew --demo --events 30 --temperature 0.12 --ema-alpha 0.40 --hysteresis 0.015")
+    print(
+        "  python -m sundew --demo --events 30 --temperature 0.12 --ema-alpha 0.40 --hysteresis 0.015"
+    )
     print()
 
     print("Custom max threshold:")

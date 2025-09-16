@@ -518,12 +518,6 @@ class EnhancedSundewAlgorithm:
         # AutoML optimizer
         if self.config.enable_automl and AUTOML_AVAILABLE:
             try:
-                objectives = [
-                    # Would need to import OptimizationObjective
-                    # OptimizationObjective('energy_savings', weight=0.4, minimize=False),
-                    # OptimizationObjective('f1_score', weight=0.4, minimize=False),
-                    # OptimizationObjective('processing_time', weight=0.2, minimize=True)
-                ]
                 self.automl_optimizer = AutoMLOptimizer(
                     objectives=None,  # Use defaults for now
                     time_budget_minutes=self.config.automl_time_budget_minutes,

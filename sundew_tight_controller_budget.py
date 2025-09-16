@@ -33,8 +33,12 @@ def gen_event(rng):
 def simulate(steps=500, q_target=0.30, eta_q=0.04, hyst=0.03, E_min=20.0,
              regen_idle=2.2, hard_emergency=0.95, seed=42):
     rng = random.Random(seed)
-    thr = 0.78; thr_on = thr+hyst; thr_off = thr-hyst
-    ema = 0.0; energy = 100.0; was_active = False
+    thr = 0.78
+    thr_on = thr+hyst
+    thr_off = thr-hyst
+    ema = 0.0
+    energy = 100.0
+    was_active = False
     m = defaultdict(lambda: 1.0, {"emergency": 1.05})
     cost_avg = 11.0  # initial guess
     beta_cost = 0.1  # EMA for cost
@@ -83,22 +87,38 @@ def simulate(steps=500, q_target=0.30, eta_q=0.04, hyst=0.03, E_min=20.0,
 
 def plot(df, prefix="tight_budget"):
     # Energy
-    plt.figure(); plt.plot(df["idx"], df["energy"])
-    plt.title("Energy vs Event"); plt.xlabel("Event index"); plt.ylabel("Energy")
-    plt.savefig(f"{prefix}_energy.png", bbox_inches="tight"); plt.close()
+    plt.figure()
+    plt.plot(df["idx"], df["energy"])
+    plt.title("Energy vs Event")
+    plt.xlabel("Event index")
+    plt.ylabel("Energy")
+    plt.savefig(f"{prefix}_energy.png", bbox_inches="tight")
+    plt.close()
     # Threshold
-    plt.figure(); plt.plot(df["idx"], df["thr"])
-    plt.title("Threshold vs Event"); plt.xlabel("Event index"); plt.ylabel("Threshold")
-    plt.savefig(f"{prefix}_threshold.png", bbox_inches="tight"); plt.close()
+    plt.figure()
+    plt.plot(df["idx"], df["thr"])
+    plt.title("Threshold vs Event")
+    plt.xlabel("Event index")
+    plt.ylabel("Threshold")
+    plt.savefig(f"{prefix}_threshold.png", bbox_inches="tight")
+    plt.close()
     # Activations
-    plt.figure(); plt.plot(df["idx"], df["y"])
-    plt.title("Activations (1) vs Dormant (0)"); plt.xlabel("Event index"); plt.ylabel("Activation flag")
-    plt.savefig(f"{prefix}_activations.png", bbox_inches="tight"); plt.close()
+    plt.figure()
+    plt.plot(df["idx"], df["y"])
+    plt.title("Activations (1) vs Dormant (0)")
+    plt.xlabel("Event index")
+    plt.ylabel("Activation flag")
+    plt.savefig(f"{prefix}_activations.png", bbox_inches="tight")
+    plt.close()
     # Cumulative rate
     cum = df["y"].cumsum()/df["idx"]
-    plt.figure(); plt.plot(df["idx"], cum)
-    plt.title("Cumulative Activation Rate"); plt.xlabel("Event index"); plt.ylabel("Cumulative rate")
-    plt.savefig(f"{prefix}_cumrate.png", bbox_inches="tight"); plt.close()
+    plt.figure()
+    plt.plot(df["idx"], cum)
+    plt.title("Cumulative Activation Rate")
+    plt.xlabel("Event index")
+    plt.ylabel("Cumulative rate")
+    plt.savefig(f"{prefix}_cumrate.png", bbox_inches="tight")
+    plt.close()
 
 def main():
     ap = argparse.ArgumentParser()

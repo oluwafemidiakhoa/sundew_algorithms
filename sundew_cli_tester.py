@@ -49,7 +49,6 @@ INIT_RE = re.compile(r"Initial threshold:\s*([0-9.]+)\s*\|\s*Energy:\s*([0-9.]+)
 
 def call_sundew(events: int, preset: str|None, temperature: float|None) -> str:
     """Run the sundew CLI and return stdout as text."""
-    args = []
     # Preferred command
     cmd_candidates = [
         ["sundew"],

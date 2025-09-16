@@ -68,7 +68,7 @@ def test_with_info_theory():
                 'context_relevance': 0.6,
                 'urgency': 0.4
             }
-            result = algorithm.process(sample)
+            algorithm.process(sample)
 
         print("Info theory test: SUCCESS")
         return True

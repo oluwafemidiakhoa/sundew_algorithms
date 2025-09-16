@@ -176,8 +176,6 @@ class MaternalHealthMonitor:
         # Preeclampsia thresholds: ≥140/90 mmHg
         # Severe preeclampsia: ≥160/110 mmHg
 
-        systolic_risk = 0.0
-        diastolic_risk = 0.0
 
         if systolic >= 160 or diastolic >= 110:
             # Severe hypertension - immediate intervention needed

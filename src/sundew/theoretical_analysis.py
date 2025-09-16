@@ -384,7 +384,7 @@ class StatisticalAnalyzer:
         if len(residuals) >= 8:
             shapiro_stat, shapiro_p = stats.shapiro(residuals)
         else:
-            shapiro_stat, shapiro_p = 1.0, 1.0
+            _shapiro_stat, shapiro_p = 1.0, 1.0
 
         # Test 4: Convergence detection using CUSUM
         cusum_pos = np.maximum.accumulate(np.maximum(0, np.cumsum(data - np.mean(data))))
@@ -462,9 +462,9 @@ class StatisticalAnalyzer:
                         values, lambda x: stats.beta.cdf(x, *beta_params)
                     )
                 except Exception:
-                    beta_ks_stat, beta_ks_p = float("inf"), 0
+                    _beta_ks_stat, beta_ks_p = float("inf"), 0
             else:
-                beta_ks_stat, beta_ks_p = float("inf"), 0
+                _beta_ks_stat, beta_ks_p = float("inf"), 0
 
             # Select best distribution
             if beta_ks_p > normal_ks_p and beta_ks_p > 0.05:

@@ -22,7 +22,7 @@ def test_dual_ema():
 
     # Process some events to build up EMA values
     for i in range(50):
-        result = algo.process({
+        algo.process({
             'magnitude': 30 + i,
             'anomaly_score': 0.3 + i * 0.01,
             'context_relevance': 0.4,
@@ -48,7 +48,7 @@ def test_dual_ema():
 
     # Process a few more events
     for i in range(5):
-        result = algo.process({
+        algo.process({
             'magnitude': 50,
             'anomaly_score': 0.5,
             'context_relevance': 0.4,

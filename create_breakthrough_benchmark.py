@@ -887,7 +887,10 @@ class BreakthroughBenchmark:
         if enhanced_neural_results:
             avg_f1_enhanced = np.mean([r['f1_score'] for r in enhanced_neural_results])
             avg_energy_enhanced = np.mean([r['energy_savings'] for r in enhanced_neural_results])
-            avg_quality = np.mean([r["research_quality"] for r in enhanced_neural_results if r["research_quality"]])
+            avg_quality = np.mean([
+                r["research_quality"] for r in enhanced_neural_results
+                if r["research_quality"]
+            ])
 
             print("\n*** ENHANCED NEURAL+PI SYSTEM ***")
             print(f"   * Average F1 Score: {avg_f1_enhanced:.3f}")

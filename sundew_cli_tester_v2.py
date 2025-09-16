@@ -81,21 +81,24 @@ def save_plots(out_dir: Path, df: pd.DataFrame, name: str):
     plt.figure()
     plt.plot(df["idx"], df["energy"])
     plt.title(f"Energy vs Event — {name}")
-    plt.xlabel("Event index"); plt.ylabel("Energy")
+    plt.xlabel("Event index")
+    plt.ylabel("Energy")
     plt.savefig(out_dir / f"{name}_energy.png", bbox_inches="tight")
     plt.close()
     # Threshold
     plt.figure()
     plt.plot(df["idx"], df["thr"])
     plt.title(f"Threshold vs Event — {name}")
-    plt.xlabel("Event index"); plt.ylabel("Threshold")
+    plt.xlabel("Event index")
+    plt.ylabel("Threshold")
     plt.savefig(out_dir / f"{name}_threshold.png", bbox_inches="tight")
     plt.close()
     # Activations
     plt.figure()
     plt.plot(df["idx"], df["is_processed"])
     plt.title(f"Activations (1) vs Dormant (0) — {name}")
-    plt.xlabel("Event index"); plt.ylabel("Activation flag")
+    plt.xlabel("Event index")
+    plt.ylabel("Activation flag")
     plt.savefig(out_dir / f"{name}_activations.png", bbox_inches="tight")
     plt.close()
 
@@ -104,7 +107,8 @@ def save_plots(out_dir: Path, df: pd.DataFrame, name: str):
     plt.figure()
     plt.plot(df["idx"], cum)
     plt.title(f"Cumulative Activation Rate — {name}")
-    plt.xlabel("Event index"); plt.ylabel("Cumulative rate")
+    plt.xlabel("Event index")
+    plt.ylabel("Cumulative rate")
     plt.savefig(out_dir / f"{name}_cumrate.png", bbox_inches="tight")
     plt.close()
 
@@ -117,7 +121,8 @@ def main():
     ap.add_argument("--outdir", type=str, default="runs_v2")
     args = ap.parse_args()
 
-    out_dir = Path(args.outdir); out_dir.mkdir(parents=True, exist_ok=True)
+    out_dir = Path(args.outdir)
+    out_dir.mkdir(parents=True, exist_ok=True)
 
     if args.from_json:
         df = parse_json(Path(args.from_json))

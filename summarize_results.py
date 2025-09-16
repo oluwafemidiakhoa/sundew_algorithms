@@ -45,7 +45,7 @@ def collect(dirpath: str) -> List[Dict[str, Any]]:
             d = json.load(open(p, "r", encoding="utf-8"))
         except Exception:
             continue
-        rep = d.get("report", {})
+        d.get("report", {})
         cnt = d.get("counts", {})
 
         rows.append({

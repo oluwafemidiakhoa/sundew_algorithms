@@ -116,7 +116,10 @@ def derived_metrics(parsed: Dict[str, Any]) -> Dict[str, Any]:
     recovered_overflow = max(0.0, (start_E + recovered - spent) - end_E)
 
     latencies = [e.get("latency_s") for e in events if e.get("latency_s") is not None]
-    avg_latency = (sum(latencies)/len(latencies)) if latencies else sections.get("Control System", {}).get("Avg Processing Time", 0.0)
+    avg_latency = (
+        (sum(latencies)/len(latencies)) if latencies
+        else sections.get("Control System", {}).get("Avg Processing Time", 0.0)
+    )
 
     return {
         "events": n,
@@ -135,10 +138,16 @@ def derived_metrics(parsed: Dict[str, Any]) -> Dict[str, Any]:
         "energy_end": end_E,
         "energy_recovered": recovered,
         "energy_spent": spent,
-        "threshold_utilization_pct": sections.get("Control System", {}).get("Threshold Utilization", None),
+        "threshold_utilization_pct": (
+            sections.get("Control System", {}).get("Threshold Utilization", None)
+        ),
         "ema_alpha": sections.get("Control System", {}).get("EMA Alpha", None),
-        "ema_rate_reported_pct": sections.get("Performance Metrics", {}).get("EMA Activation Rate", None),
-        "activation_rate_reported_pct": sections.get("Performance Metrics", {}).get("Activation Rate", None),
+        "ema_rate_reported_pct": (
+            sections.get("Performance Metrics", {}).get("EMA Activation Rate", None)
+        ),
+        "activation_rate_reported_pct": (
+            sections.get("Performance Metrics", {}).get("Activation Rate", None)
+        ),
         "convergence_status": sections.get("Control System", {}).get("Convergence Status", None),
         "hysteresis_gap": sections.get("Control System", {}).get("Hysteresis Gap", None),
     }
@@ -160,7 +169,8 @@ def print_table(rows: List[Dict[str, Any]]):
     print("\t".join(headers))
     for r in rows:
         def fmt(x):
-            if x is None: return "-"
+            if x is None:
+                return "-"
             if isinstance(x, float):
                 return f"{x:.3f}"
             return str(x)

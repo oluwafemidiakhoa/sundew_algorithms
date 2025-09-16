@@ -106,7 +106,7 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
         """Compute joint probability distribution using binning."""
         # Discretize continuous values
         x_bins = np.linspace(0, 1, self.n_bins + 1)
-        y_bins = np.array([0, 1])  # Binary for activations
+        np.array([0, 1])  # Binary for activations
 
         x_discrete = np.digitize(x, x_bins) - 1
         x_discrete = np.clip(x_discrete, 0, self.n_bins - 1)
@@ -192,7 +192,7 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
 
         # Convert to numpy arrays
         sig_array = np.array(list(self.significance_history))
-        act_array = np.array(list(self.activation_history))
+        np.array(list(self.activation_history))
 
         # Optimize threshold
         optimal_threshold = self._optimize_threshold_mi(sig_array)
