@@ -60,25 +60,58 @@ def demo_enhanced_medical_monitoring():
     # Simulate various medical scenarios
     medical_scenarios = [
         # Normal vital signs
-        {"name": "Normal BP", "magnitude": 20, "anomaly_score": 0.1, "context_relevance": 0.5, "urgency": 0.1},
-        {"name": "Normal HR", "magnitude": 25, "anomaly_score": 0.15, "context_relevance": 0.5, "urgency": 0.1},
+        {
+            "name": "Normal BP", "magnitude": 20, "anomaly_score": 0.1,
+            "context_relevance": 0.5, "urgency": 0.1
+        },
+        {
+            "name": "Normal HR", "magnitude": 25, "anomaly_score": 0.15,
+            "context_relevance": 0.5, "urgency": 0.1
+        },
 
         # Concerning trends
-        {"name": "Elevated BP", "magnitude": 45, "anomaly_score": 0.4, "context_relevance": 0.7, "urgency": 0.3},
-        {"name": "Rising HR", "magnitude": 40, "anomaly_score": 0.35, "context_relevance": 0.6, "urgency": 0.25},
+        {
+            "name": "Elevated BP", "magnitude": 45, "anomaly_score": 0.4,
+            "context_relevance": 0.7, "urgency": 0.3
+        },
+        {
+            "name": "Rising HR", "magnitude": 40, "anomaly_score": 0.35,
+            "context_relevance": 0.6, "urgency": 0.25
+        },
 
         # Critical medical events
-        {"name": "Severe Hypertension", "magnitude": 75, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.8},
-        {"name": "Cardiac Arrhythmia", "magnitude": 80, "anomaly_score": 0.85, "context_relevance": 0.95, "urgency": 0.9},
-        {"name": "Fetal Distress", "magnitude": 70, "anomaly_score": 0.75, "context_relevance": 1.0, "urgency": 0.85},
+        {
+            "name": "Severe Hypertension", "magnitude": 75, "anomaly_score": 0.8,
+            "context_relevance": 0.9, "urgency": 0.8
+        },
+        {
+            "name": "Cardiac Arrhythmia", "magnitude": 80, "anomaly_score": 0.85,
+            "context_relevance": 0.95, "urgency": 0.9
+        },
+        {
+            "name": "Fetal Distress", "magnitude": 70, "anomaly_score": 0.75,
+            "context_relevance": 1.0, "urgency": 0.85
+        },
 
         # Emergency situations
-        {"name": "Hemorrhage Pattern", "magnitude": 90, "anomaly_score": 0.95, "context_relevance": 1.0, "urgency": 1.0},
-        {"name": "Cardiac Arrest", "magnitude": 95, "anomaly_score": 0.98, "context_relevance": 1.0, "urgency": 1.0},
+        {
+            "name": "Hemorrhage Pattern", "magnitude": 90, "anomaly_score": 0.95,
+            "context_relevance": 1.0, "urgency": 1.0
+        },
+        {
+            "name": "Cardiac Arrest", "magnitude": 95, "anomaly_score": 0.98,
+            "context_relevance": 1.0, "urgency": 1.0
+        },
 
         # Post-intervention monitoring
-        {"name": "Post-treatment", "magnitude": 35, "anomaly_score": 0.25, "context_relevance": 0.8, "urgency": 0.2},
-        {"name": "Recovery", "magnitude": 30, "anomaly_score": 0.2, "context_relevance": 0.7, "urgency": 0.15},
+        {
+            "name": "Post-treatment", "magnitude": 35, "anomaly_score": 0.25,
+            "context_relevance": 0.8, "urgency": 0.2
+        },
+        {
+            "name": "Recovery", "magnitude": 30, "anomaly_score": 0.2,
+            "context_relevance": 0.7, "urgency": 0.15
+        },
     ]
 
     print("Medical Event Processing:")
@@ -103,7 +136,7 @@ def demo_enhanced_medical_monitoring():
                 severity = "[MEDIUM] MEDIUM"
 
             print(f"{i+1:2d}. {scenario['name']:<20} {severity}")
-            print(f"     Significance: {result.significance:.3f} | Energy: {result.energy_consumed:.1f}")
+            print(\n                f"     Significance: {result.significance:.3f} | Energy: {result.energy_consumed:.1f}"\n            )
         else:
             print(f"{i+1:2d}. {scenario['name']:<20} [OK] Normal")
 
