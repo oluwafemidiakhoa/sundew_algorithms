@@ -412,7 +412,9 @@ class BreakthroughBenchmark:
         )
         return samples, "Space Weather Monitoring"
 
-    def benchmark_system(self, samples: List[Dict], domain_name: str, config_name: str, config: Any) -> Dict:
+    def benchmark_system(
+        self, samples: List[Dict], domain_name: str, config_name: str, config: Any
+    ) -> Dict:
         """Benchmark a system configuration on given samples."""
 
         if isinstance(config, EnhancedSundewConfig):
@@ -471,8 +473,14 @@ class BreakthroughBenchmark:
         processing_time = time.time() - start_time
 
         # Calculate metrics
-        precision = true_positives / (true_positives + false_positives) if (true_positives + false_positives) > 0 else 0
-        recall = true_positives / (true_positives + false_negatives) if (true_positives + false_negatives) > 0 else 0
+        precision = (
+            true_positives / (true_positives + false_positives)
+            if (true_positives + false_positives) > 0 else 0
+        )
+        recall = (
+            true_positives / (true_positives + false_negatives)
+            if (true_positives + false_negatives) > 0 else 0
+        )
         f1_score = 2 * precision * recall / (precision + recall) if (precision + recall) > 0 else 0
 
         activation_rate = total_activations / len(samples)
@@ -565,13 +573,19 @@ class BreakthroughBenchmark:
         sns.heatmap(data_f1, annot=True, fmt='.3f', xticklabels=configs,
                    yticklabels=domains, ax=axes[0], cmap='RdYlGn',
                    cbar_kws={'label': 'F1 Score'})
-        axes[0].set_title('F1 Score Performance\nAcross Domains', fontsize=14, fontweight='bold')
+        axes[0].set_title(
+            'F1 Score Performance\nAcross Domains',
+            fontsize=14, fontweight='bold'
+        )
 
         # Energy savings heatmap
         sns.heatmap(data_energy, annot=True, fmt='.1f', xticklabels=configs,
                    yticklabels=domains, ax=axes[1], cmap='RdYlGn',
                    cbar_kws={'label': 'Energy Savings %'})
-        axes[1].set_title('Energy Savings Performance\nAcross Domains', fontsize=14, fontweight='bold')
+        axes[1].set_title(
+            'Energy Savings Performance\nAcross Domains',
+            fontsize=14, fontweight='bold'
+        )
 
         # Throughput heatmap
         sns.heatmap(data_throughput, annot=True, fmt='.1f', xticklabels=configs,
@@ -616,7 +630,9 @@ class BreakthroughBenchmark:
 
         ax.set_xlabel('Energy Savings (%)', fontsize=14, fontweight='bold')
         ax.set_ylabel('F1 Score', fontsize=14, fontweight='bold')
-        ax.set_title('Breakthrough Performance: Energy Savings vs Accuracy\nAcross Multiple Real-World Domains',
+        ax.set_title(
+            'Breakthrough Performance: Energy Savings vs Accuracy\n'
+            'Across Multiple Real-World Domains',
                     fontsize=16, fontweight='bold')
         ax.legend(bbox_to_anchor=(1.05, 1), loc='upper left')
         ax.grid(True, alpha=0.3)
@@ -759,7 +775,10 @@ class BreakthroughBenchmark:
         ax2.hist(energy_savings, bins=10, color='lightgreen', alpha=0.7, edgecolor='black')
         ax2.set_xlabel('Energy Savings (%)', fontsize=12, fontweight='bold')
         ax2.set_ylabel('Number of Domains', fontsize=12, fontweight='bold')
-        ax2.set_title('Energy Savings Distribution\nAcross All Domains', fontsize=14, fontweight='bold')
+        ax2.set_title(
+            'Energy Savings Distribution\nAcross All Domains',
+            fontsize=14, fontweight='bold'
+        )
         ax2.grid(True, alpha=0.3)
 
         # Add statistics
@@ -868,7 +887,7 @@ class BreakthroughBenchmark:
         if enhanced_neural_results:
             avg_f1_enhanced = np.mean([r['f1_score'] for r in enhanced_neural_results])
             avg_energy_enhanced = np.mean([r['energy_savings'] for r in enhanced_neural_results])
-            avg_quality = np.mean([r['research_quality'] for r in enhanced_neural_results if r['research_quality']])
+            avg_quality = np.mean([r["research_quality"] for r in enhanced_neural_results if r["research_quality"]])
 
             print("\n*** ENHANCED NEURAL+PI SYSTEM ***")
             print(f"   * Average F1 Score: {avg_f1_enhanced:.3f}")

@@ -73,7 +73,10 @@ class SundewVisualizationSuite:
     def create_performance_overview(self):
         """Create comprehensive performance overview plot."""
         fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(16, 12))
-        fig.suptitle('Sundew Algorithm: Comprehensive Performance Overview', fontsize=20, fontweight='bold')
+        fig.suptitle(
+            'Sundew Algorithm: Comprehensive Performance Overview',
+            fontsize=20, fontweight='bold'
+        )
 
         # 1. Activation Rate vs Energy Efficiency
         for dataset in self.summary_df['dataset_name'].unique():
@@ -89,7 +92,10 @@ class SundewVisualizationSuite:
         ax1.grid(True, alpha=0.3)
 
         # 2. Throughput by Configuration
-        config_throughput = self.summary_df.groupby('config_name')['throughput'].mean().sort_values()
+        config_throughput = (
+            self.summary_df.groupby('config_name')['throughput']
+            .mean().sort_values()
+        )
         colors = [self.colors['primary'], self.colors['secondary'], self.colors['accent'],
                  self.colors['success'], self.colors['warning']][:len(config_throughput)]
 
@@ -177,7 +183,10 @@ class SundewVisualizationSuite:
                       capsize=5, alpha=0.8)
 
         ax2.set_xticks(range(len(energy_by_dataset)))
-        ax2.set_xticklabels([d.replace('_', ' ').title() for d in energy_by_dataset.index], rotation=45)
+        ax2.set_xticklabels(
+            [d.replace('_', ' ').title() for d in energy_by_dataset.index],
+            rotation=45
+        )
         ax2.set_ylabel('Energy Efficiency (%)')
         ax2.set_title('Energy Efficiency by Dataset')
         ax2.set_ylim(0, 100)
