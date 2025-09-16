@@ -194,8 +194,12 @@ class SundewVisualizationSuite:
         # 3. Total Energy Consumption
         total_energy = self.summary_df.groupby('config_name')['total_energy'].mean()
 
-        ax3.pie(total_energy.values, labels=[c.replace('_', ' ').title() for c in total_energy.index],
-               autopct='%1.1f%%', startangle=90, colors=plt.cm.Set3(np.linspace(0, 1, len(total_energy))))
+        ax3.pie(
+            total_energy.values,
+            labels=[c.replace('_', ' ').title() for c in total_energy.index],
+            autopct='%1.1f%%', startangle=90,
+            colors=plt.cm.Set3(np.linspace(0, 1, len(total_energy)))
+        )
         ax3.set_title('Total Energy Distribution by Configuration')
 
         # 4. Energy Savings Calculation
@@ -214,8 +218,10 @@ class SundewVisualizationSuite:
             savings.append((1 - config_energy / baseline_energy) * 100)
 
         # bars =
-        ax4.barh(range(len(configs)), savings,
-                       color=[self.colors['success'] if s > 0 else self.colors['error'] for s in savings])
+        ax4.barh(
+            range(len(configs)), savings,
+            color=[self.colors['success'] if s > 0 else self.colors['error'] for s in savings]
+        )
         ax4.set_yticks(range(len(configs)))
         ax4.set_yticklabels([c.replace('_', ' ').title() for c in configs])
         ax4.set_xlabel('Energy Savings (%)')
@@ -233,7 +239,9 @@ class SundewVisualizationSuite:
 
         # Create comparison metrics
         metrics = ['activation_rate', 'energy_efficiency', 'throughput', 'f1_score']
-        metric_labels = ['Activation Rate', 'Energy Efficiency', 'Throughput (k samples/s)', 'F1 Score']
+        metric_labels = [
+            'Activation Rate', 'Energy Efficiency', 'Throughput (k samples/s)', 'F1 Score'
+        ]
 
         # 1. Radar Chart
         configs = self.summary_df['config_name'].unique()[:4]  # Top 4 configs
@@ -299,7 +307,9 @@ class SundewVisualizationSuite:
 
         # Calculate composite score
         normalized_df = self.summary_df.copy()
-        normalized_df['norm_throughput'] = normalized_df['throughput'] / normalized_df['throughput'].max()
+        normalized_df['norm_throughput'] = (
+            normalized_df['throughput'] / normalized_df['throughput'].max()
+        )
         normalized_df['norm_f1'] = normalized_df.groupby('dataset_name')['f1_score'].transform(
             lambda x: (x - x.min()) / (x.max() - x.min()) if x.max() > x.min() else 0
         )
@@ -385,7 +395,9 @@ class SundewVisualizationSuite:
 
         # 1. Research Quality Score Distribution
         quality_scores = self.summary_df['research_quality_score']
-        ax1.hist(quality_scores, bins=15, color=self.colors['primary'], alpha=0.7, edgecolor='white')
+        ax1.hist(
+            quality_scores, bins=15, color=self.colors['primary'], alpha=0.7, edgecolor='white'
+        )
         ax1.axvline(quality_scores.mean(), color=self.colors['error'], linestyle='--',
                    linewidth=2, label=f'Mean: {quality_scores.mean():.1f}')
         ax1.set_xlabel('Research Quality Score')
@@ -413,13 +425,18 @@ class SundewVisualizationSuite:
         cbar.set_label('Energy Efficiency')
 
         # 3. Configuration Quality Rankings
-        config_quality = self.summary_df.groupby('config_name')['research_quality_score'].mean().sort_values(ascending=False)
+        config_quality = (
+            self.summary_df.groupby('config_name')['research_quality_score']
+            .mean().sort_values(ascending=False)
+        )
 
         colors = plt.cm.RdYlGn(np.linspace(0.3, 1, len(config_quality)))
         bars = ax3.bar(range(len(config_quality)), config_quality.values, color=colors)
 
         ax3.set_xticks(range(len(config_quality)))
-        ax3.set_xticklabels([c.replace('_', ' ').title() for c in config_quality.index], rotation=45)
+        ax3.set_xticklabels(
+            [c.replace('_', ' ').title() for c in config_quality.index], rotation=45
+        )
         ax3.set_ylabel('Research Quality Score')
         ax3.set_title('Configuration Quality Rankings')
         ax3.set_ylim(0, 10)
@@ -430,17 +447,25 @@ class SundewVisualizationSuite:
                     ha='center', va='bottom', fontweight='bold')
 
         # 4. Quality Improvement Matrix
-        baseline_quality = self.summary_df[self.summary_df['config_name'] == 'linear_temperature_pi']['research_quality_score'].mean()
+        baseline_quality = (
+            self.summary_df[self.summary_df['config_name'] == 'linear_temperature_pi']
+            ['research_quality_score'].mean()
+        )
 
         improvements = []
         configs = self.summary_df['config_name'].unique()
 
         for config in configs:
-            config_quality = self.summary_df[self.summary_df['config_name'] == config]['research_quality_score'].mean()
+            config_quality = (
+                self.summary_df[self.summary_df['config_name'] == config]
+                ['research_quality_score'].mean()
+            )
             improvement = ((config_quality - baseline_quality) / baseline_quality) * 100
             improvements.append(improvement)
 
-        colors = [self.colors['success'] if imp > 0 else self.colors['error'] for imp in improvements]
+        colors = [
+            self.colors['success'] if imp > 0 else self.colors['error'] for imp in improvements
+        ]
         bars = ax4.barh(range(len(configs)), improvements, color=colors)
 
         ax4.set_yticks(range(len(configs)))
@@ -490,7 +515,9 @@ class SundewVisualizationSuite:
 
         ax_stats.text(0.5, 0.5, stats_text, transform=ax_stats.transAxes,
                      fontsize=16, ha='center', va='center',
-                     bbox=dict(boxstyle="round,pad=0.5", facecolor=self.colors['primary'], alpha=0.1))
+                     bbox=dict(
+                         boxstyle="round,pad=0.5", facecolor=self.colors['primary'], alpha=0.1
+                     ))
 
         # Energy Efficiency Chart
         ax1 = fig.add_subplot(gs[1, :2])
@@ -521,7 +548,10 @@ class SundewVisualizationSuite:
         # Performance Radar for Top Configurations
         ax3 = fig.add_subplot(gs[2, :2], projection='polar')
 
-        top_configs = self.summary_df.groupby('config_name')['research_quality_score'].mean().nlargest(3)
+        top_configs = (
+            self.summary_df.groupby('config_name')['research_quality_score']
+            .mean().nlargest(3)
+        )
         metrics = ['Activation Rate', 'Energy Efficiency', 'Throughput', 'F1 Score']
         angles = np.linspace(0, 2 * np.pi, len(metrics), endpoint=False).tolist()
         angles += angles[:1]
@@ -532,7 +562,10 @@ class SundewVisualizationSuite:
                 config_data['activation_rate'].mean(),
                 config_data['energy_efficiency'].mean(),
                 config_data['throughput'].mean() / 15000,
-                config_data['f1_score'].dropna().mean() if len(config_data['f1_score'].dropna()) > 0 else 0
+                (
+                    config_data['f1_score'].dropna().mean()
+                    if len(config_data['f1_score'].dropna()) > 0 else 0
+                )
             ]
             values += values[:1]
 
@@ -566,7 +599,10 @@ class SundewVisualizationSuite:
 
         # Research Quality Progression
         ax5 = fig.add_subplot(gs[3, :])
-        quality_by_config = self.summary_df.groupby('config_name')['research_quality_score'].mean().sort_values()
+        quality_by_config = (
+            self.summary_df.groupby('config_name')['research_quality_score']
+            .mean().sort_values()
+        )
 
         colors = plt.cm.RdYlGn(np.linspace(0.3, 1, len(quality_by_config)))
         # bars =
@@ -575,7 +611,9 @@ class SundewVisualizationSuite:
         ax5.set_title('Research Quality Evolution Across Configurations', fontweight='bold')
         ax5.set_ylabel('Research Quality Score (1-10)')
         ax5.set_xticks(range(len(quality_by_config)))
-        ax5.set_xticklabels([c.replace('_', ' ').title() for c in quality_by_config.index], rotation=45)
+        ax5.set_xticklabels(
+            [c.replace('_', ' ').title() for c in quality_by_config.index], rotation=45
+        )
         ax5.set_ylim(0, 10)
 
         # Add progression arrow
