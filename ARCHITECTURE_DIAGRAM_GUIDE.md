@@ -163,7 +163,7 @@ The diagram emphasizes Sundew's breakthrough innovations:
 For deeper technical details, see:
 - **README.md**: Quick start and usage examples
 - **Whitepaper.md**: Academic research documentation
-- **CLAUDE.md**: Developer workflow and architecture notes
+- **Developer.md**: Developer workflow and architecture notes
 - **examples/**: Code demonstrations and use cases
 
 ## 🚀 **Using This Diagram**
