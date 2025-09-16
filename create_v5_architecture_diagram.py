@@ -5,9 +5,7 @@ Shows the complete production-ready system with all components and flows.
 """
 
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
-from matplotlib.patches import FancyBboxPatch, Circle, FancyArrowPatch
-import numpy as np
+from matplotlib.patches import FancyArrowPatch, FancyBboxPatch
 
 # Use non-interactive backend
 plt.switch_backend('Agg')
@@ -204,7 +202,8 @@ def create_v5_architecture_diagram():
         facecolor=colors['medical'], edgecolor=edge_colors['medical'], linewidth=2
     )
     ax.add_patch(medical_box)
-    ax.text(10, 5.6, 'Medical Applications', ha='center', va='center', fontsize=11, fontweight='bold')
+    ax.text(10, 5.6, 'Medical Applications', ha='center', va='center',
+            fontsize=11, fontweight='bold')
     ax.text(10, 5.2, '• Preeclampsia detection', ha='center', va='center', fontsize=8)
     ax.text(10, 4.9, '• ECG monitoring', ha='center', va='center', fontsize=8)
     ax.text(10, 4.6, '• 295K+ lives saved/year', ha='center', va='center', fontsize=8)
@@ -215,7 +214,8 @@ def create_v5_architecture_diagram():
         facecolor=colors['monitoring'], edgecolor=edge_colors['monitoring'], linewidth=2
     )
     ax.add_patch(monitoring_box)
-    ax.text(14, 5.6, 'Monitoring & Alerts', ha='center', va='center', fontsize=11, fontweight='bold')
+    ax.text(14, 5.6, 'Monitoring & Alerts', ha='center', va='center',
+            fontsize=11, fontweight='bold')
     ax.text(14, 5.2, '• Real-time telemetry', ha='center', va='center', fontsize=8)
     ax.text(14, 4.9, '• Performance tracking', ha='center', va='center', fontsize=8)
     ax.text(14, 4.6, '• Clinical alerts', ha='center', va='center', fontsize=8)
@@ -226,7 +226,8 @@ def create_v5_architecture_diagram():
         facecolor=colors['production'], edgecolor=edge_colors['production'], linewidth=2
     )
     ax.add_patch(deployment_box)
-    ax.text(17.5, 5.6, 'Deployment Targets', ha='center', va='center', fontsize=11, fontweight='bold')
+    ax.text(17.5, 5.6, 'Deployment Targets', ha='center', va='center',
+            fontsize=11, fontweight='bold')
     ax.text(17.5, 5.2, '• Edge devices (ARM)', ha='center', va='center', fontsize=8)
     ax.text(17.5, 4.9, '• Cloud services', ha='center', va='center', fontsize=8)
     ax.text(17.5, 4.6, '• Medical devices', ha='center', va='center', fontsize=8)
@@ -237,7 +238,8 @@ def create_v5_architecture_diagram():
         facecolor='#FFFFE0', edgecolor='#FFD700', linewidth=2
     )
     ax.add_patch(metrics_box)
-    ax.text(10, 3.7, 'v0.5.0 Performance Metrics', ha='center', va='center', fontsize=12, fontweight='bold')
+    ax.text(10, 3.7, 'v0.5.0 Performance Metrics', ha='center', va='center',
+            fontsize=12, fontweight='bold')
 
     metrics_text = [
         "83% Energy Savings in Production",
@@ -249,7 +251,8 @@ def create_v5_architecture_diagram():
 
     x_positions = [3, 6.5, 10, 13.5, 17]
     for i, (text, x_pos) in enumerate(zip(metrics_text, x_positions)):
-        ax.text(x_pos, 3.2, text, ha='center', va='center', fontsize=9, fontweight='bold', color='#B8860B')
+        ax.text(x_pos, 3.2, text, ha='center', va='center', fontsize=9,
+                fontweight='bold', color='#B8860B')
         ax.text(x_pos, 2.9, "✓", ha='center', va='center', fontsize=12, color='#228B22')
 
     # ======= ARROWS AND FLOW =======

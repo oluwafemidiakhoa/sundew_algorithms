@@ -32,7 +32,7 @@ class SundewVisualizationSuite:
         # Configure matplotlib
         try:
             plt.style.use('seaborn-v0_8-whitegrid')
-        except:
+        except Exception:
             plt.style.use('default')
 
         # Set publication quality parameters
@@ -188,7 +188,8 @@ class SundewVisualizationSuite:
             config_energy = self.summary_df[self.summary_df['config_name'] == config]['avg_energy_per_sample'].mean()
             savings.append((1 - config_energy / baseline_energy) * 100)
 
-        bars = ax4.barh(range(len(configs)), savings,
+        # bars =
+        ax4.barh(range(len(configs)), savings,
                        color=[self.colors['success'] if s > 0 else self.colors['error'] for s in savings])
         ax4.set_yticks(range(len(configs)))
         ax4.set_yticklabels([c.replace('_', ' ').title() for c in configs])
@@ -292,7 +293,8 @@ class SundewVisualizationSuite:
 
         composite_scores = composite_scores.sort_values('composite', ascending=True)
 
-        bars = ax4.barh(range(len(composite_scores)), composite_scores['composite'],
+        # bars =
+        ax4.barh(range(len(composite_scores)), composite_scores['composite'],
                        color=plt.cm.viridis(np.linspace(0, 1, len(composite_scores))))
         ax4.set_yticks(range(len(composite_scores)))
         ax4.set_yticklabels([c.replace('_', ' ').title() for c in composite_scores.index])
@@ -324,11 +326,14 @@ class SundewVisualizationSuite:
             energy_effs = dataset_data['energy_efficiency']
             f1_scores = dataset_data['f1_score'].fillna(0)
 
-            bars1 = ax.bar(x_pos - width, activation_rates, width,
+            # bars1 =
+            ax.bar(x_pos - width, activation_rates, width,
                           label='Activation Rate', color=self.colors['primary'], alpha=0.8)
-            bars2 = ax.bar(x_pos, energy_effs, width,
+            # bars2 =
+            ax.bar(x_pos, energy_effs, width,
                           label='Energy Efficiency', color=self.colors['success'], alpha=0.8)
-            bars3 = ax.bar(x_pos + width, f1_scores, width,
+            # bars3 =
+            ax.bar(x_pos + width, f1_scores, width,
                           label='F1 Score', color=self.colors['accent'], alpha=0.8)
 
             ax.set_xlabel('Configuration')
@@ -533,7 +538,8 @@ class SundewVisualizationSuite:
         quality_by_config = self.summary_df.groupby('config_name')['research_quality_score'].mean().sort_values()
 
         colors = plt.cm.RdYlGn(np.linspace(0.3, 1, len(quality_by_config)))
-        bars = ax5.bar(range(len(quality_by_config)), quality_by_config.values, color=colors)
+        # bars =
+        ax5.bar(range(len(quality_by_config)), quality_by_config.values, color=colors)
 
         ax5.set_title('Research Quality Evolution Across Configurations', fontweight='bold')
         ax5.set_ylabel('Research Quality Score (1-10)')

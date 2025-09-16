@@ -13,7 +13,7 @@ from matplotlib.patches import FancyBboxPatch
 
 def create_sundew_diagram():
     fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(16, 20))
-    fig.suptitle('Sundew Algorithms: Architecture & Research Pipeline', fontsize=20, fontweight='bold')
+    fig.suptitle(\n        'Sundew Algorithms: Architecture & Research Pipeline', \n        fontsize=20, fontweight='bold'\n    )
 
     # Colors
     colors = {
@@ -165,7 +165,7 @@ def create_sundew_diagram():
     metrics_box = FancyBboxPatch((1, 2), 10, 1, boxstyle="round,pad=0.1",
                                 facecolor='#FFFDE7', edgecolor='black', linewidth=2)
     ax2.add_patch(metrics_box)
-    ax2.text(6, 2.5, 'Key Metrics: Activation Rate | Energy Savings | F1-Score | Precision/Recall | AUROC | Stability Index',
+    ax2.text(\n        6, 2.5, \n        'Key Metrics: Activation Rate | Energy Savings | F1-Score | '\n        'Precision/Recall | AUROC | Stability Index',
              ha='center', va='center', fontsize=11, fontweight='bold')
 
     # Draw connecting arrows for pipeline flow

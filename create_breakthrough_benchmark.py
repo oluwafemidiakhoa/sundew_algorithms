@@ -22,7 +22,7 @@ import json
 import sys
 import time
 import warnings
-from datetime import datetime
+# from datetime import datetime  # Unused for now
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -31,14 +31,14 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-warnings.filterwarnings('ignore')
-
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
 from sundew.config import SundewConfig
 from sundew.core import SundewAlgorithm
 from sundew.enhanced_core import EnhancedSundewAlgorithm, EnhancedSundewConfig
+
+warnings.filterwarnings('ignore')
 
 # Set style for publication-quality plots
 try:
@@ -87,9 +87,17 @@ class BreakthroughBenchmark:
 
             sample = {
                 "magnitude": min(100, abs(returns[i]) * 1000),  # Scale to 0-100
-                "anomaly_score": min(1.0, abs(returns[i]) / (3 * np.std(returns[:max(i, 50)]))),
-                "context_relevance": min(1.0, volatility.iloc[i] / volatility.iloc[:i].max() if i > 1 else 0.5),
-                "urgency": 0.9 if (is_crash or flash_crash) else 0.1 + 0.4 * abs(returns[i]) / np.std(returns[:max(i, 50)]),
+                "anomaly_score": min(
+                    1.0, abs(returns[i]) / (3 * np.std(returns[:max(i, 50)]))
+                ),
+                "context_relevance": min(
+                    1.0,
+                    volatility.iloc[i] / volatility.iloc[:i].max() if i > 1 else 0.5
+                ),
+                "urgency": (
+                    0.9 if (is_crash or flash_crash)
+                    else 0.1 + 0.4 * abs(returns[i]) / np.std(returns[:max(i, 50)])
+                ),
                 "ground_truth": is_crash or flash_crash,
                 "metadata": {
                     "price": prices[i],
@@ -115,7 +123,7 @@ class BreakthroughBenchmark:
         np.random.seed(123)
 
         samples = []
-        base_time = datetime.now()
+        # base_time = datetime.now()  # Unused for now
 
         for i in range(n_samples):
             # Simulate daily and seasonal patterns
@@ -134,17 +142,29 @@ class BreakthroughBenchmark:
             # Weather influence
             weather_factor = 0.3 * np.random.normal(0, 0.5)
 
-            base_pollution = 30 + 20 * seasonal_factor + 15 * daily_factor + 25 * traffic_factor
-            actual_pollution = max(0, base_pollution + pollution_boost + weather_factor + 5 * np.random.normal())
+            base_pollution = (
+                30 + 20 * seasonal_factor + 15 * daily_factor + 25 * traffic_factor
+            )
+            actual_pollution = max(
+                0,
+                base_pollution + pollution_boost + weather_factor + 5 * np.random.normal()
+            )
 
             # Detect dangerous levels (WHO guidelines: PM2.5 > 75 μg/m³)
             is_dangerous = actual_pollution > 75 or is_pollution_event
 
             sample = {
                 "magnitude": min(100, actual_pollution * 1.2),  # Scale to 0-100 range
-                "anomaly_score": min(1.0, max(0, (actual_pollution - 50) / 100)),  # Above normal levels
-                "context_relevance": 0.8 if traffic_factor > 0.3 else 0.3,  # Traffic hours more relevant
-                "urgency": 0.95 if is_pollution_event else (0.7 if actual_pollution > 75 else 0.2),
+                "anomaly_score": min(
+                    1.0, max(0, (actual_pollution - 50) / 100)
+                ),  # Above normal levels
+                "context_relevance": (
+                    0.8 if traffic_factor > 0.3 else 0.3
+                ),  # Traffic hours more relevant
+                "urgency": (
+                    0.95 if is_pollution_event
+                    else (0.7 if actual_pollution > 75 else 0.2)
+                ),
                 "ground_truth": is_dangerous,
                 "metadata": {
                     "hour": hour,
@@ -321,7 +341,7 @@ class BreakthroughBenchmark:
             is_cme = np.random.random() < 0.0005
 
             # Geomagnetic disturbances
-            magnetic_base = 0.5 + 0.2 * np.sin(2 * np.pi * time_hours / (24 * 27))  # Solar rotation
+            # magnetic_base = 0.5 + 0.2 * np.sin(2 * np.pi * time_hours / (24 * 27))  # Unused for now
             magnetic_disturbance = 0
 
             if is_solar_flare:
@@ -483,7 +503,7 @@ class BreakthroughBenchmark:
 
         domains = list(self.results.keys())
         configs = ['Original', 'Enhanced Linear+PI', 'Enhanced Neural+PI']
-        metrics = ['F1 Score', 'Energy Savings %', 'Throughput (K smp/s)']
+        # metrics = ['F1 Score', 'Energy Savings %', 'Throughput (K smp/s)']  # Unused for now
 
         # Create data matrix
         data_f1 = []
@@ -645,7 +665,7 @@ class BreakthroughBenchmark:
 
             # Create grouped bar chart for each domain
             configs = list(domain_results.keys())
-            metrics = ['Precision', 'Recall', 'F1 Score']
+            # metrics = ['Precision', 'Recall', 'F1 Score']  # Unused for now
 
             x = np.arange(len(configs))
             width = 0.25

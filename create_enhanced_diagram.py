@@ -218,8 +218,14 @@ def create_enhanced_architecture_diagram():
     ax.add_patch(perf_box)
     ax.text(3.5, 1.2, 'Performance Achievements', ha='center', va='center',
             fontsize=12, fontweight='bold')
-    ax.text(3.5, 0.85, '• Enhanced Neural+PI: 8.0/10 research quality', ha='center', va='center', fontsize=9)
-    ax.text(3.5, 0.65, '• 99.5% energy savings (vs 84% original)', ha='center', va='center', fontsize=9)
+    ax.text(
+        3.5, 0.85, '• Enhanced Neural+PI: 8.0/10 research quality',
+        ha='center', va='center', fontsize=9
+    )
+    ax.text(
+        3.5, 0.65, '• 99.5% energy savings (vs 84% original)',
+        ha='center', va='center', fontsize=9
+    )
     ax.text(3.5, 0.45, '• Comprehensive stability analysis', ha='center', va='center', fontsize=9)
 
     # Architecture Features Box

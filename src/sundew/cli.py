@@ -121,7 +121,6 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
 
     try:
         processed: list[ProcessingResult] = []
-        last_activation_rate = 0.0
 
         for i in range(ns.events):
             try:
@@ -138,7 +137,9 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
                         processed.append(res)
                         # Format processed events with detailed info
                         line = f"{i + 1:02d}. {x['type']:<15} {CHECK} processed"
-                        details = f"(sig={res.significance:.3f}, {res.processing_time:.3f}s, {DELTA}E{APPROX}{res.energy_consumed:.1f})"
+                        details = (f"(sig={res.significance:.3f}, "
+                                  f"{res.processing_time:.3f}s, "
+                                  f"{DELTA}E{APPROX}{res.energy_consumed:.1f})")
                         status = f"| energy {_energy_float(algo):6.1f} | thr {algo.threshold:.3f}"
                         print(f"{line:35} {details:35} {status}")
 
@@ -166,21 +167,31 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
 
     # Core metrics with improved formatting
     print("Performance Metrics:")
-    print(f"  Total Events              : {report.get('total_inputs', 0):>8}")
-    print(f"  Activations               : {report.get('activations', 0):>8}")
-    print(f"  Activation Rate           : {report.get('activation_rate', 0):>7.1%}")
-    print(f"  EMA Activation Rate       : {report.get('ema_activation_rate', 0):>7.1%}")
+    print(f"  Total Events              : "
+          f"{report.get('total_inputs', 0):>8}")
+    print(f"  Activations               : "
+          f"{report.get('activations', 0):>8}")
+    print(f"  Activation Rate           : "
+          f"{report.get('activation_rate', 0):>7.1%}")
+    print(f"  EMA Activation Rate       : "
+          f"{report.get('ema_activation_rate', 0):>7.1%}")
     print()
 
     # Enhanced energy analysis with fixed accounting
     energy_savings = report.get("estimated_energy_savings_pct", 0)
     print("Energy Analysis:")
-    print(f"  Energy Remaining          : {report.get('energy_remaining', 0):>7.1f}")
-    print(f"  Total Energy Spent        : {report.get('total_energy_spent', 0):>7.1f}")
-    print(f"  Net Energy Consumed       : {report.get('net_energy_consumed', 0):>7.1f}")
-    print(f"  Energy Recovered          : {report.get('energy_recovered', 0):>7.1f}")
-    print(f"  Processing Energy         : {report.get('energy_spent_processing', 0):>7.1f}")
-    print(f"  Dormancy Energy           : {report.get('energy_spent_dormancy', 0):>7.1f}")
+    print(f"  Energy Remaining          : "
+          f"{report.get('energy_remaining', 0):>7.1f}")
+    print(f"  Total Energy Spent        : "
+          f"{report.get('total_energy_spent', 0):>7.1f}")
+    print(f"  Net Energy Consumed       : "
+          f"{report.get('net_energy_consumed', 0):>7.1f}")
+    print(f"  Energy Recovered          : "
+          f"{report.get('energy_recovered', 0):>7.1f}")
+    print(f"  Processing Energy         : "
+          f"{report.get('energy_spent_processing', 0):>7.1f}")
+    print(f"  Dormancy Energy           : "
+          f"{report.get('energy_spent_dormancy', 0):>7.1f}")
     print(f"  Energy Savings            : {energy_savings:>7.1f}%")
 
     # Performance rating based on energy savings
@@ -197,31 +208,45 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
 
     # Enhanced control system status with debugging info
     print("Control System:")
-    print(f"  Final Threshold           : {algo.threshold:>7.3f}")
-    print(f"  Threshold Utilization     : {report.get('threshold_utilization', 0):>7.1%}")
-    print(f"  Hysteresis Gap            : {report.get('hysteresis_gap', 0):>7.3f}")
-    print(f"  EMA Alpha                 : {report.get('ema_alpha', 0):>7.3f}")
-    print(f"  EMA Discrepancy           : {report.get('ema_discrepancy', 0):>7.3f}")
-    print(f"  Avg Processing Time       : {report.get('avg_processing_time', 0):>7.3f}s")
+    print(f"  Final Threshold           : "
+          f"{algo.threshold:>7.3f}")
+    print(f"  Threshold Utilization     : "
+          f"{report.get('threshold_utilization', 0):>7.1%}")
+    print(f"  Hysteresis Gap            : "
+          f"{report.get('hysteresis_gap', 0):>7.3f}")
+    print(f"  EMA Alpha                 : "
+          f"{report.get('ema_alpha', 0):>7.3f}")
+    print(f"  EMA Discrepancy           : "
+          f"{report.get('ema_discrepancy', 0):>7.3f}")
+    print(f"  Avg Processing Time       : "
+          f"{report.get('avg_processing_time', 0):>7.3f}s")
 
     # Enhanced convergence analysis
-    rate_diff = abs(report.get("activation_rate", 0) - report.get("ema_activation_rate", 0))
-    convergence_status = "Converged" if rate_diff < 0.05 else "Oscillating"
+    rate_diff = abs(
+        report.get("activation_rate", 0) - report.get("ema_activation_rate", 0)
+    )
+    convergence_status = (
+        "Converged" if rate_diff < 0.05 else "Oscillating"
+    )
     print(f"  Convergence Status        : {convergence_status}")
     print()
 
     # Enhanced suggestions based on multiple metrics
     print("Optimization Suggestions:")
     if report.get("ema_discrepancy", 0) > 0.05:
-        print("  - Consider adjusting EMA alpha for better rate tracking")
+        print("  - Consider adjusting EMA alpha for better rate "
+              "tracking")
     if report.get("threshold_utilization", 0) > 0.9:
-        print("  - Threshold near max - reduce gains to prevent saturation")
+        print("  - Threshold near max - reduce gains to prevent "
+              "saturation")
     if report.get("energy_at_cap_pct", 0) > 50:
-        print("  - Energy frequently at cap - capacity may be underutilized")
+        print("  - Energy frequently at cap - capacity may be "
+              "underutilized")
     if abs(report.get("controller_integral_error", 0)) > 0.2:
         print("  - High integral error - consider anti-windup measures")
     if rate_diff > 0.1:
-        print("  - Consider tuning PI controller gains for better stability")
+        print("  - Consider tuning PI controller gains for better "
+              "stability")
 
     if ns.save:
         try:
@@ -232,7 +257,9 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
                 "metadata": {
                     "version": "0.3.0",
                     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
-                    "total_events": len(processed) + (ns.events - len(processed)),
+                    "total_events": (
+                        len(processed) + (ns.events - len(processed))
+                    ),
                 },
             }
             path = Path(ns.save)
@@ -272,7 +299,7 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover
         "--preset",
         type=str,
         default="",
-        help="Preset name (default: inline defaults)",
+        help="Preset name (default: inline defaults)"
     )
     ap_print.set_defaults(func=cmd_print_config)
 
@@ -280,14 +307,14 @@ def main(argv: list[str] | None = None) -> int:  # pragma: no cover
     ap.add_argument(
         "--demo",
         action="store_true",
-        help="Run the interactive demo (shortcut without subcommand)",
+        help="Run the interactive demo (shortcut without subcommand)"
     )
     ap.add_argument("--events", type=int, default=40, help="Number of demo events")
     ap.add_argument(
         "--temperature",
         type=float,
         default=0.1,
-        help="Gating temperature (0=hard)",
+        help="Gating temperature (0=hard)"
     )
     ap.add_argument(
         "--preset",
