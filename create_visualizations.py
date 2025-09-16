@@ -121,12 +121,18 @@ class SundewVisualizationSuite:
                     ha='center', va='bottom', fontweight='bold')
 
         # 4. Research Quality Score
-        quality_scores = self.summary_df.groupby('config_name')['research_quality_score'].mean().sort_values(ascending=False)
+        quality_scores = (
+            self.summary_df.groupby('config_name')['research_quality_score']
+            .mean().sort_values(ascending=False)
+        )
         colors = plt.cm.viridis(np.linspace(0, 1, len(quality_scores)))
 
         bars = ax4.bar(range(len(quality_scores)), quality_scores.values, color=colors)
         ax4.set_xticks(range(len(quality_scores)))
-        ax4.set_xticklabels([c.replace('_', ' ').title() for c in quality_scores.index], rotation=45)
+        ax4.set_xticklabels(
+            [c.replace('_', ' ').title() for c in quality_scores.index],
+            rotation=45
+        )
         ax4.set_ylabel('Research Quality Score')
         ax4.set_title('Research Quality by Configuration')
         ax4.set_ylim(0, 10)
@@ -159,9 +165,13 @@ class SundewVisualizationSuite:
         ax1.grid(True, alpha=0.3)
 
         # 2. Energy Efficiency by Dataset
-        energy_by_dataset = self.summary_df.groupby('dataset_name')['energy_efficiency'].agg(['mean', 'std'])
+        energy_by_dataset = (
+            self.summary_df.groupby('dataset_name')['energy_efficiency']
+            .agg(['mean', 'std'])
+        )
 
-        bars = ax2.bar(range(len(energy_by_dataset)), energy_by_dataset['mean'] * 100,
+        # bars =
+        ax2.bar(range(len(energy_by_dataset)), energy_by_dataset['mean'] * 100,
                       yerr=energy_by_dataset['std'] * 100,
                       color=[self.dataset_colors[d] for d in energy_by_dataset.index],
                       capsize=5, alpha=0.8)
@@ -180,12 +190,18 @@ class SundewVisualizationSuite:
         ax3.set_title('Total Energy Distribution by Configuration')
 
         # 4. Energy Savings Calculation
-        baseline_energy = self.summary_df[self.summary_df['config_name'] == 'linear_temperature_pi']['avg_energy_per_sample'].mean()
+        baseline_energy = (
+            self.summary_df[self.summary_df['config_name'] == 'linear_temperature_pi']
+            ['avg_energy_per_sample'].mean()
+        )
         configs = self.summary_df['config_name'].unique()
         savings = []
 
         for config in configs:
-            config_energy = self.summary_df[self.summary_df['config_name'] == config]['avg_energy_per_sample'].mean()
+            config_energy = (
+                self.summary_df[self.summary_df['config_name'] == config]
+                ['avg_energy_per_sample'].mean()
+            )
             savings.append((1 - config_energy / baseline_energy) * 100)
 
         # bars =
@@ -469,18 +485,24 @@ class SundewVisualizationSuite:
 
         # Energy Efficiency Chart
         ax1 = fig.add_subplot(gs[1, :2])
-        energy_by_dataset = self.summary_df.groupby('dataset_name')['energy_efficiency'].mean() * 100
-        bars = ax1.bar(range(len(energy_by_dataset)), energy_by_dataset.values,
+        energy_by_dataset = (
+            self.summary_df.groupby('dataset_name')['energy_efficiency'].mean() * 100
+        )
+        # bars =
+        ax1.bar(range(len(energy_by_dataset)), energy_by_dataset.values,
                       color=[self.dataset_colors[d] for d in energy_by_dataset.index])
         ax1.set_title('Energy Efficiency by Dataset', fontweight='bold')
         ax1.set_ylabel('Energy Efficiency (%)')
         ax1.set_xticks(range(len(energy_by_dataset)))
-        ax1.set_xticklabels([d.replace('_', ' ').title() for d in energy_by_dataset.index], rotation=45)
+        ax1.set_xticklabels(
+            [d.replace('_', ' ').title() for d in energy_by_dataset.index],
+            rotation=45
+        )
 
         # Throughput Chart
         ax2 = fig.add_subplot(gs[1, 2:])
         throughput_by_config = self.summary_df.groupby('config_name')['throughput'].mean()
-        bars = ax2.barh(range(len(throughput_by_config)), throughput_by_config.values,
+        ax2.barh(range(len(throughput_by_config)), throughput_by_config.values,
                        color=plt.cm.viridis(np.linspace(0, 1, len(throughput_by_config))))
         ax2.set_title('Throughput by Configuration', fontweight='bold')
         ax2.set_xlabel('Throughput (samples/sec)')
