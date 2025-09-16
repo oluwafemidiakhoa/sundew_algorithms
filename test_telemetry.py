@@ -23,7 +23,7 @@ def test_enhanced_telemetry():
 
     # Process events to build up telemetry data
     for i in range(30):
-        result = algo.process({
+        _ = algo.process({
             'magnitude': 30 + i * 2,
             'anomaly_score': 0.3 + i * 0.01,
             'context_relevance': 0.4,

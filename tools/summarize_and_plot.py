@@ -42,7 +42,7 @@ class RunRow:
 
         report: Dict[str, Any] = data.get("report", {}) or {}
         counts: Dict[str, Any] = data.get("counts", {}) or {}
-        cfg: Dict[str, Any] = data.get("config", {}) or {}
+        # cfg: Dict[str, Any] = data.get("config", {}) or {}  # Unused
 
         # Robust fallbacks
         total_inputs = (

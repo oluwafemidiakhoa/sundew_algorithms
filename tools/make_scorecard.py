@@ -115,10 +115,14 @@ def compute_scores(d: Dict, target_activation: float,
     return scores, overall
 
 def rating_from_overall(x: float) -> str:
-    if x >= 0.85: return "A+"
-    if x >= 0.75: return "A"
-    if x >= 0.65: return "B"
-    if x >= 0.55: return "C"
+    if x >= 0.85:
+        return "A+"
+    if x >= 0.75:
+        return "A"
+    if x >= 0.65:
+        return "B"
+    if x >= 0.55:
+        return "C"
     return "D"
 
 def main():

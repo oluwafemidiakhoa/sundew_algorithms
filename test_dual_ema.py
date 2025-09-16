@@ -72,7 +72,7 @@ def test_dual_ema():
     algo.energy.value = 80.0  # 80% capacity - normal range
 
     for i in range(3):
-        result = algo.process({
+        _ = algo.process({
             'magnitude': 40,
             'anomaly_score': 0.4,
             'context_relevance': 0.3,

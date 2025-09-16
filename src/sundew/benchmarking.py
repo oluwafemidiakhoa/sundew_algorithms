@@ -573,10 +573,10 @@ class BenchmarkRunner:
         runtime = time.perf_counter() - start_time
 
         # Compute performance metrics
-        tp = sum(1 for p, l in zip(predictions, labels) if p == 1 and l == 1)
-        fp = sum(1 for p, l in zip(predictions, labels) if p == 1 and l == 0)
-        fn = sum(1 for p, l in zip(predictions, labels) if p == 0 and l == 1)
-        tn = sum(1 for p, l in zip(predictions, labels) if p == 0 and l == 0)
+        tp = sum(1 for p, lbl in zip(predictions, labels) if p == 1 and lbl == 1)
+        fp = sum(1 for p, lbl in zip(predictions, labels) if p == 1 and lbl == 0)
+        fn = sum(1 for p, lbl in zip(predictions, labels) if p == 0 and lbl == 1)
+        tn = sum(1 for p, lbl in zip(predictions, labels) if p == 0 and lbl == 0)
 
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0
@@ -684,10 +684,10 @@ class BenchmarkRunner:
         runtime = time.perf_counter() - start_time
 
         # Compute metrics
-        tp = sum(1 for p, l in zip(predictions, labels) if p == 1 and l == 1)
-        fp = sum(1 for p, l in zip(predictions, labels) if p == 1 and l == 0)
-        fn = sum(1 for p, l in zip(predictions, labels) if p == 0 and l == 1)
-        tn = sum(1 for p, l in zip(predictions, labels) if p == 0 and l == 0)
+        tp = sum(1 for p, lbl in zip(predictions, labels) if p == 1 and lbl == 1)
+        fp = sum(1 for p, lbl in zip(predictions, labels) if p == 1 and lbl == 0)
+        fn = sum(1 for p, lbl in zip(predictions, labels) if p == 0 and lbl == 1)
+        tn = sum(1 for p, lbl in zip(predictions, labels) if p == 0 and lbl == 0)
 
         precision = tp / (tp + fp) if (tp + fp) > 0 else 0.0
         recall = tp / (tp + fn) if (tp + fn) > 0 else 0.0

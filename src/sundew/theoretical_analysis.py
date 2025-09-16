@@ -10,6 +10,7 @@ This module provides:
 - Formal verification components
 """
 
+from collections import defaultdict
 from dataclasses import dataclass
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -460,7 +461,7 @@ class StatisticalAnalyzer:
                     beta_ks_stat, beta_ks_p = stats.kstest(
                         values, lambda x: stats.beta.cdf(x, *beta_params)
                     )
-                except:
+                except Exception:
                     beta_ks_stat, beta_ks_p = float("inf"), 0
             else:
                 beta_ks_stat, beta_ks_p = float("inf"), 0

@@ -114,7 +114,8 @@ class BreakthroughBenchmark:
 
             samples.append(sample)
 
-        print(f"   Generated {len(samples)} financial samples with {sum(s['ground_truth'] for s in samples)} anomalies")
+        anomaly_count = sum(s['ground_truth'] for s in samples)
+        print(f"   Generated {len(samples)} financial samples with {anomaly_count} anomalies")
         return samples, "Financial Market Crash Detection"
 
     def generate_environmental_data(self, n_samples=8000):
@@ -181,7 +182,11 @@ class BreakthroughBenchmark:
 
             samples.append(sample)
 
-        print(f"   Generated {len(samples)} environmental samples with {sum(s['ground_truth'] for s in samples)} pollution events")
+        pollution_count = sum(s['ground_truth'] for s in samples)
+        print(
+            f"   Generated {len(samples)} environmental samples with "
+            f"{pollution_count} pollution events"
+        )
         return samples, "Environmental Pollution Detection"
 
     def generate_cybersecurity_data(self, n_samples=12000):
@@ -218,9 +223,19 @@ class BreakthroughBenchmark:
                     break
 
             # Traffic characteristics
-            packet_size = np.random.lognormal(6, 1.5) if not is_attack else np.random.lognormal(4, 2)
-            connection_rate = base_traffic + (2.0 * attack_intensity if is_attack else 0.1 * np.random.normal())
-            port_diversity = np.random.beta(2, 5) if not is_attack else np.random.beta(0.5, 2)  # Attacks often target specific ports
+            packet_size = (
+                np.random.lognormal(6, 1.5) if not is_attack
+                else np.random.lognormal(4, 2)
+            )
+            connection_rate = base_traffic + (
+                2.0 * attack_intensity if is_attack
+                else 0.1 * np.random.normal()
+            )
+            # Attacks often target specific ports
+            port_diversity = (
+                np.random.beta(2, 5) if not is_attack
+                else np.random.beta(0.5, 2)
+            )
 
             # Anomaly detection features
             traffic_anomaly = max(0, (connection_rate - base_traffic) / 3.0)
@@ -230,7 +245,8 @@ class BreakthroughBenchmark:
             sample = {
                 "magnitude": min(100, connection_rate * 30),
                 "anomaly_score": min(1.0, (traffic_anomaly + packet_anomaly + port_anomaly) / 3.0),
-                "context_relevance": 0.9 if is_business_hours else 0.6,  # Business hours more critical
+                # Business hours more critical
+                "context_relevance": 0.9 if is_business_hours else 0.6,
                 "urgency": 0.95 if is_attack else 0.1,
                 "ground_truth": is_attack,
                 "metadata": {
@@ -248,7 +264,8 @@ class BreakthroughBenchmark:
 
             samples.append(sample)
 
-        print(f"   Generated {len(samples)} cybersecurity samples with {sum(s['ground_truth'] for s in samples)} attacks")
+        attack_count = sum(s['ground_truth'] for s in samples)
+        print(f"   Generated {len(samples)} cybersecurity samples with {attack_count} attacks")
         return samples, "Cybersecurity Intrusion Detection"
 
     def generate_smart_city_data(self, n_samples=15000):
@@ -313,7 +330,8 @@ class BreakthroughBenchmark:
 
             samples.append(sample)
 
-        print(f"   Generated {len(samples)} smart city samples with {sum(s['ground_truth'] for s in samples)} critical events")
+        event_count = sum(s['ground_truth'] for s in samples)
+        print(f"   Generated {len(samples)} smart city samples with {event_count} critical events")
         return samples, "Smart City Infrastructure Monitoring"
 
     def generate_space_weather_data(self, n_samples=6000):
@@ -342,7 +360,8 @@ class BreakthroughBenchmark:
             is_cme = np.random.random() < 0.0005
 
             # Geomagnetic disturbances
-            # magnetic_base = 0.5 + 0.2 * np.sin(2 * np.pi * time_hours / (24 * 27))  # Unused for now
+            # magnetic_base = 0.5 + 0.2 * np.sin(2 * np.pi * time_hours / (24 * 27))
+            # Unused for now
             magnetic_disturbance = 0
 
             if is_solar_flare:
@@ -358,7 +377,11 @@ class BreakthroughBenchmark:
             space_weather_index = solar_base + magnetic_disturbance + 0.1 * np.random.normal()
 
             # Critical space weather event
-            is_critical = is_cme or (is_solar_flare and magnetic_disturbance > 0.5) or space_weather_index > 1.2
+            is_critical = (
+                is_cme or
+                (is_solar_flare and magnetic_disturbance > 0.5) or
+                space_weather_index > 1.2
+            )
 
             sample = {
                 "magnitude": min(100, space_weather_index * 60),
@@ -382,7 +405,11 @@ class BreakthroughBenchmark:
 
             samples.append(sample)
 
-        print(f"   Generated {len(samples)} space weather samples with {sum(s['ground_truth'] for s in samples)} critical events")
+        critical_count = sum(s['ground_truth'] for s in samples)
+        print(
+            f"   Generated {len(samples)} space weather samples with "
+            f"{critical_count} critical events"
+        )
         return samples, "Space Weather Monitoring"
 
     def benchmark_system(self, samples: List[Dict], domain_name: str, config_name: str, config: Any) -> Dict:
