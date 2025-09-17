@@ -69,7 +69,9 @@ def parse_json(path: Path) -> pd.DataFrame:
         thr = e.get("threshold") or e.get("thr") or np.nan
         if idx is None or energy is None or thr is None:
             continue
-        rows.append((int(idx), cat, status, float(sig) if sig is not None else np.nan, float(energy), float(thr)))
+        rows.append((int(idx), cat, status,
+                     float(sig) if sig is not None else np.nan,
+                     float(energy), float(thr)))
     df = pd.DataFrame(rows, columns=["idx","category","status","sig","energy","thr"])
     if df.empty:
         return df
@@ -116,8 +118,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", type=int, default=1)
     ap.add_argument("--events", type=int, default=200)
-    ap.add_argument("--cmd", type=str, default=None, help="Command to run sundew, e.g., 'sundew' or 'py -m sundew.cli'")
-    ap.add_argument("--from_json", type=str, default=None, help="Parse results from a JSON file instead of stdout")
+    ap.add_argument("--cmd", type=str, default=None,
+                    help="Command to run sundew, e.g., 'sundew' or 'py -m sundew.cli'")
+    ap.add_argument("--from_json", type=str, default=None,
+                    help="Parse results from a JSON file instead of stdout")
     ap.add_argument("--outdir", type=str, default="runs_v2")
     args = ap.parse_args()
 
@@ -138,7 +142,8 @@ def main():
     for i in range(1, args.runs+1):
         name = f"run_{i:02d}"
         print(f"[+] Running: {cmd} --demo --events {args.events}", flush=True)
-        cp = subprocess.run(f'{cmd} --demo --events {args.events}', shell=True, capture_output=True, text=True)
+        cp = subprocess.run(f'{cmd} --demo --events {args.events}', shell=True,
+                           capture_output=True, text=True)
         raw = cp.stdout or cp.stderr
         (out_dir/f"{name}_raw.txt").write_text(raw, encoding="utf-8")
         df = parse_text(raw)
@@ -147,7 +152,8 @@ def main():
             continue
         df.to_csv(out_dir/f"{name}_events.csv", index=False)
         save_plots(out_dir, df, name)
-        print(f"[✓] {name}: events={len(df)}, activations={int(df['is_processed'].sum())}, rate={df['is_processed'].mean():.3f}")
+        print(f"[✓] {name}: events={len(df)}, activations={int(df['is_processed'].sum())}, "
+              f"rate={df['is_processed'].mean():.3f}")
     print("[✓] Done.")
 
 if __name__ == "__main__":

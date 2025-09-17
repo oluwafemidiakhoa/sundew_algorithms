@@ -42,7 +42,9 @@ import numpy as np
 import pandas as pd
 
 ROW_RE = re.compile(
-    r"^\s*(\d+)\.\s*([a-z_]+)\s+(✅ processed|⏸ dormant)(?:\s*\(sig=([0-9.]+),\s*([0-9.]+)s,\s*ΔE≈([0-9.]+)\))?\s*\|\s*energy\s*([0-9.]+)\s*\|\s*thr\s*([0-9.]+)",
+    r"^\s*(\d+)\.\s*([a-z_]+)\s+(✅ processed|⏸ dormant)"
+    r"(?:\s*\(sig=([0-9.]+),\s*([0-9.]+)s,\s*ΔE≈([0-9.]+)\))?"
+    r"\s*\|\s*energy\s*([0-9.]+)\s*\|\s*thr\s*([0-9.]+)",
     re.MULTILINE
 )
 INIT_RE = re.compile(r"Initial threshold:\s*([0-9.]+)\s*\|\s*Energy:\s*([0-9.]+)")
@@ -84,7 +86,8 @@ def parse_run_text(text: str) -> pd.DataFrame:
         energy = float(m.group(7))
         thr = float(m.group(8))
         rows.append((idx, category, status, sig, dur, dE, energy, thr))
-    df = pd.DataFrame(rows, columns=["idx", "category", "status", "sig", "duration_s", "delta_E", "energy", "thr"])
+    df = pd.DataFrame(rows, columns=["idx", "category", "status", "sig",
+                                     "duration_s", "delta_E", "energy", "thr"])
     df["is_processed"] = (df["status"] == "processed").astype(int)
     return df
 

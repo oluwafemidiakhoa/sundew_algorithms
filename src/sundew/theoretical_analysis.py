@@ -20,7 +20,6 @@ from scipy.linalg import eig, solve_continuous_lyapunov
 
 try:
     import sympy as sp
-    from sympy import Matrix, diff, latex, simplify, solve, symbols
 
     SYMPY_AVAILABLE = True
 except ImportError:
@@ -28,9 +27,8 @@ except ImportError:
     sp = None
 
 try:
-    from scipy.stats import anderson, kstest, shapiro
-
-    SCIPY_STATS_AVAILABLE = True
+    import importlib.util
+    SCIPY_STATS_AVAILABLE = importlib.util.find_spec("scipy.stats") is not None
 except ImportError:
     SCIPY_STATS_AVAILABLE = False
 
@@ -181,8 +179,8 @@ class StabilityAnalyzer:
         # Performance metrics
         if stable:
             settling_time = 4.0 / convergence_rate  # 2% settling time
-            overshoot = 0  # PI controller typically no overshoot
-            steady_state_error = 0  # PI eliminates steady-state error
+            overshoot: float = 0  # PI controller typically no overshoot
+            steady_state_error: float = 0  # PI eliminates steady-state error
             lyapunov_exponent = -convergence_rate
         else:
             settling_time = float("inf")
@@ -346,7 +344,7 @@ class PerformanceBoundsAnalyzer:
 class StatisticalAnalyzer:
     """Statistical analysis and hypothesis testing."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.confidence_level = 0.95
 
     def test_convergence_hypothesis(self, threshold_history: List[float]) -> Dict[str, Any]:
@@ -576,17 +574,15 @@ class TheoreticalAnalysisEngine:
     ) -> Dict[str, Any]:
         """Extract key theoretical guarantees."""
 
-        guarantees = {
+        guarantees: Dict[str, Any] = {
             "stability_guaranteed": pi_result.converged,
             "convergence_guaranteed": pi_result.converged
             and pi_result.settling_time < float("inf"),
             "energy_savings_guaranteed": bounds.energy_savings_lower_bound > 0,
             "bounded_performance": True,  # Always true by construction
             "robustness_margin": bounds.robustness_margin > 0,
+            "formal_statements": []
         }
-
-        # Formal statements
-        guarantees["formal_statements"] = []
 
         if pi_result.converged:
             guarantees["formal_statements"].append(
@@ -597,11 +593,13 @@ class TheoreticalAnalysisEngine:
             )
 
         guarantees["formal_statements"].append(
-            f"Energy savings ∈ [{bounds.energy_savings_lower_bound:.3f}, {bounds.energy_savings_upper_bound:.3f}]"
+            f"Energy savings ∈ [{bounds.energy_savings_lower_bound:.3f}, "
+            f"{bounds.energy_savings_upper_bound:.3f}]"
         )
 
         guarantees["formal_statements"].append(
-            f"Activation rate ∈ [{bounds.activation_rate_bounds[0]:.3f}, {bounds.activation_rate_bounds[1]:.3f}]"
+            f"Activation rate ∈ [{bounds.activation_rate_bounds[0]:.3f}, "
+            f"{bounds.activation_rate_bounds[1]:.3f}]"
         )
 
         return guarantees
@@ -643,7 +641,8 @@ e(t) &= p^* - p(t) \\
         pi_result = analysis_result["stability_analysis"]["pi_controller"]
         if pi_result["converged"]:
             latex_doc += r"""
-If the linearized system has eigenvalues with negative real parts, then the equilibrium is asymptotically stable.
+If the linearized system has eigenvalues with negative real parts,
+then the equilibrium is asymptotically stable.
 \end{theorem}
 
 \begin{proof}
@@ -661,7 +660,9 @@ where $A$ has eigenvalues with negative real parts.
 \begin{theorem}[Energy Savings Bounds]
 """
         bounds = analysis_result["performance_bounds"]
-        latex_doc += f"Energy savings are bounded: ${bounds['energy_savings_bounds'][0]:.3f} \\leq E_{{savings}} \\leq {bounds['energy_savings_bounds'][1]:.3f}$"
+        latex_doc += (f"Energy savings are bounded: "
+                      f"${bounds['energy_savings_bounds'][0]:.3f} \\leq E_{{savings}} "
+                      f"\\leq {bounds['energy_savings_bounds'][1]:.3f}$")
 
         latex_doc += r"""
 \end{theorem}
@@ -760,10 +761,12 @@ if __name__ == "__main__":
     print("\nPerformance Bounds:")
     bounds = analysis_result["performance_bounds"]
     print(
-        f"  Energy Savings: {bounds['energy_savings_bounds'][0]:.1%} - {bounds['energy_savings_bounds'][1]:.1%}"
+        f"  Energy Savings: {bounds['energy_savings_bounds'][0]:.1%} - "
+        f"{bounds['energy_savings_bounds'][1]:.1%}"
     )
     print(
-        f"  Activation Rate: {bounds['activation_rate_bounds'][0]:.3f} - {bounds['activation_rate_bounds'][1]:.3f}"
+        f"  Activation Rate: {bounds['activation_rate_bounds'][0]:.3f} - "
+        f"{bounds['activation_rate_bounds'][1]:.3f}"
     )
 
     print("\nEmpirical Validation:")

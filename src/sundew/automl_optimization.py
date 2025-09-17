@@ -24,7 +24,6 @@ import numpy as np
 try:
     from sklearn.gaussian_process import GaussianProcessRegressor
     from sklearn.gaussian_process.kernels import RBF, ConstantKernel, Matern
-    from sklearn.model_selection import cross_val_score
 
     SKLEARN_AVAILABLE = True
 except ImportError:

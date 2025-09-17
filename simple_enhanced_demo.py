@@ -60,25 +60,58 @@ def demo_enhanced_medical_monitoring():
     # Simulate various medical scenarios
     medical_scenarios = [
         # Normal vital signs
-        {"name": "Normal BP", "magnitude": 20, "anomaly_score": 0.1, "context_relevance": 0.5, "urgency": 0.1},
-        {"name": "Normal HR", "magnitude": 25, "anomaly_score": 0.15, "context_relevance": 0.5, "urgency": 0.1},
+        {
+            "name": "Normal BP", "magnitude": 20, "anomaly_score": 0.1,
+            "context_relevance": 0.5, "urgency": 0.1
+        },
+        {
+            "name": "Normal HR", "magnitude": 25, "anomaly_score": 0.15,
+            "context_relevance": 0.5, "urgency": 0.1
+        },
 
         # Concerning trends
-        {"name": "Elevated BP", "magnitude": 45, "anomaly_score": 0.4, "context_relevance": 0.7, "urgency": 0.3},
-        {"name": "Rising HR", "magnitude": 40, "anomaly_score": 0.35, "context_relevance": 0.6, "urgency": 0.25},
+        {
+            "name": "Elevated BP", "magnitude": 45, "anomaly_score": 0.4,
+            "context_relevance": 0.7, "urgency": 0.3
+        },
+        {
+            "name": "Rising HR", "magnitude": 40, "anomaly_score": 0.35,
+            "context_relevance": 0.6, "urgency": 0.25
+        },
 
         # Critical medical events
-        {"name": "Severe Hypertension", "magnitude": 75, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.8},
-        {"name": "Cardiac Arrhythmia", "magnitude": 80, "anomaly_score": 0.85, "context_relevance": 0.95, "urgency": 0.9},
-        {"name": "Fetal Distress", "magnitude": 70, "anomaly_score": 0.75, "context_relevance": 1.0, "urgency": 0.85},
+        {
+            "name": "Severe Hypertension", "magnitude": 75, "anomaly_score": 0.8,
+            "context_relevance": 0.9, "urgency": 0.8
+        },
+        {
+            "name": "Cardiac Arrhythmia", "magnitude": 80, "anomaly_score": 0.85,
+            "context_relevance": 0.95, "urgency": 0.9
+        },
+        {
+            "name": "Fetal Distress", "magnitude": 70, "anomaly_score": 0.75,
+            "context_relevance": 1.0, "urgency": 0.85
+        },
 
         # Emergency situations
-        {"name": "Hemorrhage Pattern", "magnitude": 90, "anomaly_score": 0.95, "context_relevance": 1.0, "urgency": 1.0},
-        {"name": "Cardiac Arrest", "magnitude": 95, "anomaly_score": 0.98, "context_relevance": 1.0, "urgency": 1.0},
+        {
+            "name": "Hemorrhage Pattern", "magnitude": 90, "anomaly_score": 0.95,
+            "context_relevance": 1.0, "urgency": 1.0
+        },
+        {
+            "name": "Cardiac Arrest", "magnitude": 95, "anomaly_score": 0.98,
+            "context_relevance": 1.0, "urgency": 1.0
+        },
 
         # Post-intervention monitoring
-        {"name": "Post-treatment", "magnitude": 35, "anomaly_score": 0.25, "context_relevance": 0.8, "urgency": 0.2},
-        {"name": "Recovery", "magnitude": 30, "anomaly_score": 0.2, "context_relevance": 0.7, "urgency": 0.15},
+        {
+            "name": "Post-treatment", "magnitude": 35, "anomaly_score": 0.25,
+            "context_relevance": 0.8, "urgency": 0.2
+        },
+        {
+            "name": "Recovery", "magnitude": 30, "anomaly_score": 0.2,
+            "context_relevance": 0.7, "urgency": 0.15
+        },
     ]
 
     print("Medical Event Processing:")
@@ -103,7 +136,8 @@ def demo_enhanced_medical_monitoring():
                 severity = "[MEDIUM] MEDIUM"
 
             print(f"{i+1:2d}. {scenario['name']:<20} {severity}")
-            print(f"     Significance: {result.significance:.3f} | Energy: {result.energy_consumed:.1f}")
+            print(f"     Significance: {result.significance:.3f} | "
+                  f"Energy: {result.energy_consumed:.1f}")
         else:
             print(f"{i+1:2d}. {scenario['name']:<20} [OK] Normal")
 
@@ -119,7 +153,8 @@ def demo_enhanced_medical_monitoring():
     print(f"Activations: {activations}")
     print(f"Critical events detected: {critical_detected}")
     print(f"Activation rate: {report['activation_rate']:.1%}")
-    print(f"Energy remaining: {report['energy_remaining']:.1f} ({report['energy_remaining']/medical_config.max_energy:.1%})")
+    print(f"Energy remaining: {report['energy_remaining']:.1f} "
+          f"({report['energy_remaining']/medical_config.max_energy:.1%})")
     print(f"Energy efficiency: {report['estimated_energy_savings_pct']:.1f}%")
     print(f"Processing time avg: {report.get('avg_processing_time_s', 0.003):.4f}s")
     print()
@@ -133,7 +168,9 @@ def demo_enhanced_medical_monitoring():
     print(f"Sensitivity (critical detection): {sensitivity:.1%}")
     print(f"Specificity (false positive rate): {specificity:.1%}")
     print(f"Energy endurance: {report['energy_remaining'] / 24:.1f} days")
-    print(f"Deployment readiness: {'[OK] READY' if sensitivity >= 0.75 and report['energy_remaining'] > 100 else '[WARNING] NEEDS TUNING'}")
+    deployment_status = ('[OK] READY' if sensitivity >= 0.75 and report['energy_remaining'] > 100
+                        else '[WARNING] NEEDS TUNING')
+    print(f"Deployment readiness: {deployment_status}")
     print()
 
 
@@ -164,11 +201,20 @@ def demo_energy_optimization():
     test_events = []
     for i in range(100):
         if i % 20 == 19:  # 5% critical events
-            event = {"magnitude": 80 + (i % 3) * 5, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.8}
+            event = {
+                "magnitude": 80 + (i % 3) * 5, "anomaly_score": 0.8,
+                "context_relevance": 0.9, "urgency": 0.8
+            }
         elif i % 10 == 9:  # 10% concerning events
-            event = {"magnitude": 50 + (i % 3) * 5, "anomaly_score": 0.5, "context_relevance": 0.7, "urgency": 0.4}
+            event = {
+                "magnitude": 50 + (i % 3) * 5, "anomaly_score": 0.5,
+                "context_relevance": 0.7, "urgency": 0.4
+            }
         else:  # 85% normal events
-            event = {"magnitude": 20 + (i % 5) * 3, "anomaly_score": 0.1, "context_relevance": 0.5, "urgency": 0.1}
+            event = {
+                "magnitude": 20 + (i % 5) * 3, "anomaly_score": 0.1,
+                "context_relevance": 0.5, "urgency": 0.1
+            }
         test_events.append(event)
 
     results = {}
@@ -216,7 +262,9 @@ def demo_energy_optimization():
     print("-" * 50)
 
     for config_name, result in results.items():
-        print(f"{config_name:<15} {result['critical_detected']}/5     {result['days_operational']:<6.1f} ${result['cost_per_day']:<7.3f} {result['efficiency']:.1f}%")
+        print(f"{config_name:<15} {result['critical_detected']}/5     "
+              f"{result['days_operational']:<6.1f} ${result['cost_per_day']:<7.3f} "
+              f"{result['efficiency']:.1f}%")
 
     print()
     print("RECOMMENDATIONS:")
@@ -247,11 +295,26 @@ def demo_maternal_health_integration():
 
     # Progressive preeclampsia development
     monitoring_data = [
-        {"time": "08:00", "bp": (118, 76), "hr": 78, "spo2": 98, "fhr": 145, "status": "Normal morning vitals"},
-        {"time": "12:00", "bp": (125, 82), "hr": 82, "spo2": 97, "fhr": 148, "status": "Slight elevation noted"},
-        {"time": "16:00", "bp": (138, 88), "hr": 85, "spo2": 96, "fhr": 152, "status": "Borderline hypertension"},
-        {"time": "20:00", "bp": (148, 95), "hr": 88, "spo2": 95, "fhr": 158, "status": "Preeclampsia threshold"},
-        {"time": "22:00", "bp": (165, 105), "hr": 92, "spo2": 94, "fhr": 165, "status": "Severe preeclampsia"},
+        {
+            "time": "08:00", "bp": (118, 76), "hr": 78, "spo2": 98,
+            "fhr": 145, "status": "Normal morning vitals"
+        },
+        {
+            "time": "12:00", "bp": (125, 82), "hr": 82, "spo2": 97,
+            "fhr": 148, "status": "Slight elevation noted"
+        },
+        {
+            "time": "16:00", "bp": (138, 88), "hr": 85, "spo2": 96,
+            "fhr": 152, "status": "Borderline hypertension"
+        },
+        {
+            "time": "20:00", "bp": (148, 95), "hr": 88, "spo2": 95,
+            "fhr": 158, "status": "Preeclampsia threshold"
+        },
+        {
+            "time": "22:00", "bp": (165, 105), "hr": 92, "spo2": 94,
+            "fhr": 165, "status": "Severe preeclampsia"
+        },
     ]
 
     alerts_generated = []
@@ -268,7 +331,8 @@ def demo_maternal_health_integration():
 
         alert = monitor.process_vitals(vitals)
 
-        print(f"{reading['time']}: BP {reading['bp'][0]}/{reading['bp'][1]}, HR {reading['hr']}, SpO2 {reading['spo2']}%")
+        print(f"{reading['time']}: BP {reading['bp'][0]}/{reading['bp'][1]}, "
+              f"HR {reading['hr']}, SpO2 {reading['spo2']}%")
         print(f"         Fetal HR: {reading['fhr']} bpm")
 
         if alert:

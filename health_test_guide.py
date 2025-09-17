@@ -53,7 +53,8 @@ def test_maternal_health_comprehensive():
             alerts.append(alert)
             print(f"   [WARNING]  {alert.severity.upper()}: {alert.condition}")
         else:
-            print(f"   [OK] Normal vitals: BP {vitals.systolic_bp}/{vitals.diastolic_bp}, HR {vitals.heart_rate}")
+            print(f"   [OK] Normal vitals: BP {vitals.systolic_bp}/{vitals.diastolic_bp}, "
+                      f"HR {vitals.heart_rate}")
 
     print(f"   Result: {len(alerts)} alerts generated (expected: 0)")
     print()
@@ -79,7 +80,8 @@ def test_maternal_health_comprehensive():
             print(f"      BP: {vitals.systolic_bp}/{vitals.diastolic_bp} mmHg")
             print(f"      Action: {alert.recommended_action}")
         else:
-            print(f"   [DATA] Reading {i+1}: Normal (BP {vitals.systolic_bp}/{vitals.diastolic_bp})")
+            print(f"   [DATA] Reading {i+1}: Normal "
+                      f"(BP {vitals.systolic_bp}/{vitals.diastolic_bp})")
         print()
 
     print(f"   Result: {len(preeclampsia_alerts)} alerts generated")
@@ -120,7 +122,8 @@ def test_maternal_health_comprehensive():
     print(f"   Readings processed: {readings_count}")
     print(f"   Energy used: {energy_used:.1f} units")
     print(f"   Energy remaining: {energy_end:.1f}%")
-    print(f"   Estimated days remaining: {report['system_performance']['estimated_days_remaining']:.1f}")
+    print(f"   Estimated days remaining: "
+          f"{report['system_performance']['estimated_days_remaining']:.1f}")
     print(f"   Energy efficiency: {report['system_performance']['energy_efficiency_pct']:.1f}%")
     print(f"   Lives potentially saved: {report['medical_summary']['lives_potentially_saved']}")
     print()
@@ -191,8 +194,10 @@ def test_cardiac_monitoring():
         {"magnitude": 30, "anomaly_score": 0.15, "context_relevance": 0.5, "urgency": 0.1},
 
         # Arrhythmia events
-        {"magnitude": 65, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.7},  # Critical
-        {"magnitude": 45, "anomaly_score": 0.6, "context_relevance": 0.7, "urgency": 0.5},  # Concerning
+        # Critical
+        {"magnitude": 65, "anomaly_score": 0.8, "context_relevance": 0.9, "urgency": 0.7},
+        # Concerning
+        {"magnitude": 45, "anomaly_score": 0.6, "context_relevance": 0.7, "urgency": 0.5},
 
         # Normal variants
         {"magnitude": 35, "anomaly_score": 0.2, "context_relevance": 0.6, "urgency": 0.2},

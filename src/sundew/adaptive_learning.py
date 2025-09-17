@@ -29,9 +29,6 @@ import numpy as np
 
 try:
     import torch
-    import torch.nn as nn
-    import torch.optim as optim
-    from torch.utils.data import DataLoader, Dataset
 
     PYTORCH_AVAILABLE = True
 except ImportError:
@@ -112,11 +109,8 @@ except ImportError:
 
 
 try:
-    from sklearn.ensemble import IsolationForest
-    from sklearn.linear_model import LinearRegression
-    from sklearn.metrics import f1_score, precision_recall_curve
-
-    SKLEARN_AVAILABLE = True
+    import importlib.util
+    SKLEARN_AVAILABLE = importlib.util.find_spec("sklearn") is not None
 except ImportError:
     SKLEARN_AVAILABLE = False
 

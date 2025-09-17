@@ -21,12 +21,15 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 # Flexible event line:
-#  01. environmental   ✅ processed     (sig=0.220, 0.002s, ΔE≈9.5)         | energy   90.5 | thr 0.784
-#  03. emergency       processed        (sig=0.783, 0.003s, dE≈11.7)        | energy   79.3 | thr 0.797
+#  01. environmental   ✅ processed     (sig=0.220, 0.002s, ΔE≈9.5)
+#      | energy   90.5 | thr 0.784
+#  03. emergency       processed        (sig=0.783, 0.003s, dE≈11.7)
+#      | energy   79.3 | thr 0.797
 EVENT_RE = re.compile(
     r'^\s*(\d+)\.\s+([A-Za-z_]+)\s+(?:\S+\s+)?'         # index, label, optional emoji token
     r'(processed|dormant)\s*'                           # decision keyword (emoji may be stripped)
-    r'(?:\(\s*sig=([\d.]+)\s*,\s*([\d.]+)s\s*,\s*(?:ΔE|dE|DE)≈?([\d.]+)\s*\))?'  # optional (sig, latency, dE)
+    r'(?:\(\s*sig=([\d.]+)\s*,\s*([\d.]+)s\s*,\s*(?:ΔE|dE|DE)≈?([\d.]+)\s*\))?'
+    # optional (sig, latency, dE)
     r'\s*\|\s*energy\s*([-\d.]+)\s*\|\s*thr\s*([-\d.]+)\s*$',
     re.IGNORECASE
 )
@@ -196,7 +199,8 @@ def print_table(rows: List[Dict[str, Any]]):
     for r in rows:
         if r.get("_events_parsed", 0) == 0:
             print(f"WARNING: {r['_file']} had zero events parsed. "
-                  f"Check that you redirected the full CLI output to the file and that lines match the usual format.")
+                  f"Check that you redirected the full CLI output to the file "
+                  f"and that lines match the usual format.")
 
 def main():
     args = sys.argv[1:]

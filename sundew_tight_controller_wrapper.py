@@ -149,7 +149,8 @@ def main():
                   seed=args.seed)
     df.to_csv("tight_run.csv", index=False)
     plot(df, "tight")
-    print("Done. Files: tight_run.csv, tight_energy.png, tight_threshold.png, tight_activations.png, tight_cumrate.png")
+    print("Done. Files: tight_run.csv, tight_energy.png, tight_threshold.png, "
+          "tight_activations.png, tight_cumrate.png")
 
 if __name__ == "__main__":
     main()

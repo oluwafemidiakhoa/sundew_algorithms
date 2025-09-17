@@ -199,7 +199,9 @@ def main():
             "benchmark_metadata": {
                 "timestamp": time.time(),
                 "samples_tested": len(samples),
-                "test_description": "Comprehensive performance comparison of original vs enhanced Sundew"
+                "test_description": (
+                    "Comprehensive performance comparison of original vs enhanced Sundew"
+                )
             },
             "results": benchmark_results
         }, f, indent=2)

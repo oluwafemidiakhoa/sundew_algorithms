@@ -269,8 +269,10 @@ class MaternalHealthMonitor:
             return (
                 "Severe Preeclampsia/Hypertension",
                 "critical",
-                f"BP {vitals.systolic_bp}/{vitals.diastolic_bp} mmHg - severe hypertension detected",
-                "IMMEDIATE emergency transport to hospital. Monitor for seizures. Prepare magnesium sulfate.",
+                f"BP {vitals.systolic_bp}/{vitals.diastolic_bp} mmHg - "
+                f"severe hypertension detected",
+                "IMMEDIATE emergency transport to hospital. Monitor for seizures. "
+                "Prepare magnesium sulfate.",
             )
 
         # Preeclampsia
@@ -279,7 +281,8 @@ class MaternalHealthMonitor:
                 "Preeclampsia/Hypertension",
                 "high",
                 f"BP {vitals.systolic_bp}/{vitals.diastolic_bp} mmHg - hypertension detected",
-                "Contact healthcare provider within 2 hours. Monitor urine protein. Watch for headache/vision changes.",
+                "Contact healthcare provider within 2 hours. Monitor urine protein. "
+                "Watch for headache/vision changes.",
             )
 
         # Maternal tachycardia
@@ -314,8 +317,10 @@ class MaternalHealthMonitor:
             return (
                 "Possible Hemorrhage",
                 "critical",
-                f"BP {vitals.systolic_bp}/{vitals.diastolic_bp}, HR {vitals.heart_rate} - shock pattern",
-                "IMMEDIATE IV access, blood typing, emergency transport. Monitor bleeding.",
+                f"BP {vitals.systolic_bp}/{vitals.diastolic_bp}, "
+                f"HR {vitals.heart_rate} - shock pattern",
+                "IMMEDIATE IV access, blood typing, emergency transport. "
+                "Monitor bleeding.",
             )
 
         return (None, "low", "", "")

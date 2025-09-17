@@ -10,7 +10,7 @@ activation decisions.
 from abc import ABC, abstractmethod
 from collections import defaultdict, deque
 from dataclasses import dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 import numpy as np
 
@@ -81,9 +81,9 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
         self.regularization = regularization
 
         # History buffers
-        self.significance_history = deque(maxlen=history_size)
-        self.activation_history = deque(maxlen=history_size)
-        self.threshold_history = deque(maxlen=100)
+        self.significance_history: deque[float] = deque(maxlen=history_size)
+        self.activation_history: deque[bool] = deque(maxlen=history_size)
+        self.threshold_history: deque[float] = deque(maxlen=100)
 
         # Current threshold
         self.current_threshold = 0.5
@@ -158,7 +158,7 @@ class MutualInformationThreshold(InformationTheoreticThreshold):
         threshold_candidates = np.linspace(self.min_threshold, self.max_threshold, 20)
 
         best_threshold = self.current_threshold
-        best_mi = -1
+        best_mi: float = -1
 
         for threshold in threshold_candidates:
             # Simulate activations with this threshold
@@ -296,8 +296,8 @@ class EntropyBasedThreshold(InformationTheoreticThreshold):
         self.history_size = history_size
 
         self.current_threshold = 0.6
-        self.entropy_history = deque(maxlen=100)
-        self.activation_rate_history = deque(maxlen=100)
+        self.entropy_history: deque[float] = deque(maxlen=100)
+        self.activation_rate_history: deque[float] = deque(maxlen=100)
 
     def _compute_activation_entropy(self, activations: np.ndarray) -> float:
         """Compute entropy of activation pattern."""
@@ -372,7 +372,7 @@ class InformationTheoreticController:
     monitoring.
     """
 
-    def __init__(self, method: str = "mutual_information", **kwargs):
+    def __init__(self, method: str = "mutual_information", **kwargs: Any) -> None:
         """
         Initialize information-theoretic controller.
 
@@ -383,6 +383,7 @@ class InformationTheoreticController:
         self.method = method
 
         # Initialize appropriate threshold adapter
+        self.adapter: Union[MutualInformationThreshold, EntropyBasedThreshold]
         if method == "mutual_information":
             self.adapter = MutualInformationThreshold(**kwargs)
         elif method == "entropy":
@@ -394,10 +395,10 @@ class InformationTheoreticController:
             raise ValueError(f"Unknown method: {method}")
 
         # Performance tracking
-        self.performance_history = []
-        self.method_comparisons = defaultdict(list)
+        self.performance_history: List[Dict[str, Any]] = []
+        self.method_comparisons: Dict[str, List[float]] = defaultdict(list)
 
-    def _create_adaptive_adapter(self, **kwargs):
+    def _create_adaptive_adapter(self, **kwargs: Any) -> MutualInformationThreshold:
         """Create adaptive controller that switches between methods."""
         # For now, default to mutual information
         # Future: implement method switching based on performance

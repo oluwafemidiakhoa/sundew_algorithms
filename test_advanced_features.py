@@ -261,7 +261,8 @@ def test_theoretical_analysis(algorithm, test_data):
             if "theoretical_guarantees" in theoretical:
                 guarantees = theoretical["theoretical_guarantees"]
                 print(f"  Stability Guaranteed: {guarantees.get('stability_guaranteed', False)}")
-                print(f"  Energy Savings Guaranteed: {guarantees.get('energy_savings_guaranteed', False)}")
+                print(f"  Energy Savings Guaranteed: "
+                      f"{guarantees.get('energy_savings_guaranteed', False)}")
 
             return {"status": "pass", "analysis": theoretical}
         else:
@@ -364,7 +365,8 @@ def main():
         algorithm = EnhancedSundewAlgorithm(config)
         print("[OK] Advanced algorithm initialized successfully")
         print(
-            f"  Information Controller: {'Enabled' if algorithm.information_controller else 'Disabled'}"
+            f"  Information Controller: "
+            f"{'Enabled' if algorithm.information_controller else 'Disabled'}"
         )
         print(f"  Batch Engine: {'Enabled' if algorithm.batch_engine else 'Disabled'}")
         print(f"  AutoML Optimizer: {'Enabled' if algorithm.automl_optimizer else 'Disabled'}")

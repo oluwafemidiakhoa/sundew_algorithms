@@ -337,7 +337,7 @@ class EnhancedMetrics:
         energy_level: float,
         significance: float,
         window_size: int = 1000,
-    ):
+    ) -> None:
         """Update metric histories with window management."""
         self.activation_rate_history.append(activation_rate)
         self.threshold_history.append(threshold)
@@ -368,7 +368,7 @@ class EnhancedSundewAlgorithm:
         gating_strategy: Optional[GatingStrategy] = None,
         control_policy: Optional[ControlPolicy] = None,
         energy_model: Optional[EnergyModel] = None,
-    ):
+    ) -> None:
         self.config = config
 
         # Initialize components (use provided or create from config)
@@ -378,10 +378,10 @@ class EnhancedSundewAlgorithm:
         self.energy_model = energy_model or self._create_energy_model()
 
         # Initialize advanced components
-        self.information_controller = None
-        self.batch_engine = None
-        self.automl_optimizer = None
-        self.theoretical_analyzer = None
+        self.information_controller: Optional[Any] = None
+        self.batch_engine: Optional[Any] = None
+        self.automl_optimizer: Optional[Any] = None
+        self.theoretical_analyzer: Optional[Any] = None
 
         self._initialize_advanced_features()
 
@@ -402,13 +402,13 @@ class EnhancedSundewAlgorithm:
         self.recent_activations: List[bool] = []
 
         # Performance tracking
-        self.performance_evaluator = PerformanceEvaluator(config)
+        self.performance_evaluator: PerformanceEvaluator = PerformanceEvaluator(config)
 
         # Auto-tuning state
         if config.enable_auto_tuning:
-            self.auto_tuner = AutoTuner(config)
+            self.auto_tuner: Optional[AutoTuner] = AutoTuner(config)
         else:
-            self.auto_tuner = None
+            self.auto_tuner: Optional[AutoTuner] = None
 
     def _create_significance_model(self) -> SignificanceModel:
         """Create significance model based on configuration."""
@@ -418,12 +418,12 @@ class EnhancedSundewAlgorithm:
         if model_type == "neural":
             from .significance_models import NeuralSignificanceConfig
 
-            config = NeuralSignificanceConfig(**model_config)
+            config: NeuralSignificanceConfig = NeuralSignificanceConfig(**model_config)
             return NeuralSignificanceModel(config)
         else:  # "linear"
             from .significance_models import LinearSignificanceConfig
 
-            config = LinearSignificanceConfig(**model_config)
+            config: LinearSignificanceConfig = LinearSignificanceConfig(**model_config)
             return LinearSignificanceModel(config)
 
     def _create_gating_strategy(self) -> GatingStrategy:
@@ -434,12 +434,12 @@ class EnhancedSundewAlgorithm:
         if strategy_type == "adaptive":
             from .gating_strategies import AdaptiveGatingConfig
 
-            config = AdaptiveGatingConfig(**strategy_config)
+            config: AdaptiveGatingConfig = AdaptiveGatingConfig(**strategy_config)
             return AdaptiveGatingStrategy(config)
         else:  # "temperature"
             from .gating_strategies import TemperatureGatingConfig
 
-            config = TemperatureGatingConfig(**strategy_config)
+            config: TemperatureGatingConfig = TemperatureGatingConfig(**strategy_config)
             return TemperatureGatingStrategy(config)
 
     def _create_control_policy(self) -> ControlPolicy:
@@ -450,12 +450,12 @@ class EnhancedSundewAlgorithm:
         if policy_type == "mpc":
             from .control_policies import MPCControlConfig
 
-            config = MPCControlConfig(**policy_config)
+            config: MPCControlConfig = MPCControlConfig(**policy_config)
             return MPCControlPolicy(config)
         else:  # "pi"
             from .control_policies import PIControlConfig
 
-            config = PIControlConfig(**policy_config)
+            config: PIControlConfig = PIControlConfig(**policy_config)
             return PIControlPolicy(config)
 
     def _create_energy_model(self) -> EnergyModel:
@@ -466,15 +466,15 @@ class EnhancedSundewAlgorithm:
         if model_type == "realistic":
             from .energy_models import RealisticEnergyConfig
 
-            config = RealisticEnergyConfig(**model_config)
+            config: RealisticEnergyConfig = RealisticEnergyConfig(**model_config)
             return RealisticEnergyModel(config)
         else:  # "simple"
             from .energy_models import SimpleEnergyConfig
 
-            config = SimpleEnergyConfig(**model_config)
+            config: SimpleEnergyConfig = SimpleEnergyConfig(**model_config)
             return SimpleEnergyModel(config)
 
-    def _initialize_advanced_features(self):
+    def _initialize_advanced_features(self) -> None:
         """Initialize advanced feature components based on configuration."""
 
         # Information-theoretic threshold controller
@@ -741,7 +741,9 @@ class EnhancedSundewAlgorithm:
             component_metrics={},
         )
 
-    def process_batch(self, samples: List[Dict[str, Any]], processor_type: Optional[str] = None):
+    def process_batch(
+        self, samples: List[Dict[str, Any]], processor_type: Optional[str] = None
+    ) -> Any:
         """Process a batch of samples using high-performance batch processing."""
         if not self.batch_engine:
             # Fallback: process samples individually
@@ -775,11 +777,11 @@ class EnhancedSundewAlgorithm:
         # Use high-performance batch processing
         return self.batch_engine.process_batch(samples, processor_type)
 
-    def process_large_dataset(self, data_source, processor_type: Optional[str] = None):
+    def process_large_dataset(self, data_source: Any, processor_type: Optional[str] = None) -> Any:
         """Process large dataset with streaming and optimal batching."""
         if not self.batch_engine:
             # Fallback: process in chunks
-            def fallback_generator():
+            def fallback_generator() -> Any:
                 batch = []
                 for sample in data_source:
                     batch.append(sample)
@@ -804,9 +806,9 @@ class EnhancedSundewAlgorithm:
 
         try:
             # Create evaluation function
-            def evaluate_config(params):
+            def evaluate_config(params: Dict[str, Any]) -> Dict[str, float]:
                 # Apply parameters to current configuration
-                temp_config = self.config
+                temp_config: EnhancedSundewConfig = self.config
                 for key, value in params.items():
                     if hasattr(temp_config, key):
                         setattr(temp_config, key, value)
@@ -884,7 +886,7 @@ class EnhancedSundewAlgorithm:
 
         return base_time * complexity_factor
 
-    def _update_control_state(self, activated: bool, new_energy: float):
+    def _update_control_state(self, activated: bool, new_energy: float) -> None:
         """Update control state using control policy and advanced features."""
 
         # Compute current activation rate
@@ -951,7 +953,7 @@ class EnhancedSundewAlgorithm:
 
     def _update_learning_models(
         self, context: ProcessingContext, result: ProcessingResult, gating_decision: Any
-    ):
+    ) -> None:
         """Update learning models based on processing outcome."""
 
         # Create outcome information
@@ -973,7 +975,7 @@ class EnhancedSundewAlgorithm:
         # Update significance model
         self.significance_model.update(context, outcome)
 
-    def _evaluate_performance(self):
+    def _evaluate_performance(self) -> None:
         """Evaluate current system performance."""
         if self.performance_evaluator:
             performance_metrics = self.performance_evaluator.evaluate(
@@ -1213,7 +1215,7 @@ class EnhancedSundewAlgorithm:
 class PerformanceEvaluator:
     """Evaluates system performance across multiple dimensions."""
 
-    def __init__(self, config: EnhancedSundewConfig):
+    def __init__(self, config: EnhancedSundewConfig) -> None:
         self.config = config
 
     def evaluate(self, metrics: EnhancedMetrics, control_state: ControlState) -> Dict[str, Any]:
@@ -1274,12 +1276,12 @@ class PerformanceEvaluator:
 class AutoTuner:
     """Automatic hyperparameter tuning system."""
 
-    def __init__(self, config: EnhancedSundewConfig):
+    def __init__(self, config: EnhancedSundewConfig) -> None:
         self.config = config
         self.best_performance = 0.0
         self.tuning_history: List[Dict[str, Any]] = []
 
-    def update(self, metrics: EnhancedMetrics, control_state: ControlState):
+    def update(self, metrics: EnhancedMetrics, control_state: ControlState) -> None:
         """Update auto-tuning based on performance."""
         # Placeholder for auto-tuning logic
         # In practice, would implement Bayesian optimization or similar

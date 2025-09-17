@@ -488,7 +488,8 @@ class BatchProcessingEngine:
             }
 
             print(
-                f"    Throughput: {np.mean(throughputs):.0f} ± {np.std(throughputs):.0f} samples/sec"
+                f"    Throughput: {np.mean(throughputs):.0f} ± "
+                f"{np.std(throughputs):.0f} samples/sec"
             )
 
         # Select optimal processor

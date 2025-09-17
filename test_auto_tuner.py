@@ -161,13 +161,15 @@ def demo_ready_to_run_commands():
 
     print("Conservative tuning:")
     print(
-        "  python -m sundew --demo --events 30 --temperature 0.08 --ema-alpha 0.25 --hysteresis 0.03"
+        "  python -m sundew --demo --events 30 --temperature 0.08 "
+        "--ema-alpha 0.25 --hysteresis 0.03"
     )
     print()
 
     print("Aggressive tuning:")
     print(
-        "  python -m sundew --demo --events 30 --temperature 0.12 --ema-alpha 0.40 --hysteresis 0.015"
+        "  python -m sundew --demo --events 30 --temperature 0.12 "
+        "--ema-alpha 0.40 --hysteresis 0.015"
     )
     print()
 
