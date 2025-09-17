@@ -27,7 +27,7 @@ import csv
 import json
 import math
 import os
-from typing import Dict, Iterable, List, Optional
+from typing import Dict, Iterable, List, Optional, Sequence
 
 from sundew import SundewAlgorithm
 from sundew.config_presets import get_preset
@@ -99,7 +99,7 @@ COMMON_LABEL_KEYS = [
 ]
 
 
-def _best_key(header: List[str], candidates: List[str]) -> Optional[str]:
+def _best_key(header: Sequence[str], candidates: List[str]) -> Optional[str]:
     lower = {h.lower(): h for h in header}
     for k in candidates:
         if k in lower:
@@ -166,7 +166,9 @@ def ecg_events_from_csv(path: str) -> Iterable[Dict]:
 
             item = {"signal": sig}
             if key_label is not None:
-                item["label"] = _label_to_binary(row.get(key_label))
+                label_value = row.get(key_label)
+                if label_value is not None:
+                    item["label"] = _label_to_binary(label_value)
             yield item
 
 

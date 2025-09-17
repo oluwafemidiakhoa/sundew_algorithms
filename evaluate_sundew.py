@@ -38,7 +38,7 @@ HEADER_RE = re.compile(r'Initial threshold:\s*([-\d.]+)\s*\|\s*Energy:\s*([-\d.]
 FLOAT_LINE = re.compile(r'^\s*([A-Za-z ]+?):\s*([-+]?[0-9]*\.?[0-9]+)\s*%?\s*$', re.IGNORECASE)
 
 def parse_blocks(text: str) -> Dict[str, Dict[str, float]]:
-    sections = {}
+    sections: dict[str, dict[str, float]] = {}
     current = None
     for line in text.splitlines():
         if line.strip().endswith(':') and not line.strip().startswith('-'):

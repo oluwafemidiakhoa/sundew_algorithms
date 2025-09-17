@@ -285,8 +285,8 @@ class ProductionDeployment:
         }
 
         # Threading for concurrent processing
-        self.processing_queue = Queue(maxsize=1000)
-        self.result_queue = Queue()
+        self.processing_queue: Queue[dict[str, object]] = Queue(maxsize=1000)
+        self.result_queue: Queue[dict[str, object]] = Queue()
         self.shutdown_event = threading.Event()
 
         self.logger.info(f"Production deployment initialized for {platform} platform")

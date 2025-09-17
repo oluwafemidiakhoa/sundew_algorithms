@@ -6,7 +6,7 @@ import csv
 import math
 import statistics
 from collections import deque
-from typing import Dict, Generator, List, Optional, Tuple
+from typing import Dict, Generator, List, Optional, Sequence, Tuple
 
 # --- Beat symbol → urgency mapping (tweak as needed) ---
 # MIT-BIH typical symbols:
@@ -49,7 +49,7 @@ def _norm(s: str) -> str:
     return "".join(ch.lower() for ch in s if ch.isalnum() or ch == "_")
 
 
-def _pick_column(header: List[str], candidates: List[str]) -> Optional[str]:
+def _pick_column(header: Sequence[str], candidates: List[str]) -> Optional[str]:
     norm = {h: _norm(h) for h in header}
     cand = set(candidates)
     for h, n in norm.items():
@@ -133,7 +133,8 @@ def ecg_events_from_csv(
 
         for row in reader:
             x = _to_float(row.get(sig_col, "0"))
-            lbl = _clean_label(row.get(lbl_col)) if lbl_col else "N"
+            lbl_value = row.get(lbl_col) if lbl_col else None
+            lbl = _clean_label(lbl_value) if lbl_value else "N"
 
             # time
             if ts_col:

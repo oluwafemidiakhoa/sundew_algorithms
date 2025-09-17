@@ -16,7 +16,7 @@ from __future__ import annotations
 
 import argparse
 import csv
-from typing import Any, Dict, Iterable, List, Tuple
+from typing import Any, Dict, Iterable, List, Tuple, cast
 
 from benchmarks.run_ecg import run as run_ecg
 
@@ -54,8 +54,8 @@ def sweep(csv_path: str, out_csv: str, preset: str, limit: int | None) -> None:
             overrides=overrides,
         )
 
-        rep = out.get("report", {})
-        cnt = out.get("counts", {})
+        rep: dict[str, object] = cast(dict[str, object], out.get("report", {}))
+        cnt: dict[str, object] = cast(dict[str, object], out.get("counts", {}))
 
         row = dict(
             preset=preset,

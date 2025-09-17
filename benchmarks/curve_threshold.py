@@ -112,8 +112,8 @@ def main() -> None:
             overrides=overrides,
         )
 
-        rep = out.get("report", {})
-        cnt = out.get("counts", {})
+        rep: dict[str, object] = out.get("report", {})
+        cnt: dict[str, object] = out.get("counts", {})
 
         row = dict(
             activation_threshold=thr,

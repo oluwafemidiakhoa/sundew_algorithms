@@ -52,8 +52,8 @@ class ComprehensiveResearchStudy:
         os.makedirs(self.viz_dir, exist_ok=True)
 
         # Master results storage
-        self.all_results = {}
-        self.dataset_info = {}
+        self.all_results: dict[str, object] = {}
+        self.dataset_info: dict[str, object] = {}
 
         # Configure matplotlib for high-quality plots
         try:

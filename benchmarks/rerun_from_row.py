@@ -225,8 +225,8 @@ def main() -> None:
     )
 
     # Print a compact summary
-    rep = out.get("report", {})
-    cnt = out.get("counts", {})
+    rep: dict[str, object] = out.get("report", {})
+    cnt: dict[str, object] = out.get("counts", {})
     print("\n=== Re-run Summary ===")
     print(f"preset                 : {preset}")
     print(f"activation_threshold   : {overrides['activation_threshold']}")

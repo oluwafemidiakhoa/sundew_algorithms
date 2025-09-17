@@ -64,10 +64,11 @@ def _ensure_savings_pct(row: Dict) -> float:
         v = row.get(k, None)
         if isinstance(v, (int, float)):
             return float(v)
-        try:
-            return float(v)  # if string with numeric contents
-        except Exception:
-            pass
+        if v is not None:
+            try:
+                return float(v)  # if string with numeric contents
+            except Exception:
+                pass
     # 2) compute from baseline/actual if both present
     b = row.get("baseline_energy_cost", None)
     a = row.get("actual_energy_cost", None)
@@ -243,8 +244,8 @@ def _describe(rows: List[Dict]) -> str:
     )
     lines: List[str] = []
     for k in keys:
-        vals = [r.get(k) if k not in SAVINGS_ALIASES else _ensure_savings_pct(r) for r in rows]
-        vals = [v for v in vals if isinstance(v, (int, float)) and math.isfinite(v)]
+        vals_mixed = [r.get(k) if k not in SAVINGS_ALIASES else _ensure_savings_pct(r) for r in rows]
+        vals: list[float] = [float(v) for v in vals_mixed if isinstance(v, (int, float)) and math.isfinite(v)]
         if not vals:
             continue
         lines.append(f"{k:28s} min={min(vals):.4g}  med={median(vals):.4g}  max={max(vals):.4g}")

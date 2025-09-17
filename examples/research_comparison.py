@@ -252,7 +252,7 @@ class ResearchQualityComparator:
         # Test configurations
         test_configs = [("original", original_config)] + list(enhanced_configs.items())
 
-        domain_results = {}
+        domain_results: dict[str, object] = {}
 
         for domain_name in ["ecg", "vision", "audio"]:
             print(f"  Testing {domain_name} domain...")
@@ -425,7 +425,7 @@ class ResearchQualityComparator:
 
         print("\n🔄 Reproducibility Analysis...")
 
-        reproducibility_results = {}
+        reproducibility_results: dict[str, object] = {}
 
         # Factors affecting reproducibility
         factors = {
@@ -528,14 +528,16 @@ class ResearchQualityComparator:
             }
 
         # Summary
-        improvement = overall_scores.get("research_grade", {}).get("total_score", 0) - overall_scores["original"]["total_score"]
+        research_grade_score = float(overall_scores.get("research_grade", {}).get("total_score", 0))
+        original_score = float(overall_scores["original"]["total_score"])
+        improvement = research_grade_score - original_score
 
         overall_scores["summary"] = {
             "baseline_score": 6.5,
-            "original_implementation_score": overall_scores["original"]["total_score"],
-            "research_grade_score": overall_scores.get("research_grade", {}).get("total_score", 0),
-            "improvement": float(improvement),
-            "target_achieved": overall_scores.get("research_grade", {}).get("total_score", 0) >= 8.5
+            "original_implementation_score": original_score,
+            "research_grade_score": research_grade_score,
+            "improvement": improvement,
+            "target_achieved": research_grade_score >= 8.5
         }
 
         return overall_scores

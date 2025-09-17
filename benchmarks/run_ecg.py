@@ -28,7 +28,7 @@ import json
 import math
 from dataclasses import asdict
 from pathlib import Path
-from typing import Dict, Iterable, Iterator, List, Optional
+from typing import Dict, Iterable, Iterator, List, Mapping, Optional, Sequence
 
 from sundew import SundewAlgorithm
 from sundew.config_presets import get_preset
@@ -99,7 +99,7 @@ COMMON_LABEL_KEYS: List[str] = [
 ]
 
 
-def _best_key(header: List[str], candidates: List[str]) -> Optional[str]:
+def _best_key(header: Sequence[str], candidates: List[str]) -> Optional[str]:
     """Pick the best-matching header key from candidates (exact or fuzzy contains)."""
     lower = {h.lower(): h for h in header}
     for k in candidates:
@@ -259,7 +259,7 @@ def run(
     limit: Optional[int] = None,
     save_path: Optional[str] = None,
     refractory: int = 0,
-    overrides: Optional[Dict[str, float | int | bool | str]] = None,
+    overrides: Optional[Mapping[str, float | int | bool | str]] = None,
 ) -> Dict[str, object]:
     """
     Execute Sundew on a CSV stream and return a result dict.
@@ -316,7 +316,7 @@ def run(
 
     # Robust config serialization: works for slotted dataclasses too
     try:
-        cfg_dict: Dict[str, object] = asdict(cfg)  # type: ignore[assignment]
+        cfg_dict: Dict[str, object] = asdict(cfg)
     except Exception:
         cfg_dict = {
             k: getattr(cfg, k)
@@ -360,7 +360,7 @@ def run_once(
     limit: Optional[int] = None,
     save_path: Optional[str] = None,
     refractory: int = 0,
-    overrides: Optional[Dict[str, float | int | bool | str]] = None,
+    overrides: Optional[Mapping[str, float | int | bool | str]] = None,
 ) -> Dict[str, object]:
     """Explicit alias for single-run usage."""
     return run(csv_path, preset, limit, save_path, refractory, overrides)
