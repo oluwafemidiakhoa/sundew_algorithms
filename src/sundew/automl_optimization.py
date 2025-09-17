@@ -199,8 +199,8 @@ class BayesianOptimizer(BaseOptimizer):
         start_time = time.time()
 
         # Initialize with random points
-        X_trials = []
-        y_trials = []
+        X_trials: List[List[Union[float, int]]] = []
+        y_trials: List[float] = []
         all_trials = []
 
         print(f"Bayesian optimization: {n_trials} trials")
@@ -230,8 +230,8 @@ class BayesianOptimizer(BaseOptimizer):
             if (i + 1) % 5 == 0:
                 print(f"  Trial {i + 1}/{self.n_initial_points}: score = {score:.4f}")
 
-        X_trials = np.array(X_trials)
-        y_trials = np.array(y_trials)
+        X_trials_array = np.array(X_trials)
+        y_trials_array = np.array(y_trials)
 
         # Bayesian optimization loop
         gp = GaussianProcessRegressor(
@@ -239,13 +239,13 @@ class BayesianOptimizer(BaseOptimizer):
         )
 
         convergence_history = []
-        best_score = np.min(y_trials)
+        best_score = np.min(y_trials_array)
 
         print("Bayesian optimization...")
 
         for trial in range(self.n_initial_points, n_trials):
             # Fit GP on all trials so far
-            gp.fit(X_trials, y_trials)
+            gp.fit(X_trials_array, y_trials_array)
 
             # Find next point using acquisition function
             best_x = None
@@ -277,8 +277,9 @@ class BayesianOptimizer(BaseOptimizer):
             score = objective_func(best_params)
 
             # Update data
-            X_trials = np.vstack([X_trials, best_x])
-            y_trials = np.append(y_trials, score)
+            if best_x is not None:
+                X_trials_array = np.vstack([X_trials_array, np.reshape(best_x, (1, -1))])
+            y_trials_array = np.append(y_trials_array, score)
 
             if score < best_score:
                 best_score = score
@@ -301,7 +302,7 @@ class BayesianOptimizer(BaseOptimizer):
                 )
 
         # Find best parameters
-        best_idx = np.argmin(y_trials)
+        best_idx = np.argmin(y_trials_array)
         best_params = all_trials[best_idx]["params"]
 
         optimization_time = time.time() - start_time
@@ -313,7 +314,7 @@ class BayesianOptimizer(BaseOptimizer):
             optimization_time=optimization_time,
             convergence_history=convergence_history,
             method_used="bayesian_optimization",
-            validation_metrics={"final_gp_score": gp.score(X_trials, y_trials)},
+            validation_metrics={"final_gp_score": gp.score(X_trials_array, y_trials_array)},
         )
 
 
@@ -700,7 +701,7 @@ class AutoMLOptimizer:
         evaluation_func: Callable,
         enhanced_system: bool = True,
         method: str = "auto",
-        n_trials: int = None,
+        n_trials: Optional[int] = None,
     ) -> OptimizationResult:
         """Optimize Sundew algorithm configuration."""
 

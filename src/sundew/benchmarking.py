@@ -131,7 +131,7 @@ class ECGDatasetGenerator(DatasetGenerator):
         random.seed(seed)
 
         samples = []
-        labels = []
+        labels: List[int] = []
 
         # Simulate ECG signal characteristics
         normal_rate = 0.85  # 85% normal beats
@@ -194,7 +194,7 @@ class VisionDatasetGenerator(DatasetGenerator):
         random.seed(seed)
 
         samples = []
-        labels = []
+        labels: List[int] = []
 
         # Simulate object detection scenarios
         object_probability = 0.3  # 30% contain objects of interest
@@ -589,7 +589,7 @@ class BenchmarkRunner:
         algo_report = algorithm.get_comprehensive_report()
 
         # Create result object
-        result = ExperimentResult(
+        experiment_result = ExperimentResult(
             seed=seed,
             config=algorithm.config.__dict__,
             dataset_name=domain_name,
@@ -621,7 +621,7 @@ class BenchmarkRunner:
             significance_history=significance_history,
         )
 
-        return result
+        return experiment_result
 
     def _run_baseline_experiments(
         self, domain_name: str, generator: DatasetGenerator
@@ -639,6 +639,7 @@ class BenchmarkRunner:
                 samples, labels = generator.generate(self.config.num_samples, seed)
 
                 # Create baseline strategy
+                strategy: BaselineStrategy
                 if strategy_name == "random":
                     strategy = RandomBaselineStrategy()
                 elif strategy_name == "fixed_threshold":

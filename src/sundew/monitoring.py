@@ -102,7 +102,7 @@ class AlertManager:
 
     def check_thresholds(self, snapshot: MetricSnapshot) -> List[Dict[str, Any]]:
         """Check metric thresholds and generate alerts."""
-        alerts = []
+        alerts: List[Dict[str, Any]] = []
 
         if not self.config.enable_alerts:
             return alerts

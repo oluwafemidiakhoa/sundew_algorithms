@@ -117,13 +117,7 @@ python_version = "3.10"
 files = ["src"]
 exclude = [
     "src/sundew/adaptive_learning.py",
-    "src/sundew/batch_processing.py",
-    "benchmarks/.*",
-    "adapters/.*",
-    "examples/.*",
-    "build/.*",
-    "dist/.*",
-    ".*\\.py$"  # Exclude root level Python files
+    "src/sundew/batch_processing.py"
 ]
 warn_unused_ignores = true
 strict_optional = true

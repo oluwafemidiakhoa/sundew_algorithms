@@ -6,6 +6,7 @@ Supports pluggable significance models, gating strategies, control policies, and
 
 from __future__ import annotations
 
+import importlib.util
 import time
 from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional
@@ -32,25 +33,29 @@ try:
 
     INFORMATION_THEORY_AVAILABLE = True
 except ImportError:
-    InformationTheoreticController = None
+    InformationTheoreticController = None  # type: ignore
     INFORMATION_THEORY_AVAILABLE = False
 
-try:
-    from .batch_processing import GPU_AVAILABLE, BatchProcessingConfig, BatchProcessingEngine
-
-    BATCH_PROCESSING_AVAILABLE = True
-except ImportError:
+BATCH_PROCESSING_AVAILABLE = importlib.util.find_spec("sundew.batch_processing") is not None
+if BATCH_PROCESSING_AVAILABLE:
+    try:
+        from .batch_processing import GPU_AVAILABLE, BatchProcessingConfig, BatchProcessingEngine  # type: ignore
+    except ImportError:
+        BatchProcessingEngine = None
+        BatchProcessingConfig = None
+        GPU_AVAILABLE = False
+        BATCH_PROCESSING_AVAILABLE = False
+else:
     BatchProcessingEngine = None
     BatchProcessingConfig = None
     GPU_AVAILABLE = False
-    BATCH_PROCESSING_AVAILABLE = False
 
 try:
     from .automl_optimization import AutoMLOptimizer
 
     AUTOML_AVAILABLE = True
 except ImportError:
-    AutoMLOptimizer = None
+    AutoMLOptimizer = None  # type: ignore
     AUTOML_AVAILABLE = False
 
 try:
@@ -58,7 +63,7 @@ try:
 
     THEORETICAL_ANALYSIS_AVAILABLE = True
 except ImportError:
-    TheoreticalAnalysisEngine = None
+    TheoreticalAnalysisEngine = None  # type: ignore
     THEORETICAL_ANALYSIS_AVAILABLE = False
 
 
@@ -408,7 +413,7 @@ class EnhancedSundewAlgorithm:
         if config.enable_auto_tuning:
             self.auto_tuner: Optional[AutoTuner] = AutoTuner(config)
         else:
-            self.auto_tuner: Optional[AutoTuner] = None
+            self.auto_tuner = None
 
     def _create_significance_model(self) -> SignificanceModel:
         """Create significance model based on configuration."""
@@ -418,13 +423,13 @@ class EnhancedSundewAlgorithm:
         if model_type == "neural":
             from .significance_models import NeuralSignificanceConfig
 
-            config: NeuralSignificanceConfig = NeuralSignificanceConfig(**model_config)
-            return NeuralSignificanceModel(config)
+            neural_config: NeuralSignificanceConfig = NeuralSignificanceConfig(**model_config)
+            return NeuralSignificanceModel(neural_config)
         else:  # "linear"
             from .significance_models import LinearSignificanceConfig
 
-            config: LinearSignificanceConfig = LinearSignificanceConfig(**model_config)
-            return LinearSignificanceModel(config)
+            linear_config: LinearSignificanceConfig = LinearSignificanceConfig(**model_config)
+            return LinearSignificanceModel(linear_config)
 
     def _create_gating_strategy(self) -> GatingStrategy:
         """Create gating strategy based on configuration."""
@@ -434,13 +439,13 @@ class EnhancedSundewAlgorithm:
         if strategy_type == "adaptive":
             from .gating_strategies import AdaptiveGatingConfig
 
-            config: AdaptiveGatingConfig = AdaptiveGatingConfig(**strategy_config)
-            return AdaptiveGatingStrategy(config)
+            adaptive_config: AdaptiveGatingConfig = AdaptiveGatingConfig(**strategy_config)
+            return AdaptiveGatingStrategy(adaptive_config)
         else:  # "temperature"
             from .gating_strategies import TemperatureGatingConfig
 
-            config: TemperatureGatingConfig = TemperatureGatingConfig(**strategy_config)
-            return TemperatureGatingStrategy(config)
+            temp_config: TemperatureGatingConfig = TemperatureGatingConfig(**strategy_config)
+            return TemperatureGatingStrategy(temp_config)
 
     def _create_control_policy(self) -> ControlPolicy:
         """Create control policy based on configuration."""
@@ -450,13 +455,13 @@ class EnhancedSundewAlgorithm:
         if policy_type == "mpc":
             from .control_policies import MPCControlConfig
 
-            config: MPCControlConfig = MPCControlConfig(**policy_config)
-            return MPCControlPolicy(config)
+            mpc_config: MPCControlConfig = MPCControlConfig(**policy_config)
+            return MPCControlPolicy(mpc_config)
         else:  # "pi"
             from .control_policies import PIControlConfig
 
-            config: PIControlConfig = PIControlConfig(**policy_config)
-            return PIControlPolicy(config)
+            pi_config: PIControlConfig = PIControlConfig(**policy_config)
+            return PIControlPolicy(pi_config)
 
     def _create_energy_model(self) -> EnergyModel:
         """Create energy model based on configuration."""
@@ -466,13 +471,13 @@ class EnhancedSundewAlgorithm:
         if model_type == "realistic":
             from .energy_models import RealisticEnergyConfig
 
-            config: RealisticEnergyConfig = RealisticEnergyConfig(**model_config)
-            return RealisticEnergyModel(config)
+            realistic_config: RealisticEnergyConfig = RealisticEnergyConfig(**model_config)
+            return RealisticEnergyModel(realistic_config)
         else:  # "simple"
             from .energy_models import SimpleEnergyConfig
 
-            config: SimpleEnergyConfig = SimpleEnergyConfig(**model_config)
-            return SimpleEnergyModel(config)
+            simple_config: SimpleEnergyConfig = SimpleEnergyConfig(**model_config)
+            return SimpleEnergyModel(simple_config)
 
     def _initialize_advanced_features(self) -> None:
         """Initialize advanced feature components based on configuration."""
