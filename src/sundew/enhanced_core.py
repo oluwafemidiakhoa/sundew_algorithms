@@ -39,7 +39,11 @@ except ImportError:
 BATCH_PROCESSING_AVAILABLE = importlib.util.find_spec("sundew.batch_processing") is not None
 if BATCH_PROCESSING_AVAILABLE:
     try:
-        from .batch_processing import GPU_AVAILABLE, BatchProcessingConfig, BatchProcessingEngine  # type: ignore
+        from .batch_processing import (  # type: ignore
+            GPU_AVAILABLE,
+            BatchProcessingConfig,
+            BatchProcessingEngine,
+        )
     except ImportError:
         BatchProcessingEngine = None
         BatchProcessingConfig = None
