@@ -36,7 +36,7 @@ plt.savefig("plot_threshold.png", dpi=150)
 w = 150
 rate = []
 q: collections.deque[float] = collections.deque()
-s = 0
+s = 0.0
 for a in act:
     q.append(a)
     s += a

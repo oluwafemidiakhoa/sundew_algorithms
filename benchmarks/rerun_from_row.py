@@ -39,7 +39,7 @@ from __future__ import annotations
 import argparse
 import csv
 import sys
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, cast
 
 from benchmarks.run_ecg import run as run_ecg  # our unified runner
 
@@ -225,8 +225,8 @@ def main() -> None:
     )
 
     # Print a compact summary
-    rep: dict[str, object] = out.get("report", {})
-    cnt: dict[str, object] = out.get("counts", {})
+    rep: dict[str, object] = cast(dict[str, object], out.get("report", {}))
+    cnt: dict[str, object] = cast(dict[str, object], out.get("counts", {}))
     print("\n=== Re-run Summary ===")
     print(f"preset                 : {preset}")
     print(f"activation_threshold   : {overrides['activation_threshold']}")

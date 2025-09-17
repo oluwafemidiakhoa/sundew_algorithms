@@ -14,7 +14,7 @@ import json
 import sys
 import time
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, cast
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
@@ -257,7 +257,7 @@ class ResearchQualityComparator:
         for domain_name in ["ecg", "vision", "audio"]:
             print(f"  Testing {domain_name} domain...")
 
-            domain_results[domain_name] = {}
+            domain_results[domain_name] = cast(dict[str, object], {})
             generator = runner.dataset_generators[domain_name]
 
             for config_name, config in test_configs:
@@ -298,7 +298,7 @@ class ResearchQualityComparator:
                     })
 
                 # Average across seeds
-                domain_results[domain_name][config_name] = {
+                cast(dict[str, object], domain_results[domain_name])[config_name] = {
                     "mean_f1": float(np.mean([r["f1_score"] for r in config_results])),
                     "std_f1": float(np.std([r["f1_score"] for r in config_results])),
                     "mean_precision": float(np.mean([r["precision"] for r in config_results])),
@@ -528,8 +528,10 @@ class ResearchQualityComparator:
             }
 
         # Summary
-        research_grade_score = float(overall_scores.get("research_grade", {}).get("total_score", 0))
-        original_score = float(overall_scores["original"]["total_score"])
+        research_grade_dict = cast(dict[str, object], overall_scores.get("research_grade", {}))
+        research_grade_score = float(cast(float, research_grade_dict.get("total_score", 0)))
+        original_dict = cast(dict[str, object], overall_scores["original"])
+        original_score = float(cast(float, original_dict["total_score"]))
         improvement = research_grade_score - original_score
 
         overall_scores["summary"] = {

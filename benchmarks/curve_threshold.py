@@ -21,7 +21,7 @@ from __future__ import annotations
 
 import argparse
 import csv
-from typing import Any, Dict, List
+from typing import Any, Dict, List, cast
 
 import matplotlib.pyplot as plt  # std plotting; used only if --out-png
 
@@ -112,8 +112,8 @@ def main() -> None:
             overrides=overrides,
         )
 
-        rep: dict[str, object] = out.get("report", {})
-        cnt: dict[str, object] = out.get("counts", {})
+        rep: dict[str, object] = cast(dict[str, object], out.get("report", {}))
+        cnt: dict[str, object] = cast(dict[str, object], out.get("counts", {}))
 
         row = dict(
             activation_threshold=thr,
