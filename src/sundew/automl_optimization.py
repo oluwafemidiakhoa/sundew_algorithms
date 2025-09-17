@@ -16,7 +16,7 @@ import time
 import warnings
 from abc import ABC, abstractmethod
 from dataclasses import asdict, dataclass
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
+from typing import TYPE_CHECKING, Any, Callable, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 
@@ -27,20 +27,11 @@ try:
 
     SKLEARN_AVAILABLE = True
 except ImportError:
-    # Fallback classes for type hints when sklearn not available
-    class GaussianProcessRegressor:
-        pass
-
-    class Matern:
-        pass
-
-    class RBF:
-        pass
-
-    class ConstantKernel:
-        pass
-
     SKLEARN_AVAILABLE = False
+    if TYPE_CHECKING:
+        # Type hints only - not runtime classes
+        from sklearn.gaussian_process import GaussianProcessRegressor
+        from sklearn.gaussian_process.kernels import RBF, ConstantKernel, Matern
 
 try:
     import optuna
@@ -48,6 +39,8 @@ try:
     OPTUNA_AVAILABLE = True
 except ImportError:
     OPTUNA_AVAILABLE = False
+    if TYPE_CHECKING:
+        import optuna
 
 
 @dataclass
@@ -86,14 +79,23 @@ class HyperparameterSpace:
             np.random.seed(random_state)
 
         if self.param_type == "float":
+            if self.low is None or self.high is None:
+                raise ValueError("low and high must be specified for float parameters")
             if self.log_scale:
-                return np.random.lognormal(np.log(self.low), np.log(self.high / self.low))
-            return np.random.uniform(self.low, self.high)
+                return float(np.random.lognormal(
+                    np.log(float(self.low)),
+                    np.log(float(self.high) / float(self.low))
+                ))
+            return float(np.random.uniform(float(self.low), float(self.high)))
 
         elif self.param_type == "int":
-            return np.random.randint(self.low, self.high + 1)
+            if self.low is None or self.high is None:
+                raise ValueError("low and high must be specified for int parameters")
+            return int(np.random.randint(int(self.low), int(self.high) + 1))
 
         elif self.param_type == "categorical":
+            if self.choices is None:
+                raise ValueError("choices must be specified for categorical parameters")
             return np.random.choice(self.choices)
 
         elif self.param_type == "boolean":
@@ -115,13 +117,13 @@ class OptimizationResult:
     method_used: str
     validation_metrics: Dict[str, float]
 
-    def save(self, filepath: str):
+    def save(self, filepath: str) -> None:
         """Save optimization result to file."""
         with open(filepath, "w") as f:
             json.dump(asdict(self), f, indent=2, default=str)
 
     @classmethod
-    def load(cls, filepath: str):
+    def load(cls, filepath: str) -> "OptimizationResult":
         """Load optimization result from file."""
         with open(filepath, "r") as f:
             data = json.load(f)
@@ -576,7 +578,7 @@ class AutoMLOptimizer:
 
     def __init__(
         self,
-        objectives: List[OptimizationObjective] = None,
+        objectives: Optional[List[OptimizationObjective]] = None,
         time_budget_minutes: int = 60,
         auto_select_method: bool = True,
     ):
@@ -590,13 +592,13 @@ class AutoMLOptimizer:
         self.auto_select_method = auto_select_method
 
         # Available optimizers
-        self.optimizers = {}
+        self.optimizers: Dict[str, Any] = {}
         self._initialize_optimizers()
 
         # Results tracking
-        self.optimization_history = []
+        self.optimization_history: List[Dict[str, Any]] = []
 
-    def _initialize_optimizers(self):
+    def _initialize_optimizers(self) -> None:
         """Initialize available optimizers."""
         # Always available
         self.optimizers["genetic"] = GeneticAlgorithmOptimizer()
@@ -611,8 +613,8 @@ class AutoMLOptimizer:
 
     def _compute_multi_objective_score(self, metrics: Dict[str, float]) -> float:
         """Compute weighted multi-objective score."""
-        total_score = 0
-        total_weight = 0
+        total_score = 0.0
+        total_weight = 0.0
 
         for objective in self.objectives:
             if objective.name in metrics:
@@ -847,14 +849,14 @@ def create_evaluation_function(sundew_algorithm_class, test_data: List[Dict]) ->
                 energy_savings = final_report.get("estimated_energy_savings_pct", 0)
 
             # Simulate F1 score (in real usage, compare with ground truth)
-            f1_score = min(1.0, avg_significance * 2)  # Simplified metric
+            f1_score = min(1.0, float(avg_significance) * 2)  # Simplified metric
 
             return {
                 "energy_savings": energy_savings / 100,  # Normalized
                 "f1_score": f1_score,
                 "processing_time": processing_time,
-                "activation_rate": activation_rate,
-                "avg_significance": avg_significance,
+                "activation_rate": float(activation_rate),
+                "avg_significance": float(avg_significance),
             }
 
         except Exception:

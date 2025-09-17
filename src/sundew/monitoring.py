@@ -508,7 +508,7 @@ class RealTimeMonitor:
         for alert in alerts:
             print(f"ALERT [{alert['severity']}]: {alert['metric']} = {alert['value']:.3f}")
 
-    def _update_plots(self, frame):
+    def _update_plots(self, frame) -> None:
         """Update live plots (called by matplotlib animation)."""
 
         if not self.plots_initialized or len(self.metric_buffer) == 0:
@@ -634,19 +634,19 @@ class RealTimeMonitor:
 
         # Performance component (0-40 points)
         avg_f1 = np.mean([s.f1_score for s in snapshots])
-        performance_score = min(40, avg_f1 * 40)
+        performance_score = min(40.0, float(avg_f1) * 40)
 
         # Stability component (0-30 points)
         avg_oscillation = np.mean([s.oscillation_index for s in snapshots])
-        stability_score = max(0, 30 - avg_oscillation * 300)
+        stability_score = max(0.0, 30.0 - float(avg_oscillation) * 300)
 
         # Energy component (0-20 points)
         avg_energy = np.mean([s.energy_level for s in snapshots])
-        energy_score = avg_energy * 20
+        energy_score = float(avg_energy) * 20
 
         # Resource usage component (0-10 points)
         avg_cpu = np.mean([s.cpu_usage for s in snapshots])
-        resource_score = max(0, 10 - avg_cpu * 0.1)
+        resource_score = max(0.0, 10.0 - float(avg_cpu) * 0.1)
 
         total_score = performance_score + stability_score + energy_score + resource_score
         return min(100.0, total_score)
@@ -664,7 +664,7 @@ class RealTimeMonitor:
         else:
             return "CRITICAL"
 
-    def export_data(self, filename: str):
+    def export_data(self, filename: str) -> None:
         """Export monitoring data to file."""
 
         data = {
@@ -713,7 +713,7 @@ def setup_monitoring_with_alerts(
         monitor.alert_manager.register_alert_callback(alert_callback)
     else:
         # Default alert handler
-        def default_alert_handler(alert_type: str, alert_data: Dict[str, Any]):
+        def default_alert_handler(alert_type: str, alert_data: Dict[str, Any]) -> None:
             print(f"🚨 ALERT: {alert_type} - {alert_data['metric']} = {alert_data['value']:.3f}")
 
         monitor.alert_manager.register_alert_callback(default_alert_handler)

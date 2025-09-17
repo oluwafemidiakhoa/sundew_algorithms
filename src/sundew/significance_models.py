@@ -161,10 +161,10 @@ class NeuralSignificanceModel(SignificanceModel):
 
         # Learning state
         self.learning_enabled = True
-        self._accumulated_gradients = []
-        self._batch_buffer = []
+        self._accumulated_gradients: List[np.ndarray] = []
+        self._batch_buffer: List[Tuple[np.ndarray, float]] = []
 
-    def _init_network(self):
+    def _init_network(self) -> None:
         """Initialize neural network weights."""
         np.random.seed(42)  # For reproducibility
 
@@ -321,7 +321,7 @@ class NeuralSignificanceModel(SignificanceModel):
         reward = 0.6 * accuracy + 0.4 * energy_efficiency
         return float(reward)
 
-    def _batch_update(self):
+    def _batch_update(self) -> None:
         """Perform batch gradient update (simplified)."""
         if len(self._batch_buffer) < self.config.batch_size:
             return

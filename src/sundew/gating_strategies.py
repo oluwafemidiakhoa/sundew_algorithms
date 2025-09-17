@@ -8,7 +8,7 @@ from __future__ import annotations
 import math
 import random
 from dataclasses import dataclass
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 
 import numpy as np
 
@@ -83,7 +83,7 @@ class TemperatureGatingStrategy(GatingStrategy):
         self.decision_count += 1
         return decision
 
-    def _update_temperature(self, control_state: ControlState):
+    def _update_temperature(self, control_state: ControlState) -> None:
         """Adapt temperature based on system performance."""
         # Decrease temperature over time (annealing)
         self.current_temperature *= self.config.temperature_decay
@@ -122,10 +122,10 @@ class AdaptiveGatingConfig:
     context_window: int = 20
     confidence_threshold: float = 0.8
     uncertainty_penalty: float = 0.1
-    multi_objective_weights: Dict[str, float] = None
+    multi_objective_weights: Optional[Dict[str, float]] = None
     learning_rate: float = 0.01
 
-    def __post_init__(self):
+    def __post_init__(self) -> None:
         if self.multi_objective_weights is None:
             self.multi_objective_weights = {
                 "accuracy": 0.4,
@@ -329,6 +329,9 @@ class AdaptiveGatingStrategy(GatingStrategy):
     ) -> float:
         """Compute multi-objective decision score."""
         weights = self.config.multi_objective_weights
+        if weights is None:
+            # This should not happen due to __post_init__, but handle gracefully
+            weights = {"accuracy": 0.4, "energy": 0.3, "latency": 0.2, "fairness": 0.1}
 
         # Accuracy objective (based on significance)
         accuracy_score = 0.7 * significance + 0.3 * attention_score

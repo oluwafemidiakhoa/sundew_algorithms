@@ -114,7 +114,7 @@ class PIControlPolicy(ControlPolicy):
 
         return new_threshold, new_state
 
-    def _update_adaptive_gains(self, error: float, current_state: ControlState):
+    def _update_adaptive_gains(self, error: float, current_state: ControlState) -> None:
         """Update PI gains based on system performance."""
         # Simple adaptive logic - more sophisticated methods exist
 
@@ -159,14 +159,14 @@ class PIControlPolicy(ControlPolicy):
         # Estimate oscillation risk
         if len(self.stability_history) > 5:
             recent_oscillations = [h["oscillation"] for h in self.stability_history[-5:]]
-            oscillation_trend = np.mean(recent_oscillations)
+            oscillation_trend = float(np.mean(recent_oscillations))
         else:
-            oscillation_trend = 0.0
+            oscillation_trend = float(0.0)
 
         return {
             "convergence_time": min(convergence_time, horizon),
             "predicted_overshoot": predicted_overshoot,
-            "oscillation_risk": oscillation_trend,
+            "oscillation_risk": float(oscillation_trend),
             "stability_margin": max(0.0, 1.0 - oscillation_trend - predicted_overshoot),
         }
 
@@ -418,14 +418,14 @@ class MPCControlPolicy(ControlPolicy):
         robustness = 1.0 / (1.0 + state_variance * 100)
 
         return {
-            "lyapunov_exponent": lyapunov_exponent,
-            "controllability": controllability,
-            "robustness": robustness,
+            "lyapunov_exponent": float(lyapunov_exponent),
+            "controllability": float(controllability),
+            "robustness": float(robustness),
             "predicted_settling_time": float(len(trajectory)),
-            "control_cost": np.sum(np.abs(control_sequence)),
+            "control_cost": float(np.sum(np.abs(control_sequence))),
         }
 
-    def _update_system_model(self):
+    def _update_system_model(self) -> None:
         """Update system model using recent data."""
         if len(self.model_identification_data) > 20:
             self.system_model.update_parameters(self.model_identification_data[-50:])
@@ -461,10 +461,10 @@ class MPCControlPolicy(ControlPolicy):
         return {
             "convergence_time": float(convergence_time),
             "predicted_overshoot": max(0.0, max_overshoot),
-            "steady_state_variance": np.var(activation_rates[-10:])
+            "steady_state_variance": float(np.var(activation_rates[-10:]))
             if len(activation_rates) > 10
             else 0.0,
-            "stability_margin": 1.0 / (1.0 + np.var(activation_rates)),
+            "stability_margin": float(1.0 / (1.0 + np.var(activation_rates))),
         }
 
     def get_theoretical_bounds(self) -> Dict[str, Tuple[float, float]]:
@@ -481,7 +481,7 @@ class MPCControlPolicy(ControlPolicy):
 class SystemModel:
     """Simple system model for MPC."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         # Simple linear model: x[k+1] = A*x[k] + B*u[k]
         self.A = np.array([[0.95, 0.05, 0.0], [0.1, 0.85, 0.05], [0.0, 0.0, 0.98]])
         self.B = np.array([0.1, -0.2, 0.0]).reshape(-1, 1)
@@ -501,7 +501,7 @@ class SystemModel:
             "energy_level": float(next_state[2]),
         }
 
-    def update_parameters(self, data: List[Tuple[np.ndarray, float]]):
+    def update_parameters(self, data: List[Tuple[np.ndarray, float]]) -> None:
         """Update model parameters using system identification."""
         # Simple least squares update (would use more sophisticated methods in practice)
         if len(data) < 10:

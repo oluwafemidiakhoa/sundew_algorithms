@@ -430,34 +430,34 @@ class StatisticalAnalyzer:
             if len(values) < 5:
                 continue
 
-            values = np.array(values)
+            values_array = np.array(values)
 
             # Descriptive statistics
             desc_stats = {
-                "mean": np.mean(values),
-                "std": np.std(values),
-                "median": np.median(values),
-                "min": np.min(values),
-                "max": np.max(values),
-                "q25": np.percentile(values, 25),
-                "q75": np.percentile(values, 75),
-                "skewness": stats.skew(values),
-                "kurtosis": stats.kurtosis(values),
+                "mean": np.mean(values_array),
+                "std": np.std(values_array),
+                "median": np.median(values_array),
+                "min": np.min(values_array),
+                "max": np.max(values_array),
+                "q25": np.percentile(values_array, 25),
+                "q75": np.percentile(values_array, 75),
+                "skewness": stats.skew(values_array),
+                "kurtosis": stats.kurtosis(values_array),
             }
 
             # Distribution fitting
             # Try normal distribution
-            normal_params = stats.norm.fit(values)
+            normal_params = stats.norm.fit(values_array)
             normal_ks_stat, normal_ks_p = stats.kstest(
-                values, lambda x: stats.norm.cdf(x, *normal_params)
+                values_array, lambda x: stats.norm.cdf(x, *normal_params)
             )
 
             # Try beta distribution (for bounded metrics like rates)
-            if np.all(values >= 0) and np.all(values <= 1):
+            if np.all(values_array >= 0) and np.all(values_array <= 1):
                 try:
-                    beta_params = stats.beta.fit(values)
+                    beta_params = stats.beta.fit(values_array)
                     beta_ks_stat, beta_ks_p = stats.kstest(
-                        values, lambda x: stats.beta.cdf(x, *beta_params)
+                        values_array, lambda x: stats.beta.cdf(x, *beta_params)
                     )
                 except Exception:
                     _beta_ks_stat, beta_ks_p = float("inf"), 0

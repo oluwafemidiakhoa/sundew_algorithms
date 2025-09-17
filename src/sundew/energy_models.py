@@ -282,7 +282,7 @@ class RealisticEnergyModel(EnergyModel):
             "default": 10,  # KB
         }
 
-        memory_kb = memory_footprints.get(processing_type, memory_footprints["default"])
+        memory_kb: float = memory_footprints.get(processing_type, memory_footprints["default"])
 
         # Scale by significance (more significant = more data)
         memory_kb *= 1.0 + significance * 0.3
@@ -303,7 +303,7 @@ class RealisticEnergyModel(EnergyModel):
 
         return power_scaling
 
-    def _update_thermal_state(self, power_mw: float):
+    def _update_thermal_state(self, power_mw: float) -> None:
         """Update thermal state based on power consumption."""
 
         # Simple thermal model: T = T_ambient + P * R_thermal

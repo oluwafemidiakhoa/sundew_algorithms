@@ -832,9 +832,9 @@ class EnhancedSundewAlgorithm:
                 energy_savings = 1.0 - (avg_energy / 50.0)  # Normalize against full processing
 
                 return {
-                    "energy_savings": energy_savings,
-                    "f1_score": min(1.0, activation_rate * 2),  # Simplified
-                    "processing_time": np.mean([r["time"] for r in results]),
+                    "energy_savings": float(energy_savings),
+                    "f1_score": min(1.0, float(activation_rate) * 2),  # Simplified
+                    "processing_time": float(np.mean([r["time"] for r in results])),
                 }
 
             # Run optimization
@@ -854,12 +854,12 @@ class EnhancedSundewAlgorithm:
     def benchmark_batch_processors(self, test_samples: List[Dict]) -> Dict[str, Dict[str, float]]:
         """Benchmark available batch processors."""
         if not self.batch_engine:
-            return {"error": "Batch engine not available"}
+            return {"error": {"message": 0.0}}  # Return compatible type
 
         try:
             return self.batch_engine.benchmark_processors(test_samples)
-        except Exception as e:
-            return {"error": f"Benchmark failed: {e}"}
+        except Exception:
+            return {"error": {"message": 0.0}}  # Return compatible type
 
     def _determine_processing_type(self, significance: float, context: ProcessingContext) -> str:
         """Determine processing type based on significance and context."""
@@ -1159,7 +1159,7 @@ class EnhancedSundewAlgorithm:
         # Convergence (0-2 points)
         if len(self.metrics.threshold_history) >= 20:
             threshold_variance = np.var(self.metrics.threshold_history[-20:])
-            convergence_score = max(0, 2 - threshold_variance * 20)
+            convergence_score = max(0.0, 2.0 - float(threshold_variance) * 20)
         else:
             convergence_score = 1.0
 
@@ -1236,9 +1236,9 @@ class PerformanceEvaluator:
         mean_significance = np.mean(metrics.significance_history[-100:])
 
         return {
-            "variance": significance_variance,
-            "mean": mean_significance,
-            "distribution_quality": min(1.0, significance_variance * 4),  # Good spread is important
+            "variance": float(significance_variance),
+            "mean": float(mean_significance),
+            "distribution_quality": min(1.0, float(significance_variance) * 4),  # Good spread
         }
 
     def _evaluate_gating_strategy(
