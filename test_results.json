@@ -1,0 +1,92 @@
+[
+  {
+    "dataset": "Network Security",
+    "target_rate": 0.15,
+    "actual_rate": 0.010833333333333334,
+    "energy_saved": 98.91666666666666,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0,
+    "processing_time": 0.00868988037109375
+  },
+  {
+    "dataset": "Network Security",
+    "target_rate": 0.2,
+    "actual_rate": 0.010833333333333334,
+    "energy_saved": 98.91666666666666,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0,
+    "processing_time": 0.009526491165161133
+  },
+  {
+    "dataset": "Network Security",
+    "target_rate": 0.25,
+    "actual_rate": 0.010833333333333334,
+    "energy_saved": 98.91666666666666,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0,
+    "processing_time": 0.007524728775024414
+  },
+  {
+    "dataset": "Financial Anomaly",
+    "target_rate": 0.15,
+    "actual_rate": 0.0115,
+    "energy_saved": 98.85000000000001,
+    "f1_score": 0.011544011544011544,
+    "precision": 0.17391304347826086,
+    "recall": 0.005970149253731343,
+    "processing_time": 0.01851654052734375
+  },
+  {
+    "dataset": "Financial Anomaly",
+    "target_rate": 0.2,
+    "actual_rate": 0.0115,
+    "energy_saved": 98.85000000000001,
+    "f1_score": 0.011544011544011544,
+    "precision": 0.17391304347826086,
+    "recall": 0.005970149253731343,
+    "processing_time": 0.016533374786376953
+  },
+  {
+    "dataset": "Financial Anomaly",
+    "target_rate": 0.25,
+    "actual_rate": 0.0115,
+    "energy_saved": 98.85000000000001,
+    "f1_score": 0.011544011544011544,
+    "precision": 0.17391304347826086,
+    "recall": 0.005970149253731343,
+    "processing_time": 0.01703810691833496
+  },
+  {
+    "dataset": "IoT Sensors",
+    "target_rate": 0.15,
+    "actual_rate": 0.010666666666666666,
+    "energy_saved": 98.93333333333332,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "processing_time": 0.012497186660766602
+  },
+  {
+    "dataset": "IoT Sensors",
+    "target_rate": 0.2,
+    "actual_rate": 0.010666666666666666,
+    "energy_saved": 98.93333333333332,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "processing_time": 0.013009786605834961
+  },
+  {
+    "dataset": "IoT Sensors",
+    "target_rate": 0.25,
+    "actual_rate": 0.010666666666666666,
+    "energy_saved": 98.93333333333332,
+    "f1_score": 0,
+    "precision": 0.0,
+    "recall": 0.0,
+    "processing_time": 0.01253509521484375
+  }
+]

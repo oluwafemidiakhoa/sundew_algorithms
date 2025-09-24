@@ -23,19 +23,18 @@ keywords = [
 classifiers = [
   "Development Status :: 4 - Beta",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: Apache Software License",
+  "License :: OSI Approved :: MIT License",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3 :: Only",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
   "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
   "Topic :: Scientific/Engineering :: Artificial Intelligence",
 ]
 
 dependencies = [
-  "matplotlib>=3.10.6",
   "numpy>=1.22",
+  "pandas>=1.5.0",
 ]
 
 [project.optional-dependencies]
@@ -49,7 +48,7 @@ dev = [
   "twine>=5.1.1",
   "types-requests",
 ]
-viz = ["matplotlib>=3.7"]
+viz = ["matplotlib>=3.7,<4.0"]
 video = ["opencv-python>=4.8"]
 
 [project.urls]

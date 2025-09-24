@@ -18,22 +18,22 @@ class SundewConfig:
     """
 
     # Activation & rate control
-    activation_threshold: float = 0.78
-    target_activation_rate: float = 0.15
+    activation_threshold: float = 0.4   # FIXED: Start at reasonable middle point, not 0.78
+    target_activation_rate: float = 0.2  # FIXED: More reasonable 20% target, not 15%
     ema_alpha: float = 0.15  # Faster adaptation for better responsiveness
 
-    # PI controller - improved stability
-    adapt_kp: float = 0.012  # Reduced for smoother response
-    adapt_ki: float = 0.004  # Lower integral gain to prevent windup
+    # PI controller - FIXED: Stronger gains for proper convergence
+    adapt_kp: float = 0.05   # FIXED: Increased from 0.012 for meaningful adaptation
+    adapt_ki: float = 0.002  # FIXED: Reduced to prevent windup while maintaining effect
     error_deadband: float = 0.003  # Tighter deadband for precision
     integral_clamp: float = 0.30  # Reduced to prevent large corrections
 
-    # Threshold bounds
-    min_threshold: float = 0.20
-    max_threshold: float = 0.92
+    # Threshold bounds - FIXED: Wider range to handle higher target rates
+    min_threshold: float = 0.05  # FIXED: Lower minimum for higher activation rates
+    max_threshold: float = 0.95   # FIXED: Higher maximum for very low activation rates
 
-    # Energy pressure & gating
-    energy_pressure: float = 0.04
+    # Energy pressure & gating - FIXED: Disable energy pressure for stable basic operation
+    energy_pressure: float = 0.0  # FIXED: Set to 0 to remove competing control influence
     gate_temperature: float = 0.08
     hysteresis_gap: float = 0.02  # Gap between activation/deactivation thresholds
 

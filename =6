@@ -1,0 +1,5 @@
+Requirement already satisfied: hypothesis in c:\users\adminidiakhoa\appdata\local\programs\python\python310\lib\site-packages (6.138.14)
+Requirement already satisfied: attrs>=22.2.0 in c:\users\adminidiakhoa\appdata\local\programs\python\python310\lib\site-packages (from hypothesis) (25.3.0)
+Requirement already satisfied: exceptiongroup>=1.0.0 in c:\users\adminidiakhoa\appdata\local\programs\python\python310\lib\site-packages (from hypothesis) (1.3.0)
+Requirement already satisfied: sortedcontainers<3.0.0,>=2.1.0 in c:\users\adminidiakhoa\appdata\local\programs\python\python310\lib\site-packages (from hypothesis) (2.4.0)
+Requirement already satisfied: typing-extensions>=4.6.0 in c:\users\adminidiakhoa\appdata\local\programs\python\python310\lib\site-packages (from exceptiongroup>=1.0.0->hypothesis) (4.15.0)
