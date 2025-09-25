@@ -70,14 +70,29 @@ def main() -> None:
     with open(args.json, "r", encoding="utf-8") as f:
         data = json.load(f)
 
+    counts: Dict[str, float | int] | None = None
     if "y_true" in data and "y_pred" in data:
         y_true = [int(x) for x in data["y_true"]]
         y_pred = [int(x) for x in data["y_pred"]]
         counts = _metrics_from_series(y_true, y_pred)
+    elif (
+        "raw" in data
+        and isinstance(data["raw"], dict)
+        and {"y_true", "y_pred"}.issubset(data["raw"].keys())
+    ):
+        raw = data["raw"]
+        y_true = [int(x) for x in raw["y_true"]]
+        y_pred = [int(x) for x in raw["y_pred"]]
+        counts = _metrics_from_series(y_true, y_pred)
+        if "report" not in data and "report" in raw:
+            data["report"] = raw["report"]
     elif "counts" in data:
         counts = _metrics_from_counts(data["counts"])
-    else:
-        raise SystemExit("ERROR: JSON has neither 'y_true'/'y_pred' nor 'counts'.")
+
+    if counts is None:
+        raise SystemExit(
+            "ERROR: JSON has neither 'y_true'/'y_pred' nor 'counts' (or raw.y_true/raw.y_pred)."
+        )
 
     # Pretty print
     print(f"total_inputs              : {counts['total_inputs']}")

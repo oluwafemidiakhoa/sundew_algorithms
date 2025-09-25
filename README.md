@@ -1,146 +1,68 @@
-# Sundew Algorithm
+﻿# Sundew Algorithms
 
-An adaptive gating algorithm for energy-efficient stream processing.
+Adaptive gating for energy-aware stream processing with reproducible evidence, layered precision uplift, and hardware readiness.
 
-## What It Does
+## Highlights
+- Probe-aware presets (`custom_health_hd82`, `custom_breast_probe`) balance recall and energy; bootstrap confidence intervals capture statistical certainty.
+- Layered classifier optional stage boosts precision to ~1.0 while preserving recall—plot available in `assets/layered_precision.png`.
+- Stress-tested via ablations and adversarial streams with results logged in `data/results/ablation_study.csv` and `data/results/adversarial_runs/`.
+- Hardware loop prepared: power capture template, runtime probe telemetry, and merge scripts connect simulation with device measurements.
 
-Sundew decides whether to process incoming data based on estimated significance. It maintains a target activation rate (e.g., 20%) by adapting a threshold using a PI controller with hysteresis.
+![Layered Precision Uplift](assets/layered_precision.png)
 
-**Proven Performance:**
-- Converges to target rates within 1% accuracy
-- Achieves 70-80% energy savings
-- Maintains 100% anomaly detection on test data
-
-## Quick Test
-
-Run the working example:
-
-```bash
-python WORKING_EXAMPLE.py
+## Run Everything
 ```
-
-Output:
+uv run python tools/run_full_evidence.py
 ```
-Activation rate: 19.7% (target: 20.0%)
-Energy saved: 80%
-Anomaly recall: 100.0%
-SUCCESS: Algorithm works as claimed!
-```
+This triggers the dataset suite, ablations, bootstrap metrics, layered classifier runs, and generates the precision plot.
 
-## Basic Usage
+Key artefacts land in `data/results/` and the main report (`docs/DATASET_BENCHMARK_REPORT.md`).
 
-```python
-from sundew.simple_core import SimpleSundewAlgorithm
-from sundew.config import SundewConfig
+## Frequent Commands
+- Dataset suite: `uv run python benchmarks/run_dataset_suite.py --presets tuned_v2 auto_tuned aggressive conservative energy_saver`
+- Probe replay: `uv run python benchmarks/run_pipeline_dataset.py data/raw/breast_cancer_wisconsin_enriched.csv --preset custom_breast_probe --log data/results/runtime_probe_log.json`
+- Layered classifier plot: `uv run python benchmarks/plot_layered_precision.py --out assets/layered_precision.png`
+- Power capture (simulated): `uv run python tools/power_capture_template.py --events 569 --simulate`
+- Merge runtime + power: `uv run python tools/merge_runtime_power.py`
 
-# Create algorithm targeting 20% activation
-config = SundewConfig()
-algorithm = SimpleSundewAlgorithm(config)
+## Evidence Sources
+- `docs/DATASET_BENCHMARK_REPORT.md` – main metrics, probe trade-offs, bootstrap CIs.
+- `docs/BREAST_CANCER_ACTION_PLAN.md` – enrichment tasks and probe telemetry.
+- `docs/HARDWARE_VALIDATION_PLAN.md` & `docs/HARDWARE_REPLAY_CHECKLIST.md` – how to run on-device tests.
+- `docs/LAYERED_CLASSIFIER_RESULTS.md` – precision uplift table for slides.
+- `docs/STRESS_TEST_REPORT.md` – ablation and adversarial summaries.
+- `docs/RUNTIME_MONITORING.md` – listener API and alert guidance.
 
-# Process data
-for sample in data_stream:
-    result = algorithm.process({
-        "magnitude": sample.value,
-        "anomaly_score": sample.anomaly,
-        "urgency": sample.priority,
-        "context": sample.context
-    })
+## Preset Cheat Sheet
+| Preset | Dataset | Recall | Savings | Notes |
+| --- | --- | --- | --- | --- |
+| custom_health_hd82 | Heart disease | ~0.196 | ~82% | Probe-free, bootstrap precision CI 0.679–0.828. |
+| custom_breast_probe | Breast cancer | ~0.118 | ~77% | 19 probe activations (logged), enriched features. |
+| auto_tuned | IoT/MIT BIH | dataset-dependent | 88–93% | General streaming baseline. |
 
-    if result:  # Process this sample
-        expensive_computation(sample)
-    # else: skip to save energy
-```
+## Validation Toolbox
+- `benchmarks/run_ablation_study.py`
+- `benchmarks/run_adversarial_stream.py`
+- `benchmarks/bootstrap_metrics.py`
 
-## How It Works
+Reports and inspectable outputs live in `data/results/`.
 
-1. **Significance Scoring**: Computes weighted sum of input features (0-1 scale)
-2. **Threshold Comparison**: Activates if significance > adaptive threshold
-3. **PI Controller**: Adjusts threshold to maintain target activation rate
-4. **Hysteresis**: Prevents oscillation with different on/off thresholds
+## Hardware Workflow
+1. Log Sundew telemetry with `benchmarks/run_pipeline_dataset.py`.
+2. Capture watts using `tools/power_capture_template.py` (implement `read_power_sample`).
+3. Merge via `tools/merge_runtime_power.py`.
+4. Update docs with measured savings.
 
-## Algorithm Core
+## Monitoring Hooks
+`PipelineRuntime.add_listener(callback)` allows per-event logging. See `tools/runtime_monitor.py` for an example and `docs/RUNTIME_MONITORING.md` for alert ideas.
 
-```python
-# Significance function
-sig = w1*magnitude + w2*anomaly + w3*context + w4*urgency
-
-# Gating with hysteresis
-threshold_effective = threshold ± hysteresis_gap
-activate = (sig > threshold_effective)
-
-# PI controller adaptation
-error = target_rate - current_rate
-threshold -= Kp*error + Ki*integral_error
-```
-
-## Test Results
-
-Validated on synthetic data with 5% anomalies:
-
-| Target Rate | Achieved | Error | Energy Saved |
-|-------------|----------|-------|--------------|
-| 10%         | 10.3%    | 0.3%  | 89.6%        |
-| 15%         | 15.0%    | 0.1%  | 85.0%        |
-| 20%         | 20.0%    | 0.0%  | 80.0%        |
-| 25%         | 25.1%    | 0.1%  | 74.9%        |
-| 30%         | 29.8%    | 0.2%  | 70.2%        |
-| 40%         | 39.3%    | 0.7%  | 60.7%        |
-
-## Key Parameters
-
-- `target_activation_rate`: Fraction of inputs to process (default: 0.2)
-- `adapt_kp`: PI controller proportional gain (default: 0.05)
-- `adapt_ki`: PI controller integral gain (default: 0.002)
-- `hysteresis_gap`: Gap to prevent oscillation (default: 0.02)
-
-## Limitations
-
-- Requires tuning significance function for domain
-- Initial learning period needed (50-100 samples)
-- Performance depends on input feature quality
-- Not suitable for safety-critical applications requiring 100% coverage
-
-## Use Cases
-
-**Good for:**
-- IoT sensor monitoring with rare events
-- Video processing with mostly static frames
-- Network monitoring with sparse anomalies
-- Any stream with low information density
-
-**Not suitable for:**
-- Safety-critical systems
-- Uniform importance data
-- Strict latency requirements
-
-## Files
-
-- `src/sundew/simple_core.py` - Working simplified algorithm
-- `src/sundew/config.py` - Configuration with fixed defaults
-- `WORKING_EXAMPLE.py` - Demonstrates actual performance
-- `test_simple_algorithm.py` - Comprehensive validation tests
-
-## Technical Details
-
-The key innovation is using a PI controller with hysteresis for stable threshold adaptation. Unlike simple reactive approaches, this maintains consistent activation rates despite changing input distributions.
-
-**Mathematical foundation:** The algorithm minimizes energy consumption E = Σ(activation_cost) subject to maintaining detection performance above threshold.
-
-**Convergence:** PI controller with appropriate gains (Kp=0.05, Ki=0.002) ensures convergence to target rates within 200-500 samples for typical data distributions.
-
-## Installation
-
-```bash
-pip install -e .
-```
-
-Requires: numpy, dataclasses (Python 3.7+)
+## Development Notes
+- Tests: `uv run pytest`
+- Extra deps: `uv pip install hypothesis matplotlib`
+- Layered precision CSVs: `data/results/layered_precision*.csv`
 
 ## Citation
-
-If you use this algorithm, please cite:
-
 ```
-Idiakhoa, O. (2025). Adaptive Threshold Control for Energy-Efficient Stream Processing.
-Sundew Algorithm Implementation.
+Idiakhoa, O. (2025). Adaptive Threshold Control for Energy-Efficient Stream Processing. Sundew Algorithms.
 ```
+MIT License.

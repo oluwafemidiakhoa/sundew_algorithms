@@ -238,6 +238,53 @@ def _target_0p30() -> SundewConfig:
     return _clone(_tuned_v2(), target_activation_rate=0.30)
 
 
+def _custom_health() -> SundewConfig:
+    """Health-oriented preset that trades energy for recall on sparse anomalies."""
+    return _clone(
+        _tuned_v2(),
+        activation_threshold=0.55,
+        target_activation_rate=0.15,
+        ema_alpha=0.20,
+        adapt_kp=0.10,
+        adapt_ki=0.03,
+        error_deadband=0.003,
+        min_threshold=0.18,
+        max_threshold=0.85,
+        energy_pressure=0.02,
+        gate_temperature=0.18,
+        w_magnitude=0.20,
+        w_anomaly=0.45,
+        w_context=0.25,
+    )
+
+
+def _custom_health_hd82() -> SundewConfig:
+    """Heart disease tuned preset (~82% savings, higher recall)."""
+    base = _custom_health()
+    return _clone(
+        base,
+        activation_threshold=0.56,
+        target_activation_rate=0.15,
+        energy_pressure=0.02,
+        gate_temperature=0.14,
+        max_threshold=0.88,
+    )
+
+
+def _custom_breast_probe() -> SundewConfig:
+    """Breast cancer-focused preset with probe sampling."""
+    base = _custom_health()
+    return _clone(
+        base,
+        activation_threshold=0.54,
+        target_activation_rate=0.18,
+        energy_pressure=0.028,
+        gate_temperature=0.20,
+        max_threshold=0.87,
+        probe_every=50,
+    )
+
+
 def _auto_tuned() -> SundewConfig:
     """
     Auto-tuned preset based on control system analysis:
@@ -296,6 +343,9 @@ _PRESETS: Final[Dict[str, Callable[[], SundewConfig]]] = {
     "low_temp": _low_temp,
     "energy_saver": _energy_saver,
     "target_0p30": _target_0p30,
+    "custom_health": _custom_health,
+    "custom_health_hd82": _custom_health_hd82,
+    "custom_breast_probe": _custom_breast_probe,
 }
 
 

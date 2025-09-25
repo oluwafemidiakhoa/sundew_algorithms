@@ -133,7 +133,26 @@ class SundewAlgorithm:
     # ------------------------------------------------------------------
     # Public API
     # ------------------------------------------------------------------
+    def _legacy_runtime(self):
+        from .runtime import LegacyRuntimeAdapter
+        if not hasattr(self, '_runtime_adapter'):
+            self._runtime_adapter = LegacyRuntimeAdapter(self)
+            self._legacy_passthrough = True
+        return self._runtime_adapter
+
     def process(self, x: Dict[str, Any]) -> Optional[ProcessingResult]:
+        runtime = self._legacy_runtime()
+        runtime.algo = self
+        result = runtime.process(x)
+        if not getattr(result, 'activated', False):
+            return None
+        return ProcessingResult(
+            significance=float(getattr(result, 'significance', 0.0)),
+            processing_time=float(getattr(result, 'processing_time', 0.0)),
+            energy_consumed=float(getattr(result, 'energy_consumed', 0.0)),
+        )
+
+    def _process_legacy(self, x: Dict[str, Any]) -> Optional[ProcessingResult]:
         self.metrics.processed += 1
 
         # Deterministic probe
@@ -198,7 +217,7 @@ class SundewAlgorithm:
             energy_consumed=float(energy_used),
         )
 
-    def report(self) -> Dict[str, Any]:
+    def _report_legacy(self) -> Dict[str, Any]:
         n = max(1, self.metrics.processed)
         act_rate = self.metrics.activated / n
         avg_pt = (
@@ -296,6 +315,13 @@ class SundewAlgorithm:
             "energy_efficiency_trend": self._compute_energy_trend(),
             "gating_decision_breakdown": self._compute_gating_breakdown(),
         }
+
+
+    def report(self) -> Dict[str, Any]:
+        runtime = self._legacy_runtime()
+        runtime.algo = self
+        return self._report_legacy()
+
 
     # ------------------------------------------------------------------
     # Internals
