@@ -283,7 +283,6 @@ sundew_algorithms/
 ## 📚 Documentation
 
 - **[Architecture Diagrams](ARCHITECTURE_DIAGRAMS.md)** - Visual system documentation
-- **[CLAUDE.md](CLAUDE.md)** - Developer guide for Claude Code
 - **[docs/DATASET_BENCHMARK_REPORT.md](docs/DATASET_BENCHMARK_REPORT.md)** - Comprehensive benchmarking results
 - **[docs/HARDWARE_VALIDATION_PLAN.md](docs/HARDWARE_VALIDATION_PLAN.md)** - Hardware deployment guide
 - **[docs/RUNTIME_MONITORING.md](docs/RUNTIME_MONITORING.md)** - Monitoring and alerting setup
