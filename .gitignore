@@ -20,3 +20,9 @@ sundew_demo/
 .venv-*/
 venv/
 results/
+.venv/
+.venv-*/
+.venv-check/
+.venv-test/
+.venv-testpypi/
+venv/
