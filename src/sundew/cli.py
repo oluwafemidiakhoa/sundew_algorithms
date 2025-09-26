@@ -255,7 +255,7 @@ def cmd_demo(ns: argparse.Namespace) -> int:  # pragma: no cover
                 "report": report,
                 "processed_events": [_to_plain(r) for r in processed],
                 "metadata": {
-                    "version": "0.6.0",
+                    "version": "0.7.0",
                     "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
                     "total_events": (
                         len(processed) + (ns.events - len(processed))
