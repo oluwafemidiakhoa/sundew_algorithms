@@ -1,34 +1,25 @@
-﻿# build/dist/venv
+﻿# build artifacts
 dist/
 build/
 *.egg-info/
+
+# virtualenvs
 .venv/
-# caches
+.venv-*/
+.venv-check/
+.venv-test/
+.venv-testpypi/
+venv/
+
+# python caches & coverage
 __pycache__/
 *.pyc
 .pytest_cache/
 .coverage
 .hypothesis/
-# local outputs
-results/
-*.csv
-*.png
-*.svg
-*.mp4
+
+# local scratch (keep, adjust if needed)
 sundew_demo/
-.venv/
-.venv-*/
-venv/
-results/
-.venv/
-.venv-*/
-.venv-check/
-.venv-test/
-.venv-testpypi/
-venv/
-.venv/
-.venv-*/
-.venv-check/
-.venv-test/
-.venv-testpypi/
-venv/
+
+# NOTE: Do NOT ignore results/ or file types like *.csv/*.png — they are tracked via Git LFS
+# If you ever want to ignore new scratch results, add rules below (but you’re currently tracking them)
