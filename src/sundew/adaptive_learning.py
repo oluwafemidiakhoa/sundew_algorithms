@@ -672,7 +672,7 @@ class AdaptiveLearningSystem:
             "performance_history": list(self.performance_history),
             "adaptation_log": self.adaptation_log,
             "metadata": {
-                "version": "0.3.0",
+                "version": "0.6.0",
                 "saved_at": time.time(),
                 "total_experiences": len(self.performance_history),
             },

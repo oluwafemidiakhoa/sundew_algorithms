@@ -15,7 +15,7 @@ from .runtime import PipelineRuntime, build_legacy_runtime, build_simple_runtime
 try:
     __version__ = version("sundew-algorithms")
 except PackageNotFoundError:
-    __version__ = "0.0.0"
+    __version__ = "0.6.0"
 
 # Maintain backwards compatible names for core results
 ProcessingResult = CoreProcessingResult
