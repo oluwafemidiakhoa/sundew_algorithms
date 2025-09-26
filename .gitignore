@@ -16,3 +16,7 @@ results/
 *.svg
 *.mp4
 sundew_demo/
+.venv/
+.venv-*/
+venv/
+results/

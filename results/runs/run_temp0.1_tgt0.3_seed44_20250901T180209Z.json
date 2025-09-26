@@ -1,16 +1,3 @@
-{
-  "total_inputs": 300,
-  "activations": 28,
-  "activation_rate": 0.09333333333333334,
-  "ema_activation_rate": 0.11665788503061712,
-  "avg_processing_time": 0.2381066850253514,
-  "total_energy_spent": 760.7638480798759,
-  "energy_remaining": 2.6693456324266127,
-  "threshold": 0.9,
-  "baseline_energy_cost": 4500.0,
-  "actual_energy_cost": 760.7638480798759,
-  "estimated_energy_savings_pct": 83.09413670933608,
-  "temperature": 0.1,
-  "target_activation_rate": 0.3,
-  "seed": 44
-}
+version https://git-lfs.github.com/spec/v1
+oid sha256:07af72abb55f0315bd68d57f6449bb1e73de949a3c16125ef73e587f4ac30570
+size 499
