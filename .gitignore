@@ -26,3 +26,9 @@ results/
 .venv-test/
 .venv-testpypi/
 venv/
+.venv/
+.venv-*/
+.venv-check/
+.venv-test/
+.venv-testpypi/
+venv/
