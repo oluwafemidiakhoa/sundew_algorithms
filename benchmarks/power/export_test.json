@@ -1,0 +1,1218 @@
+{
+  "profile": "balanced",
+  "summary": {
+    "activation_rate": 1.0,
+    "avg_power": 6.0,
+    "baseline_idle": 1.2,
+    "baseline_heavy": 6.0,
+    "estimated_savings": 0.0
+  },
+  "metrics": {
+    "activation_rate": 1.0,
+    "avg_power_w": 6.0,
+    "energy_buffer": 0.0,
+    "samples": 200.0
+  },
+  "events": [
+    {
+      "timestamp": 0,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 1,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 2,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 3,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 4,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 5,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 6,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 7,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 8,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 9,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 10,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 11,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 12,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 13,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 14,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 15,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 16,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 17,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 18,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 19,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 20,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 21,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 22,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 23,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 24,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 25,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 26,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 27,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 28,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 29,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 30,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 31,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 32,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 33,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 34,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 35,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 36,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 37,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 38,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 39,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 40,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 41,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 42,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 43,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 44,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 45,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 46,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 47,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 48,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 49,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 50,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 51,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 52,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 53,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 54,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 55,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 56,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 57,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 58,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 59,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 60,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 61,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 62,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 63,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 64,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 65,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 66,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 67,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 68,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 69,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 70,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 71,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 72,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 73,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 74,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 75,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 76,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 77,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 78,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 79,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 80,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 81,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 82,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 83,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 84,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 85,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 86,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 87,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 88,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 89,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 90,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 91,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 92,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 93,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 94,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 95,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 96,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 97,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 98,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 99,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 100,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 101,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 102,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 103,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 104,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 105,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 106,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 107,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 108,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 109,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 110,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 111,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 112,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 113,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 114,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 115,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 116,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 117,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 118,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 119,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 120,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 121,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 122,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 123,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 124,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 125,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 126,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 127,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 128,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 129,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 130,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 131,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 132,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 133,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 134,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 135,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 136,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 137,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 138,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 139,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 140,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 141,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 142,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 143,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 144,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 145,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 146,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 147,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 148,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 149,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 150,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 151,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 152,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 153,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 154,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 155,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 156,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 157,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 158,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 159,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 160,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 161,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 162,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 163,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 164,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 165,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 166,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 167,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 168,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 169,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 170,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 171,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 172,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 173,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 174,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 175,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 176,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 177,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 178,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 179,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 180,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 181,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 182,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 183,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 184,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 185,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 186,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 187,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 188,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 189,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 190,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 191,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 192,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 193,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 194,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 195,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 196,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 197,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 198,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    },
+    {
+      "timestamp": 199,
+      "activated": 1,
+      "power_w": 6.0,
+      "profile": "balanced"
+    }
+  ]
+}

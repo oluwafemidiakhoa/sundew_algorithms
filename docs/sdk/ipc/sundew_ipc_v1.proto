@@ -1,0 +1,62 @@
+syntax = "proto3";
+
+package sundew.ipc.v1;
+
+message InitRequest {
+  string board = 1;
+  string firmware_version = 2;
+  string sdk_version = 3;
+  string config_hash = 4;
+}
+
+message InitResponse {
+  Status status = 1;
+  uint32 heartbeat_interval_ms = 2;
+  string message = 3;
+}
+
+message FeatureKV {
+  string key = 1;
+  double value = 2;
+}
+
+message ScoreEvent {
+  uint64 sequence = 1;
+  int64 timestamp_ns = 2;
+  repeated FeatureKV features = 3;
+}
+
+message GateDecision {
+  uint64 sequence = 1;
+  bool should_activate = 2;
+  double confidence = 3;
+  double threshold = 4;
+  double risk_probability = 5;
+  Status status = 6;
+}
+
+message TelemetryPush {
+  double activation_rate = 1;
+  double average_power_w = 2;
+  double energy_buffer = 3;
+  double temperature_c = 4;
+  uint64 samples = 5;
+}
+
+message Acknowledge {
+  uint64 sequence = 1;
+  Status status = 2;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_OK = 1;
+  STATUS_INVALID_PAYLOAD = 2;
+  STATUS_UNSUPPORTED_FEATURE = 3;
+  STATUS_OVERLOAD = 4;
+}
+
+service SundewGate {
+  rpc Connect(stream ScoreEvent) returns (stream GateDecision);
+  rpc PushTelemetry(TelemetryPush) returns (Acknowledge);
+}

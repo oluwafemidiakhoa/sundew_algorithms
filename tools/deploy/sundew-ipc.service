@@ -1,0 +1,7 @@
+[Unit]
+Description=Sundew IPC Daemon
+[Service]
+ExecStart=/usr/local/bin/sundew-ipc-daemon
+Restart=always
+[Install]
+WantedBy=multi-user.target
