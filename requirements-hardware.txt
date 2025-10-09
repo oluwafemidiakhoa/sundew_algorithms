@@ -1,0 +1,24 @@
+# Sundew Hardware Deployment Requirements
+# For Raspberry Pi, Jetson Nano, Coral Edge TPU
+# Installation: pip install -r requirements-hardware.txt
+
+# Include SDK requirements
+-r requirements-sdk.txt
+
+# Power Measurement Sensors
+adafruit-circuitpython-ina219>=3.4.0  # INA219 current/power sensor
+# adafruit-circuitpython-ina3221>=1.1.0  # INA3221 triple-channel (Jetson)
+
+# GPIO and Hardware Access (Raspberry Pi)
+adafruit-blinka>=8.0.0  # CircuitPython hardware API
+RPi.GPIO>=0.7.1; platform_machine=='armv7l' or platform_machine=='aarch64'
+
+# I2C Communication
+smbus2>=0.4.0  # I2C bus interface
+
+# System Monitoring
+psutil>=5.9.0  # CPU, memory, battery stats
+
+# Deployment Utilities
+supervisor>=4.2.0  # Process management for daemon
+systemd-python>=235; sys_platform=='linux'  # Systemd integration

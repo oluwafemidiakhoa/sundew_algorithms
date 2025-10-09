@@ -1,0 +1,30 @@
+# Sundew Development Requirements
+# Installation: pip install -r requirements-dev.txt
+
+# Include SDK requirements
+-r requirements-sdk.txt
+
+# Code Quality
+ruff>=0.13.0
+mypy>=1.7
+types-requests
+
+# Testing Framework
+pytest>=7.0
+pytest-cov>=4.0
+hypothesis>=6.0
+
+# Package Building
+build>=1.2.1
+twine>=5.1.1
+
+# Visualization (for benchmarks and analysis)
+matplotlib>=3.7,<4.0
+seaborn>=0.12.0
+
+# Video Processing (optional - for video_gate.py)
+# opencv-python>=4.8
+
+# Documentation (optional)
+# sphinx>=6.0
+# sphinx-rtd-theme>=1.2

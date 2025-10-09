@@ -1,0 +1,24 @@
+# Sundew Core SDK Requirements
+# Installation: pip install -r requirements-sdk.txt
+
+# Core Dependencies (required for all Sundew functionality)
+numpy>=1.22,<2.0
+pandas>=1.5.0,<3.0
+
+# SDK Dependencies (required for hardware IPC and embedded deployment)
+grpcio==1.75.1
+grpcio-tools==1.75.1
+protobuf==6.32.1
+
+# Hardware Power Measurement (optional - only needed for real device testing)
+# Uncomment if using INA219/INA3221 sensors on Raspberry Pi/Jetson:
+# adafruit-circuitpython-ina219>=3.4.0
+# adafruit-blinka>=8.0.0
+
+# System Monitoring (optional - for Surface/laptop power testing)
+psutil>=5.9.0
+
+# Testing Dependencies (optional - only for running SDK tests)
+# pytest>=7.0
+# pytest-cov>=4.0
+# hypothesis>=6.0

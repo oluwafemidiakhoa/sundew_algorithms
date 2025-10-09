@@ -38,6 +38,15 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+# SDK dependencies for hardware deployment and IPC
+sdk = [
+  "grpcio>=1.75.0",
+  "grpcio-tools>=1.75.0",
+  "protobuf>=6.32.0",
+  "psutil>=5.9.0",
+]
+
+# Development dependencies
 dev = [
   "ruff>=0.13.0",
   "mypy>=1.7",
@@ -48,8 +57,37 @@ dev = [
   "twine>=5.1.1",
   "types-requests",
 ]
+
+# Hardware deployment (Raspberry Pi, Jetson, etc.)
+hardware = [
+  "grpcio>=1.75.0",
+  "grpcio-tools>=1.75.0",
+  "protobuf>=6.32.0",
+  "psutil>=5.9.0",
+  "adafruit-circuitpython-ina219>=3.4.0",
+  "adafruit-blinka>=8.0.0",
+  "smbus2>=0.4.0",
+]
+
+# Visualization
 viz = ["matplotlib>=3.7,<4.0"]
+
+# Video processing
 video = ["opencv-python>=4.8"]
+
+# All optional dependencies
+all = [
+  "grpcio>=1.75.0",
+  "grpcio-tools>=1.75.0",
+  "protobuf>=6.32.0",
+  "psutil>=5.9.0",
+  "matplotlib>=3.7,<4.0",
+  "ruff>=0.13.0",
+  "mypy>=1.7",
+  "pytest>=7",
+  "pytest-cov>=4",
+  "hypothesis>=6",
+]
 
 [project.urls]
 Homepage      = "https://oluwafemidiakhoa.github.io"
