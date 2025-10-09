@@ -56,7 +56,7 @@ echo.
 REM Run test suite
 echo [5/5] Running SDK test suite...
 echo.
-pytest tests\test_ipc*.py tests\test_grpc*.py -v
+pytest tests/test_ipc_adapter.py tests/test_ipc_bindings.py tests/test_ipc_demo.py tests/test_ipc_shim.py tests/test_ipc_transport.py tests/test_grpc_transport.py -v
 if %ERRORLEVEL% NEQ 0 (
     echo ERROR: Tests failed
     pause
